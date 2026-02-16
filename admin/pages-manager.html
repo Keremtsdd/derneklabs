@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orhanpaşa Belediyesi - Resmi Web Sitesi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body data-type="pages">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-title">Orhanpaşa Belediyesi</div>
+        <div class="brand-sub">Yönetim Paneli</div>
+      </div>
+      <nav class="nav flex-column">
+        <a class="nav-link" href="index.html">Dashboard</a>
+        <a class="nav-link" href="news-manager.html">Haber Yönetimi</a>
+        <a class="nav-link" href="announcements-manager.html">Duyurular</a>
+        <a class="nav-link" href="events-manager.html">Etkinlikler</a>
+        <a class="nav-link active" href="pages-manager.html">Sayfa İçerikleri</a>
+        <a class="nav-link" href="projects-manager.html">Projeler</a>
+        <a class="nav-link" href="documents-manager.html">Belgeler</a>
+        <a class="nav-link" href="notices-manager.html">İlanlar</a>
+        <a class="nav-link" href="fast-links-manager.html">Hızlı İşlemler</a>
+        <a class="nav-link" href="videos-manager.html">Videolar</a>
+        <a class="nav-link" href="banners-manager.html">Bannerlar</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn btn-outline-light btn-sm w-100" id="logout-btn">Oturumu kapat</button>
+      </div>
+    </aside>
+    <main class="content">
+      <div class="content-inner">
+        <header class="topbar d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <p class="eyebrow mb-1">İçerik</p>
+            <h1 class="h4 mb-0 fw-bold">Sayfa İçerikleri</h1>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary btn-sm" id="refresh-btn">Yenile</button>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#itemModal">Yeni Sayfa</button>
+          </div>
+        </header>
+
+        <section class="card mb-3">
+          <div class="card-body py-2">
+            <p class="small text-muted mb-0">
+              <strong>Kurumsal sayfalar:</strong> Aşağıdaki listeden ilgili satırda <strong>Düzenle</strong> ile içerik ekleyebilir veya <strong>Yeni Sayfa</strong> ile yeni slug (örn. <code>iletisim</code>, <code>hakkimizda</code>) oluşturabilirsiniz. İçerik alanında HTML kullanabilirsiniz.
+            </p>
+          </div>
+        </section>
+        <section class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table align-middle" id="data-table">
+                <thead>
+                  <tr>
+                    <th>Slug</th>
+                    <th>Başlık</th>
+                    <th>Özet</th>
+                    <th>İşlemler</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="4" class="text-muted">Yükleniyor...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sayfa Ekle/Düzenle</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+        </div>
+        <form id="item-form">
+          <div class="modal-body row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Slug</label>
+              <input name="slug" class="form-control" required placeholder="baskan, meclis, iletisim...">
+              <div class="form-text">URL’de görünecek adres (örn. baskan → pages/baskan.html)</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Başlık</label>
+              <input name="title" class="form-control" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Özet</label>
+              <textarea name="summary" class="form-control" rows="2"></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label">İçerik (HTML veya metin)</label>
+              <textarea name="body" class="form-control" rows="8"></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Görsel (isteğe bağlı)</label>
+              <input type="file" name="image" class="form-control">
+            </div>
+            <div class="col-12">
+              <div id="form-alert" class="alert alert-danger d-none mb-0"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Kapat</button>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="shared.js"></script>
+  <script src="manager-common.js"></script>
+</body>
+</html>

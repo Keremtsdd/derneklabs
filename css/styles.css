@@ -1,0 +1,1025 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    padding-bottom: 100px;
+    background: #bbe0f375 url(../images/background.webp);
+    background-size: 100%;
+    background-repeat: no-repeat
+}
+
+.mce-notification,
+.tox-notifications-container {
+    display: none !important
+}
+
+.container {
+    background: #fff
+}
+
+.bg-1 {
+    background: linear-gradient(115.74deg, #0069de -6.1%, #004d90 101.85%)
+}
+
+.bg-2 {
+    background: linear-gradient(115.74deg, #ff0001 -6.1%, #ab0000 101.85%)
+}
+
+.bg-3,
+.bg-3:hover {
+    background: linear-gradient(115.74deg, rgb(239 239 239/37%) -6.1%, rgb(245 245 245) 101.85%)
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: "Bree Serif", serif !important
+}
+
+.text-bld {
+    color: #054886
+}
+
+.hizli-menu-beltr .btn {
+    font-size: 16px
+}
+
+.hizli-menu-beltr .servis img {
+    width: 50px
+}
+
+.hizli-menu-beltr .btn:hover {
+    background: #d60b28;
+    transition: opacity .38s ease 0
+}
+
+.tanitim-slider .owl-prev {
+    left: 10px
+}
+
+.tanitim-slider .owl-next {
+    right: 10px;
+    position: absolute;
+    top: 25%
+}
+
+.tanitim-slider .owl-prev {
+    position: absolute;
+    top: 25%
+}
+
+.tanitim-slider .owl-dots .owl-dot span {
+    width: 30px
+}
+
+.tanitim-slider .owl-next span,
+.tanitim-slider .owl-prev span {
+    font-size: 180px;
+    color: #d60b28;
+    transition: opacity .35s ease 0;
+    font-weight: 100
+}
+
+.tanitim-slider .owl-next span:hover,
+.tanitim-slider .owl-prev span:hover {
+    color: #002f63;
+    opacity: .5;
+    transition: opacity .35s ease 0
+}
+
+.tanitim-slider .owl-theme .owl-dots .owl-dot span {
+    background: #d60b28
+}
+
+.buyuk-slider .item a,
+.tanitim-slider .item a {
+    text-decoration: none;
+    transition: opacity .35s ease 0;
+    color: #002f63
+}
+
+.m-kart .card-title:hover,
+.tanitim-slider .item a:hover {
+    text-decoration: none;
+    color: #d60b28;
+    transition: .3s
+}
+
+.m-kart .card-body {
+    color: #002f63;
+    padding: 15px 0 0
+}
+
+.haber-slider .owl-prev {
+    left: -45px
+}
+
+.haber-slider .owl-next {
+    right: -45px
+}
+
+.haber-slider .owl-next,
+.haber-slider .owl-prev {
+    position: absolute;
+    top: 10%
+}
+
+.buyuk-slider .item a:hover,
+.m-kart .card-title {
+    text-decoration: none;
+    transition: opacity .35s ease 0
+}
+
+.m-kart .card-title {
+    font-size: 18px;
+    line-height: 1.4;
+    color: #002f63;
+    font-weight: 700
+}
+
+.video-slider .owl-prev {
+    left: -45px
+}
+
+.video-slider .owl-next {
+    right: -45px
+}
+
+.video-slider .owl-next,
+.video-slider .owl-prev {
+    position: absolute;
+    top: 10%
+}
+
+.video-slider .video-icon {
+    position: absolute;
+    top: 30%;
+    text-align: center;
+    width: 100%;
+    z-index: 3;
+    font-size: 1.6rem;
+    color: #fff;
+    opacity: .9
+}
+
+.video-slider .owl-next span,
+.video-slider .owl-prev span {
+    font-size: 120px;
+    color: #002f63
+}
+
+.video-slider .owl-next span:hover,
+.video-slider .owl-prev span:hover {
+    font-size: 120px;
+    color: #d21000
+}
+
+.buyuk-slider .owl-prev {
+    left: 10px
+}
+
+.buyuk-slider .owl-next {
+    right: 10px
+}
+
+.buyuk-slider .owl-next,
+.buyuk-slider .owl-prev {
+    position: absolute;
+    top: 15%
+}
+
+.buyuk-slider .owl-next span,
+.buyuk-slider .owl-prev span {
+    font-size: 180px;
+    color: #002f63;
+    font-weight: 400;
+    transition: opacity .35s ease 0
+}
+
+.buyuk-slider .owl-next span:hover,
+.buyuk-slider .owl-prev span:hover {
+    font-size: 180px;
+    color: red;
+    opacity: .5;
+    font-weight: 400;
+    transition: opacity .35s ease 0
+}
+
+.buyuk-slider .item a:hover {
+    color: #d60b28;
+    background: 0 0
+}
+
+.owl-theme .owl-nav [class*=owl-]:hover {
+    background: 0 0
+}
+
+.btn-search {
+    height: 80px;
+    color: #fff;
+    line-height: 80px
+}
+
+.arama-beltr .form-control {
+    font-size: 1.1rem
+}
+
+.arama-beltr .form-control:focus {
+    box-shadow: none !important
+}
+
+.arama-beltr .btn:hover {
+    color: #fff
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-weight: bolder;
+    color: #002f63;
+    font-size: 15px
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    font-weight: bolder;
+    color: #d21000;
+    font-size: 15px
+}
+
+.dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: 0;
+    font-size: 14px;
+    color: #0a0a0a;
+    text-align: left;
+    list-style: none;
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 0
+}
+
+.dropdown-item {
+    color: #002f63;
+    font-size: 16px;
+    font-weight: 500
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #002f63
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: #fff;
+    background-color: #d60b28;
+    transition: .3s
+}
+
+.navbar .megamenu {
+    padding: 1rem
+}
+
+.col-megamenu li a {
+    text-decoration: none;
+    color: #666;
+    transition: .3s
+}
+
+.col-megamenu li a:hover {
+    text-decoration: none;
+    color: #ddd
+}
+
+.menu .list-group-item a {
+    font-size: 15px;
+    font-weight: 600;
+    color: #002f63;
+    transition: color .3s ease
+}
+
+.menu .list-group-item a:hover {
+    font-size: 15px;
+    font-weight: 600;
+    color: #d60b28
+}
+
+.menu .list-group-item.active {
+    background: #f3f3f3
+}
+
+.map-responsive {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0
+}
+
+.map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute
+}
+
+.top-nav .nav-item a {
+    color: #fff;
+    font-size: 13px
+}
+
+.link-tab .nav-pills {
+    background: #fff;
+    flex-wrap: nowrap
+}
+
+.link-tab .nav-pills .nav-link {
+    border: 0;
+    font-weight: 700;
+    color: #002f63;
+    transition: .3s
+}
+
+.link-tab .nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    color: #fff;
+    background: #d21000;
+    font-weight: 700
+}
+
+.link-tab .nav-link:focus {
+    color: #002f63;
+    transition: .3s;
+    font-weight: 700
+}
+
+.link-tab .list-group-item:hover {
+    background: #f7f7f7;
+    transition: .3s;
+    cursor: pointer
+}
+
+.link-tab .list-group-item a,
+.multimedya-tab-beltr .list-group-item a {
+    text-decoration: none;
+    color: #002f63;
+    font-weight: 500;
+    font-size: 14px
+}
+
+.link-tab .list-group-item a:hover,
+.multimedya-tab-beltr .list-group-item a:hover {
+    text-decoration: none
+}
+
+.proje-slider .card {
+    background: 0 0
+}
+
+.proje-slider .card-title {
+    color: #002f63;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.6
+}
+
+.proje-slider .card-body {
+    color: #2b4b61;
+    border-radius: .2rem;
+    padding: 15px 0 0
+}
+
+.proje-slider .card-text {
+    color: #3f3f3f;
+    font-size: 14px;
+    line-height: 1.6
+}
+
+.proje-slider .owl-prev {
+    left: -60px
+}
+
+.proje-slider .owl-next {
+    right: -60px
+}
+
+.proje-slider .owl-next,
+.proje-slider .owl-prev {
+    position: absolute;
+    top: 0;
+    border: 1px solid #ddd
+}
+
+.icerik-diger .owl-next span,
+.icerik-diger .owl-prev span,
+.proje-slider .owl-next span,
+.proje-slider .owl-prev span {
+    font-size: 150px;
+    color: #002f63;
+    font-weight: 400
+}
+
+.icerik-diger .owl-next span:hover,
+.icerik-diger .owl-prev span:hover,
+.proje-slider .owl-next span:hover,
+.proje-slider .owl-prev span:hover {
+    font-size: 150px;
+    color: #002f63;
+    opacity: .5
+}
+
+.icerik-diger .card {
+    background: 0 0
+}
+
+.icerik-diger .card-title {
+    color: #002f63;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.6
+}
+
+.icerik-diger .card-body {
+    color: #2b4b61;
+    border-radius: .2rem;
+    padding: 15px 0 0
+}
+
+.icerik-diger .card-text {
+    color: #3f3f3f;
+    font-size: 14px;
+    line-height: 1.6
+}
+
+.icerik-diger .owl-prev {
+    left: -60px
+}
+
+.icerik-diger .owl-next {
+    right: -60px
+}
+
+.icerik-diger .owl-next,
+.icerik-diger .owl-prev {
+    position: absolute;
+    top: 0;
+    border: 1px solid #ddd
+}
+
+.multimedya-tab-beltr .nav-pills {
+    background: 0 0;
+    flex-wrap: nowrap
+}
+
+.multimedya-tab-beltr .nav-pills .nav-link {
+    border-radius: 0;
+    font-weight: 700;
+    color: #002f63;
+    transition: .3s
+}
+
+.multimedya-tab-beltr .nav-pills .nav-link.active {
+    color: #fff;
+    border-radius: .25rem;
+    background: #d21000
+}
+
+.multimedya-tab-beltr .nav-link:focus,
+.nav-link:hover {
+    color: #fff;
+    transition: .3s
+}
+
+.multimedya-tab-beltr .tab-tarih {
+    font-size: 11px;
+    color: #7e7e7e
+}
+
+.servis {
+    margin-bottom: 10px;
+    border: 1px solid #9ab9db36;
+    border-radius: .25rem
+}
+
+.servis:hover {
+    margin-bottom: 10px;
+    transition: .3s
+}
+
+.servis h3 {
+    color: #002f63 !important;
+    font-size: 16px;
+    padding-top: 3px
+}
+
+.sticky {
+    height: 80px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 988;
+    background: linear-gradient(115.74deg, rgb(0 47 99) -6.1%, rgb(7 85 153) 101.85%)
+}
+
+#baskan {
+    color: #fff !important;
+    height: 80px;
+    box-sizing: border-box;
+    position: relative
+}
+
+#baskan .img-baskan {
+    position: absolute;
+    bottom: 0px;
+    right: 40px;
+    width: 250px;
+}
+
+#baskan .img-baskan h1 {
+    color: #fff !important;
+}
+
+#baskan .img-baskan p {
+    font-size: 14px;
+    line-height: 0px;
+}
+
+#baskan .img-baskan img {
+    width: 250px;
+    padding: 0;
+    margin: 0
+}
+
+#baskan .baslik-baskan {
+    padding: 18px 30px 15px 70px;
+    border-right: 1px solid #ffffff1a;
+    color: #fff !important;
+}
+
+#baskan .baslik-baskan h1 {
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    opacity: .7;
+    font-family: "Bree Serif", serif;
+    color: #fff !important;
+}
+
+#baskan .baslik-baskan p {
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    color: #ffffff91;
+    font-family: "Bree Serif", serif
+}
+
+#baskan .sosyal i {
+    font-size: 24px
+}
+
+.tab {
+    overflow: hidden;
+    width: 100%;
+    background: #f0f8ff
+}
+
+.tab button {
+    display: inline-block;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 10px;
+    background: 0 0;
+    transition: .3s;
+    text-align: center
+}
+
+.tab button:hover {
+    background-color: #002f63;
+    color: #fff;
+    transition: .3s
+}
+
+.tab button.active {
+    background-color: #d60b28;
+    color: #fff
+}
+
+.tabcontent {
+    display: none;
+    padding: 20px 0;
+    border-top: none;
+    width: 100%
+}
+
+.icerik-detay-beltr h1 {
+    font-weight: 700;
+    color: #002f63;
+    font-size: 30px
+}
+
+.icerik-detay-beltr .icerik-detay-spot p,
+.icerik-detay-beltr h3 {
+    font-weight: 700;
+    color: #002f63;
+    font-size: 20px
+}
+
+.icerik-detay-beltr .tarih {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px
+}
+
+.icerik-detay-beltr .icerik-ikon i {
+    font-weight: 400;
+    font-size: 18px;
+    color: #d60b28
+}
+
+.icerik-detay-beltr .icerik-detay-ikon {
+    font-size: 30px
+}
+
+.icerik-detay-beltr p {
+    font-size: 16px;
+    line-height: 24px
+}
+
+.icerik-detay-beltr .icerik-detay-spot p {
+    line-height: 1.4
+}
+
+.icerik-detay-beltr .proje-kunye p {
+    font-size: 14px
+}
+
+.icerik-detay-beltr .hizmetler-beltr h3 {
+    font-size: 1.4rem;
+    line-height: 1.4rem
+}
+
+.icerik-detay-beltr .hizmetler-beltr img {
+    width: 50px;
+    margin-right: 20px
+}
+
+.icerik-detay-beltr .hizmetler-beltr .accordion-body {
+    padding: 0 !important
+}
+
+.icerik-detay-beltr ul.breadcrumb {
+    padding: 10px 16px;
+    list-style: none;
+    background-color: #eeeeee4a
+}
+
+.icerik-detay-beltr ul.breadcrumb li {
+    display: inline;
+    font-size: 16px
+}
+
+.icerik-detay-beltr ul.breadcrumb li+li:before {
+    padding: 8px;
+    color: #000;
+    content: "/ "
+}
+
+.icerik-detay-beltr ul.breadcrumb li a {
+    color: #0275d8;
+    text-decoration: none
+}
+
+.icerik-detay-beltr ul.breadcrumb li a:hover {
+    color: #01447e;
+    text-decoration: underline
+}
+
+.icerik-detay-beltr .icerik-slider .video-icon {
+    position: absolute;
+    top: 40%;
+    text-align: center;
+    width: 100%;
+    z-index: 3;
+    font-size: 2rem;
+    color: #fff;
+    opacity: .9
+}
+
+.icerik-detay-beltr .icerik-slider .video-icon i {
+    background: #d21000;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px
+}
+
+.icerik-detay-beltr .icerik-alt-menu .nav-link.active,
+.icerik-detay-beltr .icerik-alt-menu .nav-link:hover {
+    font-size: 18px;
+    color: #d60b28;
+    font-weight: 700
+}
+
+.icerik-detay-beltr .icerik-alt-menu .nav-link {
+    font-size: 18px;
+    color: #002f63;
+    font-weight: 700
+}
+
+.icerik-detay-beltr .icerik-alt-menu img {
+    width: 40px
+}
+
+.icerik-detay-beltr .icerik-menu .nav-link.active {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700
+}
+
+.icerik-detay-beltr .icerik-menu .nav-link {
+    font-size: 16px;
+    color: #000;
+    font-weight: 400
+}
+
+.icerik-detay-beltr .icerik-menu .nav-link:hover {
+    font-size: 16px;
+    color: #d21000
+}
+
+.icerik-detay-beltr .h-kutu {
+    background-color: rgb(248 249 250);
+    border-radius: 10px
+}
+
+.icerik-detay-beltr .h-kutu a,
+.tab button {
+    color: #002f63;
+    font-size: 18px
+}
+
+.icerik-detay-beltr .mudurlukler a {
+    font-size: 17px
+}
+
+.icerik-detay-beltr .mudurlukler a:hover {
+    font-size: 17px;
+    color: #d60b28;
+    transition: .3s
+}
+
+.icerik-detay-beltr .mudurlukler img {
+    width: 50px
+}
+
+.icerik-detay-beltr .icerik-detay-yazi .list-group-item {
+    font-size: 16px
+}
+
+.icerik-detay-yazi a {
+    color: #d21000;
+    text-decoration: none;
+    font-weight: 700
+}
+
+ul.nav h3 {
+    font-size: 20px;
+    padding-left: 15px
+}
+
+@media (max-width:319px) {
+    .border-end {
+        border-right: 0 !important
+    }
+}
+
+@media (min-width:576px) and (max-width:767.98px) {
+    .border-end {
+        border-right: 0 !important
+    }
+}
+
+@media all and (min-width:992px) {
+    .navbar .has-megamenu {
+        position: static !important
+    }
+
+    .navbar .megamenu {
+        left: 0;
+        right: 0;
+        width: 100%;
+        margin-top: 0;
+        border-radius: 0
+    }
+}
+
+@media (min-width:320px) and (max-width:1200px) {
+    body {
+        padding-bottom: 0
+    }
+
+    .border-end {
+        border-right: 0 !important
+    }
+
+    .tab button {
+        display: inline-block;
+        border: 0;
+        outline: 0;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        color: #002f63;
+        padding: 10px;
+        background: 0 0;
+        transition: .3s;
+        text-align: center
+    }
+
+    .icerik-detay-beltr .icerik-menu .nav-link,
+    .icerik-detay-beltr .icerik-menu .nav-link:hover {
+        font-size: 14px;
+        color: #000;
+        font-weight: 400
+    }
+
+    .servis h3 {
+        color: #002f63 !important;
+        font-size: 13px;
+        padding-top: 3px;
+        font-weight: 600
+    }
+
+    .icerik-detay-beltr .hizmetler-beltr h3,
+    .m-kart .card-title,
+    .proje-slider .card-title {
+        font-size: 18px
+    }
+
+    .multimedya-tab-beltr .row,
+    .projeler-beltr .row,
+    .tabs-beltr .row {
+        padding: 0 !important
+    }
+
+    .multimedya-tab-beltr .video-slider .video-icon {
+        top: 18% !important
+    }
+
+    iframe {
+        width: 100%;
+        height: auto;
+        overflow: hidden
+    }
+
+    .icerik-detay-beltr h1 {
+        font-size: 26px
+    }
+
+    .icerik-detay-beltr .icerik-detay-spot p {
+        font-size: 18px;
+        color: #002f63;
+        font-weight: 600;
+        line-height: 24px
+    }
+
+    .arama-beltr,
+    .hizli-menu-beltr,
+    .icerik-detay-beltr,
+    .multimedya-tab-beltr,
+    .sosyal-bel-tr,
+    .tabs-beltr,
+    .ust-menu-beltr,
+    .ust-slider-beltr {
+        margin-bottom: 10px !important
+    }
+
+    .icerik-detay-beltr ul.breadcrumb li {
+        display: inline;
+        font-size: 14px
+    }
+
+    .hizli-menu-beltr .row,
+    .icerik-detay-beltr .row,
+    .icerik-diger-beltr .row,
+    .multimedya-tab-beltr .row,
+    .projeler-beltr .row,
+    .tabs-beltr .row {
+        padding: .8rem !important
+    }
+
+    .icerik-detay .row {
+        padding: 0 !important
+    }
+
+    .icerik-detay-beltr .icerik-detay-ikon {
+        font-size: 24px
+    }
+
+    .hizli-menu-beltr .btn {
+        font-size: .9rem;
+        border-radius: 1px
+    }
+
+    .hizli-menu-beltr .servis img {
+        width: 50px
+    }
+
+    .navbar-brand img {
+        width: 70px !important
+    }
+
+    .navbar-toggler-icon {
+        display: inline-block;
+        width: 1.3em;
+        height: 1.3em;
+        vertical-align: middle;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        font-size: 16px !important;
+        font-weight: bolder;
+        color: #002f63
+    }
+
+    .link-tab .nav-pills .nav-link,
+    .multimedya-tab-beltr .nav-pills .nav-link {
+        font-size: .8rem
+    }
+
+    .multimedya-tab-beltr .nav-pills,
+    .projeler-beltr .proje-baslik,
+    .tabs-beltr .nav-pills {
+        margin-top: 15px
+    }
+
+    .container {
+        border-radius: 0 !important
+    }
+
+    .icerik-detay-beltr .hizmetler-beltr img {
+        width: 45px;
+        margin-right: 15px
+    }
+
+    .icerik-detay-beltr .hizmetler-beltr .accordion-body {
+        padding: 0 !important;
+        margin-left: -15px;
+        margin-right: -15px
+    }
+
+    .icerik-detay-beltr .icerik-alt-menu .nav-link.active,
+    .icerik-detay-beltr .icerik-alt-menu .nav-link:hover {
+        font-size: 15px;
+        color: #d60b28;
+        font-weight: 700
+    }
+
+    .icerik-detay-beltr .icerik-alt-menu .nav-link {
+        font-size: 15px;
+        color: #002f63;
+        font-weight: 700
+    }
+
+    .icerik-detay-beltr .icerik-alt-menu img {
+        width: 30px
+    }
+
+    .border-n-mobil {
+        border: 0 solid !important
+    }
+
+    .buyuk-slider .owl-item img {
+        border-radius: 0 !important
+    }
+}
+
+@media (min-width:768px) and (max-width:1024px) {
+    .icerik-detay-beltr .hizmetler-beltr h3 {
+        font-size: 18px
+    }
+
+    .icerik-detay-beltr .hizmetler-beltr img {
+        width: 60px;
+        margin-right: 25px
+    }
+
+    .icerik-detay-beltr .hizmetler-kapak-beltr img {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: block
+    }
+
+    .border-n-mobil {
+        border: 0 solid !important
+    }
+}
