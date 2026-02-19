@@ -1,47 +1,60 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars, FaTimes, FaChevronDown, FaTwitter, FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa';
 
+// Types
 interface MenuItem {
-    label: string;
-    href: string;
-    external?: boolean;
+    id: string;
+    title: string;
+    url: string;
+    children: MenuItem[];
+    collapsed?: boolean;
 }
 
-interface MenuGroup {
-    label: string;
-    items: MenuItem[];
-}
+const STORAGE_KEY = 'navbar_menu_data_v2';
 
-const kurumsalGroups: MenuGroup[] = [
+const DEFAULT_MENU_ITEMS: MenuItem[] = [
     {
-        label: 'Orhanpaşa Belediyesi',
-        items: [
-            { label: 'Hizmet Merkezleri', href: '/sayfa/hizmet-merkezleri' },
-            { label: 'Belediye Başkan V.', href: '/baskan' },
-            { label: 'Başkan Yardımcıları', href: '/sayfa/baskan-yardimcilari' },
-            { label: 'Koordinatörler', href: '/sayfa/koordinatorler' },
-            { label: 'Belediye Meclisi', href: '/sayfa/meclis' },
-            { label: 'Müdürlükler', href: '/sayfa/mudurlukler' },
-            { label: 'Belediye Encümeni', href: '/sayfa/encumen' },
-            { label: 'Organizasyon Şeması', href: '/sayfa/organizasyon-semasi' },
-            { label: 'İç Denetim', href: '/sayfa/denetim' },
-            { label: 'KVKK Bilgilendirmesi', href: '/sayfa/kvkk' },
+        id: 'kurumsal',
+        title: 'KURUMSAL',
+        url: '#',
+        children: [
+            {
+                id: 'orhanpasa-bel',
+                title: 'Orhanpaşa Belediyesi',
+                url: '#',
+                children: [
+                    { id: 'baskan', title: 'Belediye Başkanı', url: '/baskan', children: [] },
+                    { id: 'yonetim', title: 'Yönetim Şeması', url: '/sayfa/yonetim', children: [] },
+                    { id: 'mudurlukler', title: 'Müdürlükler', url: '/sayfa/mudurlukler', children: [] },
+                ],
+            },
+        ],
+    },
+    { id: 'projeler', title: 'PROJELER', url: '/projeler', children: [] },
+    { id: 'etkinlikler', title: 'ETKİNLİK', url: '/etkinlikler', children: [] },
+    {
+        id: 'hizli-islemler',
+        title: 'HIZLI İŞLEMLER',
+        url: '#',
+        children: [
+            { id: 'borc-sorgulama', title: 'Borç Sorgulama', url: '/borc-sorgulama', children: [] },
+            { id: 'nobetci-eczane', title: 'Nöbetçi Eczaneler', url: '/nobetci-eczaneler', children: [] },
+            { id: 'imar-durumu', title: 'İmar Durumu', url: '/imar-durumu', children: [] },
         ],
     },
     {
-        label: 'Bayrampaşa',
-        items: [
-            { label: 'Bayrampaşa Hakkında', href: '/hakkinda' },
-            { label: 'Kent Konseyi', href: '/sayfa/kent-konseyi' },
-            { label: 'Stratejik Plan ve Raporlar', href: '/sayfa/stratejik' },
-            { label: 'Kurumsal Kimlik', href: '/sayfa/kurumsal-kimlik' },
-            { label: 'Banka Hesap No', href: '/sayfa/banka-hesap-numarasi' },
-            { label: 'Kamu Hizmeti Standartı', href: '/sayfa/kamuhizmet-standarti' },
-            { label: 'Etik İlkeler', href: '/sayfa/etik-ilkeler' },
-            { label: 'İletişim Bilgileri', href: '/iletisim' },
+        id: 'basvuru-islemleri',
+        title: 'BAŞVURU İŞLEMLERİ',
+        url: '#',
+        children: [
+            { id: 'beyaz-masa', title: 'Beyaz Masa Başvurusu', url: '/beyaz-masa', children: [] },
+            { id: 'is-basvurusu', title: 'İş Başvurusu', url: '/is-basvurusu', children: [] },
+            { id: 'evrak-takip', title: 'Evrak Takip', url: '/evrak-takip', children: [] },
         ],
     },
+    { id: 'e-belediye', title: 'E-BELEDİYE', url: '/e-belediye', children: [] },
+    { id: 'yayinlar', title: 'YAYINLAR', url: '/yayinlar', children: [] },
 ];
 
 const socialLinks = [
@@ -53,7 +66,145 @@ const socialLinks = [
 
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [kurumsalOpen, setKurumsalOpen] = useState(false);
+    const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+    const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
+    const dropdownRef = useRef<HTMLUListElement>(null);
+
+    // Initialize menu from localStorage or default
+    useEffect(() => {
+        const loadMenu = () => {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    setMenuItems(JSON.parse(saved));
+                } catch {
+                    setMenuItems(DEFAULT_MENU_ITEMS);
+                }
+            } else {
+                setMenuItems(DEFAULT_MENU_ITEMS);
+                // Persist defaults to local storage if empty to sync with Admin Panel
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_MENU_ITEMS));
+            }
+        };
+
+        loadMenu();
+
+        // Optional: Listen for storage events to update if changed in another tab
+        window.addEventListener('storage', loadMenu);
+        return () => window.removeEventListener('storage', loadMenu);
+    }, []);
+
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setOpenDropdowns({});
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const toggleDropdown = (id: string, isOpen: boolean) => {
+        setOpenDropdowns((prev) => ({ ...prev, [id]: isOpen }));
+    };
+
+    // Recursive Menu Component for Desktop
+    const DesktopMenuItem = ({ item, depth = 0 }: { item: MenuItem; depth?: number }) => {
+        const hasChildren = item.children && item.children.length > 0;
+        const isOpen = openDropdowns[item.id];
+
+        const handleMouseEnter = () => {
+            if (hasChildren) toggleDropdown(item.id, true);
+        };
+
+        const handleMouseLeave = () => {
+            if (hasChildren) toggleDropdown(item.id, false);
+        };
+
+        return (
+            <li
+                className={`relative group ${depth === 0 ? 'h-full flex items-center' : ''}`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
+                <Link
+                    to={item.url}
+                    className={`
+                        flex items-center gap-1 transition-colors
+                        ${depth === 0
+                            ? 'px-3 py-2 text-sm font-bold text-primary hover:text-accent uppercase'
+                            : 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-accent w-full'
+                        }
+                    `}
+                    onClick={(e) => {
+                        if (hasChildren && item.url === '#') e.preventDefault();
+                    }}
+                >
+                    {item.title}
+                    {hasChildren && (
+                        <FaChevronDown className={`text-[10px] transition-transform ${isOpen ? 'rotate-180' : ''} ${depth > 0 ? '-rotate-90 ml-auto' : ''}`} />
+                    )}
+                </Link>
+
+                {/* Dropdown Menu */}
+                {hasChildren && isOpen && (
+                    <div className={`
+                        absolute z-50 bg-white shadow-xl rounded-lg border border-gray-100 min-w-[220px] py-1 animate-in fade-in zoom-in-95 duration-100
+                        ${depth === 0 ? 'top-full left-0' : 'top-0 left-full ml-1'}
+                    `}>
+                        <ul className="py-1">
+                            {item.children.map((child) => (
+                                <DesktopMenuItem key={child.id} item={child} depth={depth + 1} />
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </li>
+        );
+    };
+
+    // Recursive Menu Component for Mobile
+    const MobileMenuItem = ({ item, depth = 0 }: { item: MenuItem; depth?: number }) => {
+        const hasChildren = item.children && item.children.length > 0;
+        const [isExpanded, setIsExpanded] = useState(false);
+
+        return (
+            <li>
+                <div className="flex items-center justify-between">
+                    <Link
+                        to={item.url}
+                        className={`
+                            block flex-1 py-2 text-primary hover:bg-gray-50 rounded
+                            ${depth === 0 ? 'text-sm font-bold uppercase px-3' : 'text-sm font-medium pl-6 pr-3'}
+                            ${depth > 1 ? 'pl-9' : ''}
+                        `}
+                        onClick={() => {
+                            if (!hasChildren) setMobileOpen(false);
+                        }}
+                    >
+                        {item.title}
+                    </Link>
+                    {hasChildren && (
+                        <button
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            className="p-2 text-gray-400 hover:text-accent"
+                        >
+                            <FaChevronDown className={`text-xs transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
+                    )}
+                </div>
+                {hasChildren && isExpanded && (
+                    <ul className="border-l-2 border-gray-100 ml-4 space-y-1 my-1">
+                        {item.children.map((child) => (
+                            <MobileMenuItem key={child.id} item={child} depth={depth + 1} />
+                        ))}
+                    </ul>
+                )}
+            </li>
+        );
+    };
 
     return (
         <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -66,72 +217,13 @@ export default function Header() {
                     </Link>
 
                     {/* Desktop Nav */}
-                    <ul className="hidden lg:flex items-center gap-1">
-                        {/* Kurumsal Mega Menu */}
-                        <li className="relative group">
-                            <button
-                                className="nav-link flex items-center gap-1 px-3 py-2 text-sm font-bold text-primary hover:text-accent transition-colors"
-                                onClick={() => setKurumsalOpen(!kurumsalOpen)}
-                                onMouseEnter={() => setKurumsalOpen(true)}
-                            >
-                                KURUMSAL <FaChevronDown className="text-[10px]" />
-                            </button>
-                            {kurumsalOpen && (
-                                <div
-                                    className="absolute left-0 top-full bg-white shadow-xl rounded-lg border p-6 min-w-[600px] z-50"
-                                    onMouseLeave={() => setKurumsalOpen(false)}
-                                >
-                                    <div className="grid grid-cols-2 gap-6">
-                                        {kurumsalGroups.map((group) => (
-                                            <div key={group.label}>
-                                                <h6 className="text-accent font-bold text-sm mb-3">{group.label}</h6>
-                                                <ul className="space-y-1.5">
-                                                    {group.items.map((item) => (
-                                                        <li key={item.href}>
-                                                            <Link
-                                                                to={item.href}
-                                                                className="text-sm text-primary hover:text-accent transition-colors font-medium"
-                                                                onClick={() => setKurumsalOpen(false)}
-                                                            >
-                                                                {item.label}
-                                                            </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </li>
-                        <li>
-                            <Link to="/projeler" className="px-3 py-2 text-sm font-bold text-primary hover:text-accent transition-colors">
-                                PROJELER
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/etkinlikler" className="px-3 py-2 text-sm font-bold text-primary hover:text-accent transition-colors">
-                                ETKİNLİK
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/haberler" className="px-3 py-2 text-sm font-bold text-primary hover:text-accent transition-colors">
-                                HABERLER
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/duyurular" className="px-3 py-2 text-sm font-bold text-primary hover:text-accent transition-colors">
-                                DUYURULAR
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/iletisim" className="px-3 py-2 text-sm font-bold text-primary hover:text-accent transition-colors">
-                                İLETİŞİM
-                            </Link>
-                        </li>
+                    <ul className="hidden lg:flex items-center gap-1 h-full" ref={dropdownRef}>
+                        {menuItems.map((item) => (
+                            <DesktopMenuItem key={item.id} item={item} />
+                        ))}
 
                         {/* Social Icons */}
-                        <li className="flex items-center gap-1 ml-3">
+                        <li className="flex items-center gap-1 ml-3 pl-3 border-l h-8">
                             {socialLinks.map(({ icon: Icon, href, title }) => (
                                 <a
                                     key={title}
@@ -159,31 +251,11 @@ export default function Header() {
 
                 {/* Mobile Nav */}
                 {mobileOpen && (
-                    <div className="lg:hidden border-t pb-4 animate-in slide-in-from-top">
+                    <div className="lg:hidden border-t pb-4 animate-in slide-in-from-top max-h-[80vh] overflow-y-auto">
                         <ul className="space-y-1 pt-2">
-                            {kurumsalGroups.flatMap((g) => g.items).map((item) => (
-                                <li key={item.href}>
-                                    <Link
-                                        to={item.href}
-                                        className="block px-3 py-2 text-sm font-medium text-primary hover:bg-gray-50 rounded"
-                                        onClick={() => setMobileOpen(false)}
-                                    >
-                                        {item.label}
-                                    </Link>
-                                </li>
+                            {menuItems.map((item) => (
+                                <MobileMenuItem key={item.id} item={item} />
                             ))}
-                            <li className="border-t pt-2 mt-2">
-                                <Link to="/projeler" className="block px-3 py-2 text-sm font-bold text-primary" onClick={() => setMobileOpen(false)}>PROJELER</Link>
-                            </li>
-                            <li>
-                                <Link to="/etkinlikler" className="block px-3 py-2 text-sm font-bold text-primary" onClick={() => setMobileOpen(false)}>ETKİNLİK</Link>
-                            </li>
-                            <li>
-                                <Link to="/haberler" className="block px-3 py-2 text-sm font-bold text-primary" onClick={() => setMobileOpen(false)}>HABERLER</Link>
-                            </li>
-                            <li>
-                                <Link to="/iletisim" className="block px-3 py-2 text-sm font-bold text-primary" onClick={() => setMobileOpen(false)}>İLETİŞİM</Link>
-                            </li>
                         </ul>
                         <div className="flex gap-2 px-3 pt-3 border-t mt-2">
                             {socialLinks.map(({ icon: Icon, href, title }) => (

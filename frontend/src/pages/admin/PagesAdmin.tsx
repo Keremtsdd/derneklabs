@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAdminCollection } from '../../hooks/useAdmin';
 import DataTable from '../../components/admin/DataTable';
 import ImageUpload from '../../components/admin/ImageUpload';
+import RichTextEditor from '../../components/admin/RichTextEditor';
 
 interface PageItem {
     id: string;
@@ -108,12 +109,13 @@ export default function PagesAdmin() {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">İçerik</label>
-                        <textarea
-                            value={formData.body}
-                            onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                            rows={10}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-mono text-sm"
-                        />
+                        <div className="min-h-[400px]">
+                            <RichTextEditor
+                                value={formData.body}
+                                onChange={(html) => setFormData({ ...formData, body: html })}
+                                placeholder="Sayfa içeriğini buraya giriniz..."
+                            />
+                        </div>
                     </div>
                     <ImageUpload currentImage={editing?.image} onFileSelect={setImageFile} />
                     <div className="flex gap-3 pt-2">

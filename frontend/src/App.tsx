@@ -14,6 +14,7 @@ import AdminLayout from './pages/admin/AdminLayout';
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import PagesAdmin from './pages/admin/PagesAdmin';
+import MenuManager from './pages/admin/MenuManager';
 import {
   NewsPage,
   AnnouncementsPage,
@@ -64,6 +65,7 @@ export default function App() {
             <Route path="hizli-islemler" element={<FastLinksPage />} />
             <Route path="belgeler" element={<DocumentsPage />} />
             <Route path="sayfalar" element={<PagesAdmin />} />
+            <Route path="menu" element={<MenuManager />} />
           </Route>
         </Routes>
       </BrowserRouter>

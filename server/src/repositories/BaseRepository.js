@@ -36,13 +36,31 @@ class BaseRepository {
     }
 
     /**
-     * Boş string'leri null'a dönüştür — MySQL DATE/INT kolonları için gerekli
+     * DD.MM.YYYY -> YYYY-MM-DD dönüşümü
+     */
+    formatDate(value) {
+        if (!value) return null;
+        // Zaten YYYY-MM-DD formatındaysa dokunma
+        if (/^\d{4}-\d{2}-\d{2}/.test(value)) return value;
+
+        // DD.MM.YYYY formatı kontrolü
+        const parts = value.split('.');
+        if (parts.length === 3) {
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+        return value;
+    }
+
+    /**
+     * Verileri temizle ve formatla
      */
     sanitize(data) {
         const clean = {};
         for (const [key, value] of Object.entries(data)) {
             if (value === '' || value === undefined) {
                 clean[key] = null;
+            } else if (key === 'date' && typeof value === 'string') {
+                clean[key] = this.formatDate(value);
             } else {
                 clean[key] = value;
             }
