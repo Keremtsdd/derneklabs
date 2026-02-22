@@ -280,7 +280,48 @@ h4 {
 }
 
 .navbar .megamenu {
-    padding: 1rem
+    padding: 0;
+    background: #fff;
+    border: none;
+    border-top: 1px solid rgba(0,0,0,.08)
+}
+
+/* Kurumsal mega menü başlıkları (kırmızı, büyük harf) */
+.megamenu-title {
+    color: #d60b28;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    font-size: 1rem;
+    margin-bottom: .75rem
+}
+
+.megamenu-figure {
+    margin: 0
+}
+
+.megamenu-list .list-group-item {
+    border: none;
+    border-bottom: 1px solid #eee;
+    border-radius: 0;
+    padding: .5rem 0
+}
+
+.megamenu-list .list-group-item:last-child {
+    border-bottom: none
+}
+
+.megamenu-contact a {
+    color: #0d6efd;
+    text-decoration: underline
+}
+
+.megamenu-contact a:hover {
+    color: #d60b28
+}
+
+.megamenu-map {
+    min-height: 180px
 }
 
 .col-megamenu li a {
@@ -806,16 +847,90 @@ ul.nav h3 {
 }
 
 @media all and (min-width:992px) {
+    /* Mega menü tam genişlik ve görünürlük */
+    .ust-menu-beltr {
+        overflow: visible
+    }
+
+    .ust-menu-beltr .navbar {
+        position: relative;
+        overflow: visible
+    }
+
     .navbar .has-megamenu {
         position: static !important
     }
 
     .navbar .megamenu {
+        position: absolute;
         left: 0;
         right: 0;
+        top: 100%;
         width: 100%;
+        min-width: 100%;
         margin-top: 0;
-        border-radius: 0
+        border-radius: 0;
+        display: none;
+        background: #fff;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+        z-index: 1050
+    }
+
+    .navbar .megamenu .container-fluid {
+        max-width: 100%;
+        overflow: hidden
+    }
+
+    .navbar .megamenu .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0
+    }
+
+    .navbar .megamenu .col-lg-4 {
+        min-width: 0;
+        flex: none
+    }
+
+    .navbar .megamenu .col-megamenu {
+        min-width: 0;
+        overflow: hidden;
+        word-wrap: break-word
+    }
+
+    .navbar .megamenu .megamenu-contact p {
+        word-wrap: break-word;
+        overflow-wrap: break-word
+    }
+
+    /* Masaüstü: Kurumsal veya menü alanına hover = mega menü görünsün (CSS + JS) */
+    .navbar .has-megamenu:hover .dropdown-menu.megamenu,
+    .navbar .has-megamenu.show-megamenu .dropdown-menu.megamenu,
+    .navbar .has-megamenu .dropdown-menu.megamenu.show {
+        display: block !important
+    }
+}
+
+/* Mobil: mega menü tıklanınca açılır, içerik kaydırılabilir */
+@media (max-width:991.98px) {
+    .navbar .megamenu {
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: .75rem
+    }
+
+    .megamenu-map {
+        min-height: 140px;
+        padding-bottom: 50%
+    }
+
+    .col-megamenu {
+        border-end: none !important;
+        border-bottom: 1px solid #eee
+    }
+
+    .col-megamenu:last-child {
+        border-bottom: none
     }
 }
 

@@ -128,15 +128,26 @@ const deletePage = asyncHandler(async (req, res) => {
 
 // ─── Settings ───
 
-const getSettings = asyncHandler(async (_req, res) => {
-    const data = await settingsService.getAll();
+/** GET /api/admin/settings — tümü veya ?group=general ile gruplu */
+const getSettings = asyncHandler(async (req, res) => {
+    const group = req.query.group;
+    const data = group ? await settingsService.getByGroup(group) : await settingsService.getAll();
     res.json({ success: true, data });
 });
 
+/** PUT /api/admin/settings — toplu güncelleme. Body: { settings: { key: value, ... } } */
 const updateSettings = asyncHandler(async (req, res) => {
+    const { settings: settingsPayload } = req.body;
+    if (settingsPayload && typeof settingsPayload === 'object') {
+        const data = await settingsService.setBulk(settingsPayload);
+        return res.json({ success: true, data });
+    }
     const { key, value } = req.body;
-    const data = await settingsService.set(key, value);
-    res.json({ success: true, data });
+    if (key != null) {
+        const data = await settingsService.set(key, value);
+        return res.json({ success: true, data });
+    }
+    res.status(400).json({ success: false, message: 'settings objesi veya key/value gerekli' });
 });
 
 // ─── Dashboard istatistikleri ───

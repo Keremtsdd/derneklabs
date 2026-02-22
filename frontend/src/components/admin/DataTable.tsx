@@ -108,11 +108,11 @@ export default function DataTable<T extends { id: string }>({
     );
 }
 
-/** Görsel kolonu için yardımcı */
-export function imageColumn<T>(key: keyof T) {
+/** Görsel/İkon kolonu için yardımcı */
+export function imageColumn<T>(key: keyof T, columnLabel?: string) {
     return {
         key: key as string,
-        label: 'Görsel',
+        label: columnLabel ?? 'Görsel',
         render: (item: T) => {
             const src = String((item as Record<string, unknown>)[key as string] || '');
             return src ? (

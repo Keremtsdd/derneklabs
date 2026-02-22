@@ -16,6 +16,12 @@ router.use(auth);
 // Dashboard istatistikleri
 router.get('/dashboard/stats', getDashboardStats);
 
+// Tek dosya yükleme (ayarlar logo/og_image vb. için)
+router.post('/upload', upload.single('file'), (req, res) => {
+    if (!req.file) return res.status(400).json({ success: false, message: 'Dosya yok' });
+    res.json({ success: true, url: `/uploads/${req.file.filename}` });
+});
+
 // Settings
 router.get('/settings', getSettings);
 router.put('/settings', updateSettings);

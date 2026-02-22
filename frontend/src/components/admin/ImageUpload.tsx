@@ -4,9 +4,11 @@ import { resolveImageUrl } from '../../services/api';
 interface ImageUploadProps {
     currentImage?: string;
     onFileSelect: (file: File | null) => void;
+    /** Örn. "İkon" — Hızlı bağlantılar için; varsayılan: "Görsel" */
+    label?: string;
 }
 
-export default function ImageUpload({ currentImage, onFileSelect }: ImageUploadProps) {
+export default function ImageUpload({ currentImage, onFileSelect, label = 'Görsel' }: ImageUploadProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -28,7 +30,7 @@ export default function ImageUpload({ currentImage, onFileSelect }: ImageUploadP
 
     return (
         <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Görsel</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
             <div
                 onClick={() => inputRef.current?.click()}
                 className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-blue-400 transition-colors"

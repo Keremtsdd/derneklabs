@@ -116,24 +116,23 @@ test
 					</button>
 					<div class="collapse navbar-collapse" id="main_nav">
 						<ul class="navbar-nav">
-							<li class="nav-item dropdown has-megamenu">
-								<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> KURUMSAL </a>
-								<div class="dropdown-menu megamenu shadow-lg border" role="menu">
-									<div class="row g-3">
+							<li class="nav-item dropdown has-megamenu" id="kurumsal-megamenu-trigger">
+								<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="kurumsal-dropdown-btn" aria-expanded="false" aria-haspopup="true">KURUMSAL</a>
+								<div class="dropdown-menu megamenu shadow-lg border" id="kurumsal-megamenu" role="menu" aria-labelledby="kurumsal-dropdown-btn">
+									<div class="container-fluid">
+									<div class="row g-0 g-lg-3">
 										<div class="col-lg-4 col-12">
-											<div class="col-megamenu p-3 border-end">
-												<div class="col mb-3">
-													<h6 class="title text-danger fw-bolder">Orhanpaşa Belediyesi</h6>
-													<figure><img src="images/menu_baskan.png" class="img-fluid border shadow-sm" alt="Hasan Mutlu">
+											<div class="col-megamenu p-3 p-lg-4 border-end">
+													<h6 class="megamenu-title">Orhanpaşa Belediyesi</h6>
+													<figure class="megamenu-figure mb-2">
+														<img src="images/menu_baskan.png" class="img-fluid border shadow-sm" alt="Belediye Başkanı">
+														<figcaption class="text-danger small fw-bold mt-1">Orhanpaşa Belediyesi Başkan V.</figcaption>
 													</figure>
-													<div class="col mb-3">
-														<a class="btn bg-1 text-white btn-sm" href="https://x.com/Ibrahimakn" target="_blank" rel="noopener noreferrer" role="button"><i class="fa-brands fa-twitter"></i></a>
-														<a class="btn bg-1 text-white btn-sm" href="https://www.instagram.com/ibrahimakinbb/" target="_blank" rel="noopener noreferrer" role="button"><i class="fab fa-instagram"></i></a>
-
-
+													<div class="megamenu-social mb-3">
+														<a class="btn bg-1 text-white btn-sm me-1" href="https://x.com/Ibrahimakn" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+														<a class="btn bg-1 text-white btn-sm" href="https://www.instagram.com/ibrahimakinbb/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
 													</div>
-												</div>
-												<ul class="menu list-group list-group-flush">
+													<ul class="menu list-group list-group-flush megamenu-list">
 																											<li class="list-group-item"><a href="pages/hizmet-merkezleri.html">Hizmet Merkezleri</a>
 														</li>
 																											<li class="list-group-item"><a href="pages/baskan.html">Belediye Başkan V.</a>
@@ -152,19 +151,18 @@ test
 														</li>
 																											<li class="list-group-item"><a href="pages/denetim.html">İç Denetim</a>
 														</li>
-																											<li class="list-group-item"><a href="pages/kvkk.html">KVKK Bilgilendirmesi</a>
-														</li>
-													
-												</ul>
+																											<li class="list-group-item"><a href="pages/kvkk.html">KVKK Bilgilendirmesi</a></li>
+													</ul>
+												</div>
 											</div>
-										</div>
-										<div class="col-lg-4 col-12">
-											<div class="col-megamenu p-3 border-end">
-												<h6 class="title text-danger fw-bolder">BAYRAMPAŞA</h6>
-												<figure><img src="images/menu_belediye.jpg" class="img-fluid rounded-3" alt="Bayrampaşa Belediyesi">
-												</figure>
-												<ul class="menu list-group list-group-flush">
-																											<li class="list-group-item"><a href="pages/about.html">Bayrampaşa Hakkında</a>
+											<div class="col-lg-4 col-12">
+												<div class="col-megamenu p-3 p-lg-4 border-end">
+													<h6 class="megamenu-title">Orhanpaşa</h6>
+													<figure class="megamenu-figure mb-2">
+														<img src="images/menu_belediye.jpg" class="img-fluid rounded-3" alt="Orhanpaşa Belediyesi">
+													</figure>
+													<ul class="menu list-group list-group-flush megamenu-list">
+														<li class="list-group-item"><a href="pages/about.html">Orhanpaşa Hakkında</a>
 														</li>
 																											<li class="list-group-item"><a href="pages/kent-konseyi.html">Bayrampaşa Kent Konseyi</a>
 														</li>
@@ -185,11 +183,11 @@ test
 										</div>
 										<div class="col-lg-4 col-12">
 											<div class="col-megamenu p-3">
-												<h6 class="title text-danger fw-bolder">İLETİŞİM</h6>
-												<div class="map-responsive">
-													<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6019.129994581453!2d28.912395!3d41.034772!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2f2f759065a8afbc!2sT.C%20Bayrampa%C5%9Fa%20Belediyesi!5e0!3m2!1str!2str!4v1625232148007!5m2!1str!2str" width="600" height="450" frameborder="0" style="border:0" allowfullscreen=""></iframe>
-												</div>
-												<div class="col mt-3">
+												<h6 class="megamenu-title">İletişim</h6>
+													<div class="map-responsive megamenu-map">
+														<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6019.129994581453!2d28.912395!3d41.034772!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2f2f759065a8afbc!2sT.C%20Bayrampa%C5%9Fa%20Belediyesi!5e0!3m2!1str!2str!4v1625232148007!5m2!1str!2str" width="600" height="450" style="border:0" allowfullscreen="" loading="lazy" title="Belediye konumu"></iframe>
+													</div>
+													<div class="megamenu-contact mt-3">
 													<p><b>Adres: </b>Yenidoğan Mahallesi Abdi İpekçi Caddesi No:2
 														Bayrampaşa/İstanbul/Türkiye</p>
 													<p><b>E-posta: </b><a href="/cdn-cgi/l/email-protection#87e5e6fef5e6eaf7e6f4e6c7e5e6fef5e6eaf7e6f4e6a9e5e2eba9f3f5"></a><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cfadaeb6bdaea2bfaebcae8fadaeb6bdaea2bfaebcaee1adaaa3e1bbbd">[email protected]</a>
@@ -200,8 +198,11 @@ test
 													<p><b>KEP Adresi: </b><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4022213932212d3021332122252c2524293925332900283370716e2b25306e3432">[email protected]</a></p>
 													<p><b>UETS Adresi: </b>35419-69147-33683</p>
 												</div>
+													</div>
+												</div>
 											</div>
 										</div>
+									</div>
 									</div>
 								</div>
 							</li>
@@ -1027,6 +1028,64 @@ test
 <script src="js/bootstrap.bundle.min.js" type="1711c12bacba05704cc470d6-text/javascript"></script>
 <script src="js/app.js" type="1711c12bacba05704cc470d6-text/javascript"></script>
 <script src="js/datepicker-tr.js" type="1711c12bacba05704cc470d6-text/javascript"></script>
+<script type="1711c12bacba05704cc470d6-text/javascript">
+(function() {
+	function esc(s) { if (!s) return ''; var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+	function escUrl(u) { try { return encodeURI(u || '#'); } catch(e) { return '#'; } }
+	var apiBase = (typeof window.KURUMSAL_MENU_API_BASE !== 'undefined') ? window.KURUMSAL_MENU_API_BASE : '';
+	var menuEl = document.getElementById('kurumsal-megamenu');
+	if (!menuEl) return;
+	fetch(apiBase + '/api/public/kurumsal-menu', { method: 'GET', headers: { Accept: 'application/json' } })
+		.then(function(r) { return r.ok ? r.json() : null; })
+		.then(function(res) {
+			if (!res || !res.success || !res.data) return;
+			var d = res.data;
+			var c1 = d.column1 || {}, c2 = d.column2 || {}, c3 = d.column3 || {};
+			var socialIcons = { twitter: 'fa-brands fa-twitter', instagram: 'fab fa-instagram', facebook: 'fab fa-facebook-f' };
+			var html = '<div class="container-fluid"><div class="row g-0 g-lg-3">';
+			html += '<div class="col-lg-4 col-12"><div class="col-megamenu p-3 p-lg-4 border-end">';
+			html += '<h6 class="megamenu-title">' + esc(c1.title) + '</h6>';
+			if (c1.imageUrl) {
+				html += '<figure class="megamenu-figure mb-2"><img src="' + escUrl(c1.imageUrl) + '" class="img-fluid border shadow-sm" alt=""><figcaption class="text-danger small fw-bold mt-1">' + esc(c1.imageCaption) + '</figcaption></figure>';
+			}
+			if (c1.socialLinks && c1.socialLinks.length) {
+				html += '<div class="megamenu-social mb-3">';
+				c1.socialLinks.forEach(function(s) {
+					var icon = socialIcons[s.icon] || 'fas fa-link';
+					html += '<a class="btn bg-1 text-white btn-sm me-1" href="' + escUrl(s.url) + '" target="_blank" rel="noopener noreferrer" aria-label="' + esc(s.label) + '"><i class="' + esc(icon) + '"></i></a>';
+				});
+				html += '</div>';
+			}
+			html += '<ul class="menu list-group list-group-flush megamenu-list">';
+			(c1.menuItems || []).forEach(function(m) {
+				html += '<li class="list-group-item"><a href="' + escUrl(m.url) + '">' + esc(m.title) + '</a></li>';
+			});
+			html += '</ul></div></div>';
+			html += '<div class="col-lg-4 col-12"><div class="col-megamenu p-3 p-lg-4 border-end">';
+			html += '<h6 class="megamenu-title">' + esc(c2.title) + '</h6>';
+			if (c2.imageUrl) html += '<figure class="megamenu-figure mb-2"><img src="' + escUrl(c2.imageUrl) + '" class="img-fluid rounded-3" alt=""></figure>';
+			html += '<ul class="menu list-group list-group-flush megamenu-list">';
+			(c2.menuItems || []).forEach(function(m) {
+				html += '<li class="list-group-item"><a href="' + escUrl(m.url) + '">' + esc(m.title) + '</a></li>';
+			});
+			html += '</ul></div></div>';
+			html += '<div class="col-lg-4 col-12"><div class="col-megamenu p-3 p-lg-4">';
+			html += '<h6 class="megamenu-title">' + esc(c3.title) + '</h6>';
+			if (c3.mapEmbedUrl) html += '<div class="map-responsive megamenu-map"><iframe src="' + escUrl(c3.mapEmbedUrl) + '" width="600" height="450" style="border:0" allowfullscreen="" loading="lazy" title="Harita"></iframe></div>';
+			var ct = c3.contact || {};
+			html += '<div class="megamenu-contact mt-3">';
+			if (ct.address) html += '<p class="mb-1"><strong>Adres:</strong> ' + esc(ct.address) + '</p>';
+			if (ct.email) html += '<p class="mb-1"><strong>E-posta:</strong> <a href="mailto:' + esc(ct.email) + '">' + esc(ct.email) + '</a></p>';
+			if (ct.phone) html += '<p class="mb-1"><strong>Telefon:</strong> <a href="tel:' + esc(ct.phone.replace(/\s/g,'')) + '">' + esc(ct.phone) + '</a></p>';
+			if (ct.fax) html += '<p class="mb-1"><strong>Faks:</strong> ' + esc(ct.fax) + '</p>';
+			if (ct.kep) html += '<p class="mb-1"><strong>KEP Adresi:</strong> <a href="mailto:' + esc(ct.kep) + '">' + esc(ct.kep) + '</a></p>';
+			if (ct.uets) html += '<p class="mb-0"><strong>UETS Adresi:</strong> ' + esc(ct.uets) + '</p>';
+			html += '</div></div></div></div></div>';
+			menuEl.innerHTML = html;
+		})
+		.catch(function() {});
+})();
+</script>
 
 <script type="1711c12bacba05704cc470d6-text/javascript">
 	$(function () {

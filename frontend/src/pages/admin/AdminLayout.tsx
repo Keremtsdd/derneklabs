@@ -23,13 +23,15 @@ const menuSections: MenuSection[] = [
             { to: '/admin/sayfalar', label: 'Sayfalar', icon: '📃' },
             { to: '/admin/belgeler', label: 'Belgeler', icon: '📄' },
             { to: '/admin/bannerlar', label: 'Banner / Slider', icon: '🖼️' },
-            { to: '/admin/hizli-islemler', label: 'Hızlı İşlemler', icon: '⚡' },
+            { to: '/admin/hizli-islemler', label: 'Hızlı Bağlantılar', icon: '⚡' },
         ]
     },
     {
         title: 'Site Yönetimi',
         items: [
             { to: '/admin/menu', label: 'Menü Yönetimi', icon: '☰' },
+            { to: '/admin/kurumsal-menu', label: 'Kurumsal Menü', icon: '📋' },
+            { to: '/admin/ayarlar', label: 'Site Ayarları', icon: '⚙️' },
         ]
     }
 ];

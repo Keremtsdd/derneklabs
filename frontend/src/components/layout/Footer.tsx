@@ -1,6 +1,9 @@
 import { FaTwitter, FaFacebookF, FaInstagram, FaYoutube, FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function Footer() {
+    const { siteName, address, email, phone } = useSiteSettings();
+
     return (
         <footer className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-primary to-primary-light text-white hidden xl:block">
             <div className="max-w-7xl mx-auto px-4">
@@ -15,7 +18,7 @@ export default function Footer() {
 
                     {/* Belediye */}
                     <div className="shrink-0">
-                        <p className="text-xs opacity-70 font-heading">T.C. Orhanpaşa Belediye Başkanlığı</p>
+                        <p className="text-xs opacity-70 font-heading">T.C. {siteName} Başkanlığı</p>
                         <p className="text-xs opacity-50">Tüm hakları saklıdır.</p>
                     </div>
 
@@ -25,11 +28,11 @@ export default function Footer() {
                     <div className="shrink-0 space-y-0.5">
                         <p className="text-xs opacity-70 flex items-center gap-1.5">
                             <FaEnvelope className="text-[10px]" />
-                            <a href="mailto:iletisim@orhanpasa.bel.tr" className="hover:underline">iletisim@orhanpasa.bel.tr</a>
+                            <a href={`mailto:${email}`} className="hover:underline">{email}</a>
                         </p>
                         <p className="text-xs opacity-50 flex items-center gap-1.5">
                             <FaMapMarkerAlt className="text-[10px]" />
-                            Orhanpaşa Meydanı, No: 1, İstanbul
+                            {address}
                         </p>
                     </div>
 
@@ -60,7 +63,7 @@ export default function Footer() {
                             <FaPhoneAlt className="text-[10px]" />
                             Bize Ulaşın
                         </p>
-                        <p className="font-heading font-bold text-lg">444 1 990</p>
+                        <a href={`tel:${phone.replace(/\s/g, '')}`} className="font-heading font-bold text-lg block">{phone}</a>
                     </div>
                 </div>
             </div>

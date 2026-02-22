@@ -69,6 +69,38 @@ export async function fetchDashboardStats(): Promise<DashboardStats> {
     return request<DashboardStats>('/api/admin/dashboard/stats');
 }
 
+/** Site ayarları — tümü veya gruplu (örn. group=general) */
+export async function fetchSettings(group?: string): Promise<Record<string, unknown>> {
+    const q = group ? `?group=${encodeURIComponent(group)}` : '';
+    return request<Record<string, unknown>>(`/api/admin/settings${q}`);
+}
+
+/** Site ayarlarını toplu güncelle. Kaydedince cache backend'de temizlenir. */
+export async function updateSettings(settings: Record<string, unknown>): Promise<Record<string, unknown>> {
+    return request<Record<string, unknown>>('/api/admin/settings', {
+        method: 'PUT',
+        body: JSON.stringify({ settings }),
+    });
+}
+
+/** Tek dosya yükle (ayarlar logo/og_image vb.). Dönen url'yi ayarda saklayabilirsin. */
+export async function uploadFile(file: File): Promise<{ url: string }> {
+    const form = new FormData();
+    form.append('file', file);
+    const token = getToken();
+    const response = await fetch(`${API_BASE}/api/admin/upload`, {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: form,
+    });
+    if (!response.ok) {
+        const err = await response.json().catch(() => ({ message: 'Yükleme hatası' }));
+        throw new Error(err.message || 'Yükleme başarısız');
+    }
+    const result: ApiResponse<{ url: string }> = await response.json();
+    return result.data;
+}
+
 /** Generic CRUD */
 export async function fetchAdminCollection<T>(collection: string): Promise<T[]> {
     return request<T[]>(`/api/admin/${collection}`);

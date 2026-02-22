@@ -14,17 +14,19 @@ interface CrudItem {
     published?: boolean;
 }
 
+interface FieldConfig {
+    key: string;
+    label: string;
+    type: 'text' | 'textarea' | 'date' | 'url' | 'number' | 'checkbox';
+    required?: boolean;
+}
+
 interface CollectionPageConfig {
     collection: string;
     title: string;
     fields: FieldConfig[];
-}
-
-interface FieldConfig {
-    key: string;
-    label: string;
-    type: 'text' | 'textarea' | 'date' | 'url';
-    required?: boolean;
+    /** Görsel alanı etiketi (örn. "İkon"); Hızlı Bağlantılar için kullanılır */
+    imageLabel?: string;
 }
 
 /** Genel CRUD sayfa fabrikası */
@@ -38,7 +40,9 @@ export function createCollectionPage(config: CollectionPageConfig) {
 
         const openCreate = () => {
             setEditing(null);
-            setFormData({});
+            const defaults: Record<string, string> = {};
+            config.fields.filter((f) => f.type === 'checkbox').forEach((f) => { defaults[f.key] = '1'; });
+            setFormData(defaults);
             setImageFile(null);
             setShowForm(true);
         };
@@ -47,7 +51,12 @@ export function createCollectionPage(config: CollectionPageConfig) {
             setEditing(item);
             const data: Record<string, string> = {};
             config.fields.forEach((f) => {
-                data[f.key] = String((item as Record<string, unknown>)[f.key] ?? '');
+                const raw = (item as Record<string, unknown>)[f.key];
+                if (f.type === 'checkbox') {
+                    data[f.key] = raw === 1 || raw === true || raw === '1' ? '1' : '0';
+                } else {
+                    data[f.key] = String(raw ?? '');
+                }
             });
             setFormData(data);
             setImageFile(null);
@@ -77,11 +86,11 @@ export function createCollectionPage(config: CollectionPageConfig) {
         };
 
         const columns = [
-            imageColumn<CrudItem>('image'),
+            imageColumn<CrudItem>('image', config.imageLabel),
             { key: 'title', label: 'Başlık' },
             ...config.fields
                 .filter((f) => f.key !== 'title' && f.key !== 'image')
-                .slice(0, 2)
+                .slice(0, 3)
                 .map((f) => ({ key: f.key, label: f.label })),
         ];
 
@@ -97,27 +106,41 @@ export function createCollectionPage(config: CollectionPageConfig) {
                     <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 max-w-2xl space-y-5">
                         {config.fields.map((field) => (
                             <div key={field.key}>
-                                <label className="block text-sm font-medium text-gray-700 mb-1.5">{field.label}</label>
-                                {field.type === 'textarea' ? (
-                                    <textarea
-                                        value={formData[field.key] || ''}
-                                        onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                                        required={field.required}
-                                        rows={4}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                                    />
+                                {field.type === 'checkbox' ? (
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={formData[field.key] === '1'}
+                                            onChange={(e) => setFormData({ ...formData, [field.key]: e.target.checked ? '1' : '0' })}
+                                            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        />
+                                        <span className="text-sm font-medium text-gray-700">{field.label}</span>
+                                    </label>
                                 ) : (
-                                    <input
-                                        type={field.type === 'date' ? 'date' : field.type === 'url' ? 'url' : 'text'}
-                                        value={formData[field.key] || ''}
-                                        onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                                        required={field.required}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                                    />
+                                    <>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">{field.label}</label>
+                                        {field.type === 'textarea' ? (
+                                            <textarea
+                                                value={formData[field.key] || ''}
+                                                onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                                                required={field.required}
+                                                rows={4}
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                            />
+                                        ) : (
+                                            <input
+                                                type={field.type === 'date' ? 'date' : field.type === 'url' ? 'url' : field.type === 'number' ? 'number' : 'text'}
+                                                value={formData[field.key] || ''}
+                                                onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                                                required={field.required}
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                            />
+                                        )}
+                                    </>
                                 )}
                             </div>
                         ))}
-                        <ImageUpload currentImage={editing?.image} onFileSelect={setImageFile} />
+                        <ImageUpload currentImage={editing?.image} onFileSelect={setImageFile} label={config.imageLabel} />
                         <div className="flex gap-3 pt-2">
                             <button type="submit" className="px-6 py-2.5 bg-[#0d2137] text-white rounded-lg font-medium hover:bg-[#1a3a5c] transition-colors">
                                 {editing ? 'Güncelle' : 'Oluştur'}
@@ -204,10 +227,13 @@ export const BannersPage = createCollectionPage({
 
 export const FastLinksPage = createCollectionPage({
     collection: 'fast_links',
-    title: 'Hızlı İşlemler',
+    title: 'Hızlı Bağlantılar',
+    imageLabel: 'İkon',
     fields: [
         { key: 'title', label: 'Başlık', type: 'text', required: true },
-        { key: 'link', label: 'Link', type: 'url', required: true },
+        { key: 'link', label: 'Bağlantı adresi (URL)', type: 'url', required: true },
+        { key: 'sort_order', label: 'Sıra (küçük numara önce görünür)', type: 'number' },
+        { key: 'published', label: 'Yayında göster', type: 'checkbox' },
     ],
 });
 

@@ -15,11 +15,14 @@ class BaseRepository {
 
     /** Tüm kayıtları getir (opsiyonel: sadece published) */
     async findAll(publishedOnly = false) {
-        let sql = `SELECT * FROM ?? ORDER BY created_at DESC`;
+        const orderBy = (this.tableName === 'fast_links' || this.tableName === 'banners')
+            ? 'ORDER BY sort_order ASC, created_at DESC'
+            : 'ORDER BY created_at DESC';
+        let sql = `SELECT * FROM ?? ${orderBy}`;
         const params = [this.tableName];
 
         if (publishedOnly) {
-            sql = `SELECT * FROM ?? WHERE published = 1 ORDER BY created_at DESC`;
+            sql = `SELECT * FROM ?? WHERE published = 1 ${orderBy}`;
         }
 
         const [rows] = await pool.query(sql, params);

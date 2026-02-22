@@ -26,9 +26,18 @@ class SettingsRepository {
         const [rows] = await pool.query(`SELECT * FROM settings`);
         const result = {};
         for (const row of rows) {
-            result[row.setting_key] = row.setting_value;
+            const val = row.setting_value;
+            result[row.setting_key] = typeof val === 'string' ? (() => { try { return JSON.parse(val); } catch { return val; } })() : val;
         }
         return result;
+    }
+
+    /** Toplu güncelleme — birçok key-value tek seferde */
+    async setBulk(settings) {
+        if (!settings || typeof settings !== 'object') return;
+        for (const [key, value] of Object.entries(settings)) {
+            await this.set(key, value);
+        }
     }
 }
 

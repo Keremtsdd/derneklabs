@@ -52,4 +52,11 @@ const getSettings = asyncHandler(async (_req, res) => {
     res.json({ success: true, data });
 });
 
-module.exports = { getCollection, getPages, getPageBySlug, getSettings };
+/** GET /api/public/kurumsal-menu — Kurumsal mega menü içeriği (navbar) */
+const getKurumsalMenu = asyncHandler(async (_req, res) => {
+    const all = await settingsService.getAll();
+    const data = all.kurumsal_megamenu || null;
+    res.json({ success: true, data });
+});
+
+module.exports = { getCollection, getPages, getPageBySlug, getSettings, getKurumsalMenu };

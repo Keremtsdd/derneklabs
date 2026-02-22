@@ -15,6 +15,8 @@ import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import PagesAdmin from './pages/admin/PagesAdmin';
 import MenuManager from './pages/admin/MenuManager';
+import KurumsalMenuManager from './pages/admin/KurumsalMenuManager';
+import Settings from './pages/admin/Settings';
 import {
   NewsPage,
   AnnouncementsPage,
@@ -66,6 +68,8 @@ export default function App() {
             <Route path="belgeler" element={<DocumentsPage />} />
             <Route path="sayfalar" element={<PagesAdmin />} />
             <Route path="menu" element={<MenuManager />} />
+            <Route path="kurumsal-menu" element={<KurumsalMenuManager />} />
+            <Route path="ayarlar" element={<Settings />} />
           </Route>
         </Routes>
       </BrowserRouter>

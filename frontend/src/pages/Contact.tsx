@@ -1,7 +1,18 @@
 import { Link } from 'react-router-dom';
 import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaFax } from 'react-icons/fa';
+import { useSiteSettings } from '../hooks/useSiteSettings';
+
+const DEFAULT_FAX = '+90 212 467 19 89';
+const DEFAULT_MAP_SRC = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6019.129994581453!2d28.912395!3d41.034772!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2f2f759065a8afbc!2sT.C%20Bayrampa%C5%9Fa%20Belediyesi!5e0!3m2!1str!2str!4v1625232148007!5m2!1str!2str';
 
 export default function Contact() {
+    const { address, email, phone, mapEmbed } = useSiteSettings();
+
+    const hasMapHtml = mapEmbed && mapEmbed.trim().length > 0;
+    const mapContent = hasMapHtml
+        ? { __html: mapEmbed }
+        : undefined;
+
     return (
         <div className="max-w-7xl mx-auto px-4 pt-6">
             <div className="bg-white rounded-lg shadow-sm p-6">
@@ -22,10 +33,7 @@ export default function Contact() {
                             <FaMapMarkerAlt className="text-accent mt-0.5 shrink-0" />
                             <div>
                                 <h3 className="font-heading font-bold text-primary text-sm mb-1">Adres</h3>
-                                <p className="text-sm text-gray-600">
-                                    Yenidoğan Mahallesi Abdi İpekçi Caddesi No:2<br />
-                                    Bayrampaşa/İstanbul/Türkiye
-                                </p>
+                                <p className="text-sm text-gray-600 whitespace-pre-line">{address}</p>
                             </div>
                         </div>
 
@@ -33,8 +41,8 @@ export default function Contact() {
                             <FaEnvelope className="text-accent mt-0.5 shrink-0" />
                             <div>
                                 <h3 className="font-heading font-bold text-primary text-sm mb-1">E-posta</h3>
-                                <a href="mailto:iletisim@orhanpasa.bel.tr" className="text-sm text-primary hover:text-accent transition-colors">
-                                    iletisim@orhanpasa.bel.tr
+                                <a href={`mailto:${email}`} className="text-sm text-primary hover:text-accent transition-colors">
+                                    {email}
                                 </a>
                             </div>
                         </div>
@@ -43,8 +51,8 @@ export default function Contact() {
                             <FaPhoneAlt className="text-accent mt-0.5 shrink-0" />
                             <div>
                                 <h3 className="font-heading font-bold text-primary text-sm mb-1">Telefon</h3>
-                                <a href="tel:+902124671900" className="text-sm text-primary hover:text-accent transition-colors">
-                                    +90 212 467 19 00 / 444 1 990
+                                <a href={`tel:${phone.replace(/\s/g, '')}`} className="text-sm text-primary hover:text-accent transition-colors">
+                                    {phone}
                                 </a>
                             </div>
                         </div>
@@ -53,23 +61,27 @@ export default function Contact() {
                             <FaFax className="text-accent mt-0.5 shrink-0" />
                             <div>
                                 <h3 className="font-heading font-bold text-primary text-sm mb-1">Faks</h3>
-                                <p className="text-sm text-gray-600">+90 212 467 19 89</p>
+                                <p className="text-sm text-gray-600">{DEFAULT_FAX}</p>
                             </div>
                         </div>
                     </div>
 
-                    {/* Harita */}
-                    <div className="rounded-lg overflow-hidden shadow-sm">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6019.129994581453!2d28.912395!3d41.034772!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2f2f759065a8afbc!2sT.C%20Bayrampa%C5%9Fa%20Belediyesi!5e0!3m2!1str!2str!4v1625232148007!5m2!1str!2str"
-                            width="100%"
-                            height="400"
-                            style={{ border: 0 }}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                            title="Belediye Konumu"
-                        />
+                    {/* Harita: Site ayarlarından embed HTML veya varsayılan iframe */}
+                    <div className="rounded-lg overflow-hidden shadow-sm min-h-[400px]">
+                        {hasMapHtml ? (
+                            <div className="[&>iframe]:w-full [&>iframe]:h-[400px] [&>iframe]:border-0" dangerouslySetInnerHTML={mapContent} />
+                        ) : (
+                            <iframe
+                                src={DEFAULT_MAP_SRC}
+                                width="100%"
+                                height="400"
+                                style={{ border: 0 }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                title="Belediye Konumu"
+                            />
+                        )}
                     </div>
                 </div>
             </div>
