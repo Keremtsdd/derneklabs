@@ -538,6 +538,89 @@ class OptimizedDropdown {
     }
 }
 
+/**
+ * Kurumsal mega menü: masaüstünde hover ile açılır, mobilde tıklama ile açılır.
+ */
+class KurumsalMegamenu {
+    constructor() {
+        this.trigger = document.getElementById('kurumsal-megamenu-trigger');
+        this.menu = document.getElementById('kurumsal-megamenu');
+        if (!this.trigger || !this.menu) return;
+        this.closeTimer = null;
+        this.hoverDelay = 180;
+        this.isTouch = 'ontouchstart' in window;
+        this.boundShow = this.show.bind(this);
+        this.boundHide = this.hide.bind(this);
+        this.boundScheduleHide = this.scheduleHide.bind(this);
+        this.boundCancelHide = this.cancelHide.bind(this);
+        this.menu.setAttribute('aria-hidden', 'true');
+        if (window.innerWidth >= 992 && !this.isTouch) {
+            this.trigger.classList.add('hover-bound');
+            this.bindHover();
+        }
+        window.addEventListener('resize', () => this.onResize());
+    }
+    
+    bindHover() {
+        this.trigger.addEventListener('mouseenter', this.boundCancelHide);
+        this.trigger.addEventListener('mouseenter', this.boundShow);
+        this.trigger.addEventListener('mouseleave', this.boundScheduleHide);
+        this.menu.addEventListener('mouseenter', this.boundCancelHide);
+        this.menu.addEventListener('mouseenter', this.boundShow);
+        this.menu.addEventListener('mouseleave', this.boundScheduleHide);
+    }
+    
+    unbindHover() {
+        this.trigger.removeEventListener('mouseenter', this.boundCancelHide);
+        this.trigger.removeEventListener('mouseenter', this.boundShow);
+        this.trigger.removeEventListener('mouseleave', this.boundScheduleHide);
+        this.menu.removeEventListener('mouseenter', this.boundCancelHide);
+        this.menu.removeEventListener('mouseenter', this.boundShow);
+        this.menu.removeEventListener('mouseleave', this.boundScheduleHide);
+    }
+    
+    onResize() {
+        if (window.innerWidth >= 992 && !this.isTouch) {
+            if (!this.trigger.matches('.hover-bound')) {
+                this.trigger.classList.add('hover-bound');
+                this.bindHover();
+            }
+        } else {
+            this.trigger.classList.remove('hover-bound');
+            this.unbindHover();
+            this.hide();
+        }
+    }
+    
+    show() {
+        if (this.closeTimer) clearTimeout(this.closeTimer);
+        this.closeTimer = null;
+        this.trigger.classList.add('show-megamenu');
+        this.menu.classList.add('show');
+        this.menu.style.display = 'block';
+        this.menu.setAttribute('aria-hidden', 'false');
+    }
+    
+    hide() {
+        this.trigger.classList.remove('show-megamenu');
+        this.menu.classList.remove('show');
+        this.menu.style.display = '';
+        this.menu.setAttribute('aria-hidden', 'true');
+    }
+    
+    scheduleHide() {
+        if (this.closeTimer) clearTimeout(this.closeTimer);
+        this.closeTimer = setTimeout(() => this.hide(), this.hoverDelay);
+    }
+    
+    cancelHide() {
+        if (this.closeTimer) {
+            clearTimeout(this.closeTimer);
+            this.closeTimer = null;
+        }
+    }
+}
+
 class LazyLightbox {
     constructor() {
         this.loaded = false;
@@ -711,6 +794,7 @@ class AppInitializer {
         try {
             window.tabSystem = new SimplifiedTabSystem();
             new OptimizedDropdown();
+            new KurumsalMegamenu();
             resizeHandler.addCallback(() => sliderManager.refreshAllSliders());
         } catch (error) {
             console.warn('Critical UI initialization failed:', error);

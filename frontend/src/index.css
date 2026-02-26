@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+/* ========================= */
+/* Design Tokens             */
+/* ========================= */
+@theme {
+  --color-primary: #002f63;
+  --color-primary-light: #0755a0;
+  --color-accent: #d21000;
+  --color-accent-hover: #d60b28;
+  --color-surface: #ffffff;
+  --color-background: #f0f4f8;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+
+  --font-heading: "Bree Serif", serif;
+  --font-body: "Open Sans", sans-serif;
+}
+
+/* ========================= */
+/* Global Styles             */
+/* ========================= */
+@layer base {
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* ========================= */
+/* Embla Carousel Base       */
+/* ========================= */
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+/* ========================= */
+/* Scrollbar                 */
+/* ========================= */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
