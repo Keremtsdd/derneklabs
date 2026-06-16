@@ -9,6 +9,7 @@ export interface BaseRecord {
     created_at: string;
     updated_at: string;
     published: boolean;
+    dynamicProperties?: any;
 }
 
 export interface News extends BaseRecord { }

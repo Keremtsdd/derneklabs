@@ -11,18 +11,29 @@ export default function DocumentItem({ item }: DocumentItemProps) {
     const isExternal = item.link?.startsWith('http');
 
     const content = (
-        <li className="border-b border-gray-100 last:border-0">
-            <div className="py-3 px-1 hover:bg-gray-50 transition-colors rounded">
-                <p className="text-sm font-medium text-primary hover:text-accent transition-colors">
-                    {item.title}
-                </p>
-                {(item.date || item.created_at) && (
-                    <div className="flex items-center gap-1 text-xs text-text-muted mt-1">
-                        <FaClock className="text-[10px]" />
-                        <time dateTime={item.date || item.created_at}>
-                            {formatDate(item.date || item.created_at)}
-                        </time>
-                    </div>
+        <li className="border-b border-slate-100 last:border-0">
+            <div className="py-4 px-3 hover:bg-slate-50/80 transition-all duration-200 rounded-2xl group flex items-start gap-3">
+                <span className="text-2xl select-none pt-0.5">📄</span>
+                <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors leading-snug truncate">
+                        {item.title}
+                    </p>
+                    {item.summary && (
+                        <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 leading-normal">{item.summary}</p>
+                    )}
+                    {(item.date || item.created_at) && (
+                        <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-400 mt-1.5 uppercase tracking-wider">
+                            <FaClock className="text-[9px]" />
+                            <time dateTime={item.date || item.created_at}>
+                                {formatDate(item.date || item.created_at)}
+                            </time>
+                        </div>
+                    )}
+                </div>
+                {isExternal && (
+                    <span className="text-xs text-slate-400 font-bold bg-slate-100 group-hover:bg-slate-200/80 px-2 py-1 rounded-md ml-auto shrink-0 transition-colors uppercase tracking-wider">
+                        Aç
+                    </span>
                 )}
             </div>
         </li>
@@ -30,14 +41,14 @@ export default function DocumentItem({ item }: DocumentItemProps) {
 
     if (isExternal) {
         return (
-            <a href={item.link} target="_blank" rel="noopener noreferrer" aria-label={`Belge: ${item.title}`}>
+            <a href={item.link} target="_blank" rel="noopener noreferrer" aria-label={`Belge: ${item.title}`} className="block">
                 {content}
             </a>
         );
     }
 
     return (
-        <Link to={`/belgeler/${item.id}`} aria-label={`Belge: ${item.title}`}>
+        <Link to={`/belgeler/${item.id}`} aria-label={`Belge: ${item.title}`} className="block">
             {content}
         </Link>
     );

@@ -3,14 +3,9 @@ import { resolveImageUrl } from '../../services/api';
 
 /** Statik fallback hızlı işlem linkleri */
 const FALLBACK_LINKS = [
-    { title: 'T.C No ile Ödeme', image: '/images/online-odeme42.png', link: '#' },
-    { title: 'Afet Toplanma Alanı', image: '/images/afet-ve-acil-durum-toplanma-alani-sorgulama77182.png', link: '#' },
-    { title: 'Fotoğraf Galeri', image: '/images/fotograf-galeri61051.png', link: '#' },
-    { title: 'Çözüm Merkezi', image: '/images/istek-ve-sikayet598.png', link: '#' },
-    { title: 'Kent Konseyi', image: '/images/bayrampasa-kent-konseyi75286.png', link: '#' },
-    { title: 'E-Veteriner', image: '/images/e-veteriner66357.png', link: '#' },
-    { title: 'İmar Durumu Sorgulama', image: '/images/hizli-islemler128.png', link: '#' },
-    { title: 'Kent Bilgi Sistemi', image: '/images/cografi-bilgi-sistemi9881.png', link: '#' },
+    { title: 'Destek Ol / Bağış', image: '/images/online-odeme42.png', link: '/destek' },
+    { title: 'Gönüllü Ol', image: '/images/fotograf-galeri61051.png', link: '/sayfa/gonulluluk' },
+    { title: 'Destek Masası', image: '/images/istek-ve-sikayet598.png', link: '/iletisim' },
 ];
 
 export default function QuickActionGrid() {
@@ -25,26 +20,33 @@ export default function QuickActionGrid() {
         : FALLBACK_LINKS;
 
     return (
-        <div className="max-w-7xl mx-auto px-4 mb-6">
-            <div className="bg-white rounded-lg shadow-sm p-4">
-                <h2 className="font-heading text-primary font-bold text-lg mb-4">HIZLI İŞLEMLER</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="max-w-7xl mx-auto px-4 mb-10">
+            <div className="bg-white rounded-3xl shadow-xl shadow-slate-100/50 p-6 md:p-8 border border-slate-100">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-2 border-b border-slate-50 pb-4">
+                    <div>
+                        <h2 className="font-heading text-primary font-extrabold text-xl md:text-2xl uppercase tracking-tight">Hızlı Bağlantılar</h2>
+                        <p className="text-xs text-slate-400 mt-0.5">Vakfımızın online hizmetlerine, gönüllülük ve destek başvuru kanallarına buradan ulaşabilirsiniz.</p>
+                    </div>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4">
                     {items.map((item, i) => (
                         <a
                             key={i}
                             href={item.link}
                             target={item.link.startsWith('http') ? '_blank' : undefined}
                             rel={item.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                            className="flex flex-col items-center p-3 rounded-lg border border-gray-100 hover:border-accent/30 hover:shadow-sm transition-all group"
+                            className="flex flex-col items-center p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-300 group"
                             aria-label={`Hızlı işlem: ${item.title}`}
                         >
-                            <img
-                                src={item.image}
-                                alt={item.title}
-                                className="w-12 h-12 object-contain mb-2"
-                                loading="lazy"
-                            />
-                            <h3 className="text-xs sm:text-sm text-primary font-heading font-bold text-center group-hover:text-accent transition-colors leading-tight">
+                            <div className="w-14 h-14 bg-white rounded-xl shadow-sm border border-slate-50 flex items-center justify-center p-2 mb-3 group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
+                                <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    className="w-full h-full object-contain"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <h3 className="text-xs sm:text-sm text-slate-700 font-heading font-extrabold text-center group-hover:text-primary transition-colors leading-tight px-1">
                                 {item.title}
                             </h3>
                         </a>

@@ -29,6 +29,15 @@ export default function DataTable<T extends { id: string }>({
     isDeleting,
 }: DataTableProps<T>) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredItems = items.filter((item) => {
+        return columns.some((col) => {
+            const val = (item as any)[col.key];
+            if (val === null || val === undefined) return false;
+            return String(val).toLowerCase().includes(searchQuery.toLowerCase());
+        });
+    });
 
     const handleDelete = (id: string) => {
         if (deleteId === id) {
@@ -40,68 +49,103 @@ export default function DataTable<T extends { id: string }>({
     };
 
     return (
-        <div>
-            <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
+        <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h1 className="text-2xl font-black text-slate-900 tracking-tight">{title}</h1>
                 <button
                     onClick={onCreate}
-                    className="px-4 py-2 bg-[#0d2137] text-white rounded-lg hover:bg-[#1a3a5c] transition-colors text-sm font-medium"
+                    className="px-5 py-2.5 bg-[#0d2137] text-white rounded-xl hover:bg-[#1a3a5c] transition-all text-sm font-semibold shadow-md hover:shadow-lg flex items-center gap-1.5"
                 >
-                    + Yeni Ekle
+                    ✨ Yeni Ekle
                 </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            {(items.length > 0 || searchQuery) && (
+                <div className="bg-white rounded-2xl p-3 shadow-md border border-slate-100/80 flex items-center gap-3">
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Tabloda ara..."
+                        className="flex-1 px-4 py-2 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 text-xs font-semibold text-slate-800"
+                    />
+                </div>
+            )}
+
+            <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100/80">
                 {isLoading ? (
-                    <div className="p-8 text-center text-gray-500">Yükleniyor...</div>
-                ) : items.length === 0 ? (
-                    <div className="p-8 text-center text-gray-500">Henüz kayıt yok</div>
+                    <div className="p-16 text-center">
+                        <div className="inline-block w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-3"></div>
+                        <p className="text-slate-500 text-sm">Veriler yükleniyor...</p>
+                    </div>
+                ) : filteredItems.length === 0 ? (
+                    <div className="p-16 text-center text-slate-500 text-sm">
+                        {searchQuery ? '🔍 Arama sonucuna uygun kayıt bulunamadı.' : '📭 Henüz kayıt bulunmuyor.'}
+                    </div>
                 ) : (
-                    <table className="w-full">
-                        <thead>
-                            <tr className="bg-gray-50 border-b">
-                                {columns.map((col) => (
-                                    <th key={String(col.key)} className="text-left px-4 py-3 text-sm font-medium text-gray-500">
-                                        {col.label}
-                                    </th>
-                                ))}
-                                <th className="text-right px-4 py-3 text-sm font-medium text-gray-500 w-36">
-                                    İşlemler
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {items.map((item) => (
-                                <tr key={item.id} className="border-b last:border-0 hover:bg-gray-50 transition-colors">
+                    <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                            <thead>
+                                <tr className="bg-slate-50/70 border-b border-slate-100">
                                     {columns.map((col) => (
-                                        <td key={String(col.key)} className="px-4 py-3 text-sm text-gray-700">
-                                            {col.render ? col.render(item) : String((item as Record<string, unknown>)[col.key as string] ?? '')}
-                                        </td>
+                                        <th key={String(col.key)} className="text-left px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                            {col.label}
+                                        </th>
                                     ))}
-                                    <td className="px-4 py-3 text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <button
-                                                onClick={() => onEdit(item)}
-                                                className="px-3 py-1.5 text-xs bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors"
-                                            >
-                                                Düzenle
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(item.id)}
-                                                disabled={isDeleting}
-                                                className={`px-3 py-1.5 text-xs rounded-md transition-colors ${deleteId === item.id
-                                                        ? 'bg-red-600 text-white hover:bg-red-700'
-                                                        : 'bg-red-50 text-red-600 hover:bg-red-100'
-                                                    }`}
-                                            >
-                                                {deleteId === item.id ? 'Emin misin?' : 'Sil'}
-                                            </button>
-                                        </div>
-                                    </td>
+                                    <th className="text-right px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-40">
+                                        İşlemler
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100">
+                                {filteredItems.map((item) => (
+                                    <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
+                                        {columns.map((col) => (
+                                            <td key={String(col.key)} className="px-6 py-4 text-sm text-slate-700 whitespace-nowrap">
+                                                {col.render ? (
+                                                    col.render(item)
+                                                ) : col.key === 'published' ? (
+                                                    (item as any)[col.key] ? (
+                                                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                                            Yayında
+                                                        </span>
+                                                    ) : (
+                                                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                                            Taslak
+                                                        </span>
+                                                    )
+                                                ) : (
+                                                    <span className="font-medium text-slate-800">
+                                                        {String((item as Record<string, unknown>)[col.key as string] ?? '')}
+                                                    </span>
+                                                )}
+                                            </td>
+                                        ))}
+                                        <td className="px-6 py-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <button
+                                                    onClick={() => onEdit(item)}
+                                                    className="px-3.5 py-1.5 text-xs bg-blue-50 text-blue-600 font-semibold rounded-lg hover:bg-blue-100 transition-colors"
+                                                >
+                                                    Düzenle
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(item.id)}
+                                                    disabled={isDeleting}
+                                                    className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors ${deleteId === item.id
+                                                            ? 'bg-red-600 text-white hover:bg-red-700'
+                                                            : 'bg-red-50 text-red-600 hover:bg-red-100'
+                                                        }`}
+                                                >
+                                                    {deleteId === item.id ? 'Emin misin?' : 'Sil'}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
         </div>
@@ -116,9 +160,9 @@ export function imageColumn<T>(key: keyof T, columnLabel?: string) {
         render: (item: T) => {
             const src = String((item as Record<string, unknown>)[key as string] || '');
             return src ? (
-                <img src={resolveImageUrl(src)} alt="" className="w-12 h-12 object-cover rounded" />
+                <img src={resolveImageUrl(src)} alt="" className="w-10 h-10 object-cover rounded-xl border border-slate-100 shadow-sm" />
             ) : (
-                <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-xs">Yok</div>
+                <div className="w-10 h-10 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center text-slate-400 text-xs font-semibold">Yok</div>
             );
         },
     };

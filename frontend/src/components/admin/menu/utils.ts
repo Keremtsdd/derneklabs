@@ -7,11 +7,13 @@ export function flatten(
     parentId: string | null = null,
     depth = 0
 ): FlatMenuItem[] {
-    return items.reduce<FlatMenuItem[]>((acc, item, index) => {
+    const safeItems = Array.isArray(items) ? items : [];
+    return safeItems.reduce<FlatMenuItem[]>((acc, item, index) => {
+        const children = Array.isArray(item.children) ? item.children : [];
         return [
             ...acc,
             { ...item, parentId, depth, index },
-            ...flatten(item.children, item.id, depth + 1),
+            ...flatten(children, item.id, depth + 1),
         ];
     }, []);
 }
@@ -59,21 +61,17 @@ export function findItemDeep(
 }
 
 export function removeItem(items: MenuItem[], id: string): MenuItem[] {
-    const newItems = [];
-
-    for (const item of items) {
-        if (item.id === id) {
-            continue;
-        }
-
-        if (item.children.length) {
-            item.children = removeItem(item.children, id);
-        }
-
-        newItems.push(item);
-    }
-
-    return newItems;
+    return items
+        .filter((item) => item.id !== id)
+        .map((item) => {
+            if (item.children && item.children.length > 0) {
+                return {
+                    ...item,
+                    children: removeItem(item.children, id),
+                };
+            }
+            return item;
+        });
 }
 
 export function setProperty<T extends keyof MenuItem>(
@@ -82,18 +80,23 @@ export function setProperty<T extends keyof MenuItem>(
     property: T,
     setter: (value: MenuItem[T]) => MenuItem[T]
 ): MenuItem[] {
-    for (const item of items) {
+    return items.map((item) => {
         if (item.id === id) {
-            item[property] = setter(item[property]);
-            continue;
+            return {
+                ...item,
+                [property]: setter(item[property]),
+            };
         }
 
-        if (item.children.length) {
-            item.children = setProperty(item.children, id, property, setter);
+        if (item.children && item.children.length > 0) {
+            return {
+                ...item,
+                children: setProperty(item.children, id, property, setter),
+            };
         }
-    }
 
-    return [...items];
+        return item;
+    });
 }
 
 function getDragDepth(offset: number, indentationWidth: number) {

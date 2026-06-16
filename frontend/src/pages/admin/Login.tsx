@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/adminApi';
 import { useAuth } from '../../hooks/useAdmin';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const { saveAuth } = useAuth();
     const navigate = useNavigate();
+    const { siteName, logo } = useSiteSettings();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,11 +34,15 @@ export default function Login() {
             <div className="w-full max-w-md">
                 <div className="bg-white rounded-2xl shadow-2xl p-8">
                     <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-[#0d2137] rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <span className="text-3xl">🏛️</span>
-                        </div>
+                        {logo ? (
+                            <img src={logo} alt="" className="w-16 h-16 object-contain mx-auto mb-4 rounded-2xl" />
+                        ) : (
+                            <div className="w-16 h-16 bg-[#0d2137] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <span className="text-3xl">🏛️</span>
+                            </div>
+                        )}
                         <h1 className="text-2xl font-bold text-gray-800">Yönetim Paneli</h1>
-                        <p className="text-gray-500 mt-1">Orhanpaşa Belediyesi</p>
+                        <p className="text-gray-550 mt-1">{siteName || 'Sivil Toplum Portalı'}</p>
                     </div>
 
                     {error && (
@@ -57,7 +63,7 @@ export default function Login() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                                placeholder="admin@belediye.gov.tr"
+                                placeholder="admin@cukurcastk.org.tr"
                             />
                         </div>
                         <div>
