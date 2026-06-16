@@ -52,28 +52,28 @@ export function useSiteSettings() {
         raw: data,
         isLoading,
         isSuccess,
-        /** Genel: site adı (varsayılan: Orhanpaşa Bel.) */
-        siteName: getString(data, 'general_site_name', 'Orhanpaşa Bel.'),
+        /** Genel: site adı */
+        siteName: getString(data, 'general_site_name', ''),
         /** Genel: site açıklaması */
         siteDescription: getString(data, 'general_site_description', ''),
-        /** Genel: logo URL (varsayılan: /images/logo-kare.png) */
-        logo: getString(data, 'general_logo', '/images/logo-kare.png'),
+        /** Genel: logo URL */
+        logo: getString(data, 'general_logo', ''),
+        /** Genel: favicon URL */
+        favicon: getString(data, 'general_favicon', ''),
         /** İletişim: adres */
-        address: getString(
-            data,
-            'contact_address',
-            'Yenidoğan Mahallesi Abdi İpekçi Caddesi No:2, Bayrampaşa/İstanbul'
-        ),
+        address: getString(data, 'contact_address', ''),
         /** İletişim: telefon */
-        phone: getString(data, 'contact_phone', '444 1 990'),
+        phone: getString(data, 'contact_phone', ''),
         /** İletişim: e-posta */
-        email: getString(data, 'contact_email', 'iletisim@orhanpasa.bel.tr'),
+        email: getString(data, 'contact_email', ''),
         /** İletişim: harita embed HTML */
         mapEmbed: getString(data, 'contact_map_embed', ''),
         /** SEO: meta başlık */
-        metaTitle: getString(data, 'seo_meta_title', 'Orhanpaşa Belediyesi'),
+        metaTitle: getString(data, 'seo_meta_title', ''),
         /** SEO: meta açıklama */
         metaDescription: getString(data, 'seo_meta_description', ''),
+        /** SEO: meta anahtar kelimeler */
+        metaKeywords: getString(data, 'seo_meta_keywords', ''),
         /** SEO: OG görsel */
         ogImage: getString(data, 'seo_og_image', ''),
         /** Bakım modu açık mı */

@@ -64,20 +64,83 @@ export async function login(email: string, password: string): Promise<LoginRespo
     return result.data;
 }
 
+/** Helper function to map data objects to v1 DTO schema */
+function mapToDto(data: any): any {
+    if (!data) return {};
+    const dto: any = {};
+    if (data.title !== undefined) dto.title = data.title;
+    if (data.slug !== undefined) dto.slug = data.slug;
+    if (data.summary !== undefined) dto.shortDescription = data.summary;
+    if (data.body !== undefined) dto.content = data.body;
+    if (data.content !== undefined) dto.content = data.content;
+    if (data.image !== undefined) dto.image = data.image;
+    if (data.link !== undefined) dto.link = data.link;
+    if (data.published !== undefined) dto.isActive = data.published;
+    if (data.status !== undefined) dto.status = data.status;
+    if (data.sort_order !== undefined) dto.sortOrder = Number(data.sort_order || 0);
+    if (data.sortOrder !== undefined) dto.sortOrder = Number(data.sortOrder || 0);
+
+    const dynamicProperties: any = {};
+    if (data.date) dynamicProperties.date = data.date;
+    if (data.eventDate) dynamicProperties.eventDate = data.eventDate;
+    if (data.location) dynamicProperties.location = data.location;
+    if (data.fileSize) dynamicProperties.fileSize = data.fileSize;
+    if (data.fileType) dynamicProperties.fileType = data.fileType;
+    if (Object.keys(dynamicProperties).length > 0) {
+        dto.dynamicProperties = dynamicProperties;
+    }
+
+    return dto;
+}
+
+/** Helper function to map FormData objects to v1 DTO schema */
+function mapFormDataToDto(formData: FormData): FormData {
+    const newForm = new FormData();
+    formData.forEach((value, key) => {
+        if (key === 'summary') {
+            newForm.append('shortDescription', value);
+        } else if (key === 'published') {
+            newForm.append('isActive', value === 'true' || value === '1' ? 'true' : 'false');
+        } else if (key === 'body' || key === 'content') {
+            newForm.append('content', value);
+        } else if (key === 'sort_order' || key === 'sortOrder') {
+            newForm.append('sortOrder', value);
+        } else if (key === 'status') {
+            newForm.append('status', value);
+        } else if (['date', 'eventDate', 'location', 'fileSize', 'fileType'].includes(key)) {
+            // Skiped: handled in dynamicProperties
+        } else {
+            newForm.append(key, value);
+        }
+    });
+
+    const dynamicProperties: any = {};
+    if (formData.has('date')) dynamicProperties.date = formData.get('date');
+    if (formData.has('eventDate')) dynamicProperties.eventDate = formData.get('eventDate');
+    if (formData.has('location')) dynamicProperties.location = formData.get('location');
+    if (formData.has('fileSize')) dynamicProperties.fileSize = formData.get('fileSize');
+    if (formData.has('fileType')) dynamicProperties.fileType = formData.get('fileType');
+    if (Object.keys(dynamicProperties).length > 0) {
+        newForm.append('dynamicProperties', JSON.stringify(dynamicProperties));
+    }
+
+    return newForm;
+}
+
 /** Dashboard istatistikleri */
 export async function fetchDashboardStats(): Promise<DashboardStats> {
-    return request<DashboardStats>('/api/admin/dashboard/stats');
+    return request<DashboardStats>('/api/v1/dashboard/stats');
 }
 
 /** Site ayarları — tümü veya gruplu (örn. group=general) */
 export async function fetchSettings(group?: string): Promise<Record<string, unknown>> {
     const q = group ? `?group=${encodeURIComponent(group)}` : '';
-    return request<Record<string, unknown>>(`/api/admin/settings${q}`);
+    return request<Record<string, unknown>>(`/api/v1/settings${q}`);
 }
 
 /** Site ayarlarını toplu güncelle. Kaydedince cache backend'de temizlenir. */
 export async function updateSettings(settings: Record<string, unknown>): Promise<Record<string, unknown>> {
-    return request<Record<string, unknown>>('/api/admin/settings', {
+    return request<Record<string, unknown>>('/api/v1/settings', {
         method: 'PUT',
         body: JSON.stringify({ settings }),
     });
@@ -88,7 +151,7 @@ export async function uploadFile(file: File): Promise<{ url: string }> {
     const form = new FormData();
     form.append('file', file);
     const token = getToken();
-    const response = await fetch(`${API_BASE}/api/admin/upload`, {
+    const response = await fetch(`${API_BASE}/api/v1/upload`, {
         method: 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: form,
@@ -103,20 +166,50 @@ export async function uploadFile(file: File): Promise<{ url: string }> {
 
 /** Generic CRUD */
 export async function fetchAdminCollection<T>(collection: string): Promise<T[]> {
-    return request<T[]>(`/api/admin/${collection}`);
+    const apiCollection = collection === 'fast_links' ? 'quick-links' : collection;
+    const data = await request<any[]>(`/api/v1/${apiCollection}`);
+    return (data || []).map((item) => ({
+        id: item.id,
+        title: item.title,
+        summary: item.shortDescription || '',
+        content: item.content || '',
+        date: item.dynamicProperties?.date || item.dynamicProperties?.eventDate || '',
+        image: item.image || '',
+        link: item.link || '',
+        published: item.isActive,
+        created_at: item.createdAt,
+        updated_at: item.updatedAt,
+        ...item
+    })) as unknown as T[];
 }
 
 export async function fetchAdminItem<T>(collection: string, id: string): Promise<T> {
-    return request<T>(`/api/admin/${collection}/${id}`);
+    const apiCollection = collection === 'fast_links' ? 'quick-links' : collection;
+    const item = await request<any>(`/api/v1/${apiCollection}/${id}`);
+    return {
+        id: item.id,
+        title: item.title,
+        summary: item.shortDescription || '',
+        content: item.content || '',
+        date: item.dynamicProperties?.date || item.dynamicProperties?.eventDate || '',
+        image: item.image || '',
+        link: item.link || '',
+        published: item.isActive,
+        created_at: item.createdAt,
+        updated_at: item.updatedAt,
+        ...item
+    } as unknown as T;
 }
 
 export async function createAdminItem<T>(collection: string, data: FormData | Record<string, unknown>): Promise<T> {
+    const apiCollection = collection === 'fast_links' ? 'quick-links' : collection;
     if (data instanceof FormData) {
         const token = getToken();
-        const response = await fetch(`${API_BASE}/api/admin/${collection}`, {
+        const mappedForm = mapFormDataToDto(data);
+        const response = await fetch(`${API_BASE}/api/v1/${apiCollection}`, {
             method: 'POST',
             headers: token ? { Authorization: `Bearer ${token}` } : {},
-            body: data,
+            body: mappedForm,
         });
         if (!response.ok) {
             const err = await response.json().catch(() => ({ message: 'Oluşturma hatası' }));
@@ -125,19 +218,22 @@ export async function createAdminItem<T>(collection: string, data: FormData | Re
         const result: ApiResponse<T> = await response.json();
         return result.data;
     }
-    return request<T>(`/api/admin/${collection}`, {
+    const mappedJson = mapToDto(data);
+    return request<T>(`/api/v1/${apiCollection}`, {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify(mappedJson),
     });
 }
 
 export async function updateAdminItem<T>(collection: string, id: string, data: FormData | Record<string, unknown>): Promise<T> {
+    const apiCollection = collection === 'fast_links' ? 'quick-links' : collection;
     if (data instanceof FormData) {
         const token = getToken();
-        const response = await fetch(`${API_BASE}/api/admin/${collection}/${id}`, {
+        const mappedForm = mapFormDataToDto(data);
+        const response = await fetch(`${API_BASE}/api/v1/${apiCollection}/${id}`, {
             method: 'PUT',
             headers: token ? { Authorization: `Bearer ${token}` } : {},
-            body: data,
+            body: mappedForm,
         });
         if (!response.ok) {
             const err = await response.json().catch(() => ({ message: 'Güncelleme hatası' }));
@@ -146,12 +242,14 @@ export async function updateAdminItem<T>(collection: string, id: string, data: F
         const result: ApiResponse<T> = await response.json();
         return result.data;
     }
-    return request<T>(`/api/admin/${collection}/${id}`, {
+    const mappedJson = mapToDto(data);
+    return request<T>(`/api/v1/${apiCollection}/${id}`, {
         method: 'PUT',
-        body: JSON.stringify(data),
+        body: JSON.stringify(mappedJson),
     });
 }
 
 export async function deleteAdminItem(collection: string, id: string): Promise<void> {
-    await request<unknown>(`/api/admin/${collection}/${id}`, { method: 'DELETE' });
+    const apiCollection = collection === 'fast_links' ? 'quick-links' : collection;
+    await request<unknown>(`/api/v1/${apiCollection}/${id}`, { method: 'DELETE' });
 }

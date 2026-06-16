@@ -67,6 +67,11 @@ function useSettingsForm(group: GroupId, allData: Record<string, unknown> | unde
     return { initial, defaults };
 }
 
+// Modern input, textarea, and label class constants for premium SaaS aesthetic
+const labelClass = "block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2";
+const inputClass = "w-full border border-slate-200 rounded-xl px-4 py-2.5 bg-slate-50/50 hover:bg-slate-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-200 outline-none text-slate-800 text-sm";
+const submitButtonClass = "px-6 py-3 bg-gradient-to-r from-primary to-primary-light text-white font-semibold text-sm rounded-xl hover:opacity-95 shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/20 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
+
 function GeneralTab({ data, onSave, saving }: { data: Record<string, unknown> | undefined; onSave: (s: Record<string, unknown>) => void; saving: boolean }) {
     const { initial } = useSettingsForm('general', data);
     const [form, setForm] = useState(initial);
@@ -93,37 +98,53 @@ function GeneralTab({ data, onSave, saving }: { data: Record<string, unknown> | 
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Site Adı</label>
+                <label className={labelClass}>Site Adı</label>
                 <input
                     type="text"
                     value={String(form.site_name ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, site_name: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                    className={inputClass}
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Site Açıklaması</label>
+                <label className={labelClass}>Site Açıklaması</label>
                 <textarea
                     value={String(form.site_description ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, site_description: e.target.value }))}
                     rows={3}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                    className={inputClass}
                 />
             </div>
-            <ImageUpload
-                label="Logo"
-                currentImage={String(form.logo ?? '')}
-                onFileSelect={setLogoFile}
-            />
-            <ImageUpload
-                label="Favicon"
-                currentImage={String(form.favicon ?? '')}
-                onFileSelect={setFaviconFile}
-            />
-            <button type="submit" disabled={saving} className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover disabled:opacity-50">
-                {saving ? 'Kaydediliyor…' : 'Kaydet'}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                    <ImageUpload
+                        label="Logo"
+                        currentImage={String(form.logo ?? '')}
+                        onFileSelect={setLogoFile}
+                        onClear={() => setForm(f => ({ ...f, logo: '' }))}
+                    />
+                </div>
+                <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                    <ImageUpload
+                        label="Favicon"
+                        currentImage={String(form.favicon ?? '')}
+                        onFileSelect={setFaviconFile}
+                        onClear={() => setForm(f => ({ ...f, favicon: '' }))}
+                    />
+                </div>
+            </div>
+            <button type="submit" disabled={saving} className={submitButtonClass}>
+                {saving ? (
+                    <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Kaydediliyor...
+                    </>
+                ) : 'Ayarları Kaydet'}
             </button>
         </form>
     );
@@ -144,46 +165,56 @@ function ContactTab({ data, onSave, saving }: { data: Record<string, unknown> | 
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Adres</label>
+                <label className={labelClass}>Adres</label>
                 <textarea
                     value={String(form.address ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
                     rows={2}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                    className={inputClass}
                 />
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
-                <input
-                    type="text"
-                    value={String(form.phone ?? '')}
-                    onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label className={labelClass}>Telefon</label>
+                    <input
+                        type="text"
+                        value={String(form.phone ?? '')}
+                        onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                        className={inputClass}
+                    />
+                </div>
+                <div>
+                    <label className={labelClass}>E-posta</label>
+                    <input
+                        type="email"
+                        value={String(form.email ?? '')}
+                        onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                        className={inputClass}
+                    />
+                </div>
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
-                <input
-                    type="email"
-                    value={String(form.email ?? '')}
-                    onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Harita embed kodu (HTML)</label>
+                <label className={labelClass}>Harita embed kodu (HTML)</label>
                 <textarea
                     value={String(form.map_embed ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, map_embed: e.target.value }))}
                     rows={4}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 font-mono text-sm"
+                    className={`${inputClass} font-mono text-xs`}
                     placeholder="<iframe ...></iframe>"
                 />
             </div>
-            <button type="submit" disabled={saving} className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover disabled:opacity-50">
-                {saving ? 'Kaydediliyor…' : 'Kaydet'}
+            <button type="submit" disabled={saving} className={submitButtonClass}>
+                {saving ? (
+                    <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Kaydediliyor...
+                    </>
+                ) : 'İletişim Bilgilerini Kaydet'}
             </button>
         </form>
     );
@@ -210,42 +241,53 @@ function SeoTab({ data, onSave, saving }: { data: Record<string, unknown> | unde
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Meta Başlık</label>
+                <label className={labelClass}>Meta Başlık</label>
                 <input
                     type="text"
                     value={String(form.meta_title ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, meta_title: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                    className={inputClass}
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Meta Açıklama</label>
+                <label className={labelClass}>Meta Açıklama</label>
                 <textarea
                     value={String(form.meta_description ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, meta_description: e.target.value }))}
-                    rows={2}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                    rows={3}
+                    className={inputClass}
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Meta Anahtar Kelimeler</label>
+                <label className={labelClass}>Meta Anahtar Kelimeler</label>
                 <input
                     type="text"
                     value={String(form.meta_keywords ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, meta_keywords: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                    placeholder="kelime1, kelime2"
+                    className={inputClass}
+                    placeholder="sivil toplum, dernek, vakıf, yardım, projeler"
                 />
             </div>
-            <ImageUpload
-                label="OG Görsel (sosyal paylaşım)"
-                currentImage={String(form.og_image ?? '')}
-                onFileSelect={setOgFile}
-            />
-            <button type="submit" disabled={saving} className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover disabled:opacity-50">
-                {saving ? 'Kaydediliyor…' : 'Kaydet'}
+            <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                <ImageUpload
+                    label="OG Görsel (Sosyal Medya Paylaşımı)"
+                    currentImage={String(form.og_image ?? '')}
+                    onFileSelect={setOgFile}
+                    onClear={() => setForm(f => ({ ...f, og_image: '' }))}
+                />
+            </div>
+            <button type="submit" disabled={saving} className={submitButtonClass}>
+                {saving ? (
+                    <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Kaydediliyor...
+                    </>
+                ) : 'SEO Ayarlarını Kaydet'}
             </button>
         </form>
     );
@@ -268,67 +310,79 @@ function SmtpTab({ data, onSave, saving }: { data: Record<string, unknown> | und
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">SMTP Sunucu</label>
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="md:col-span-2">
+                    <label className={labelClass}>SMTP Sunucu</label>
                     <input
                         type="text"
                         value={String(form.host ?? '')}
                         onChange={(e) => setForm((f) => ({ ...f, host: e.target.value }))}
                         placeholder="smtp.example.com"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                        className={inputClass}
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Port</label>
+                    <label className={labelClass}>Port</label>
                     <input
                         type="text"
                         value={String(form.port ?? '587')}
                         onChange={(e) => setForm((f) => ({ ...f, port: e.target.value }))}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                        className={inputClass}
                     />
                 </div>
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Kullanıcı</label>
-                <input
-                    type="text"
-                    value={String(form.user ?? '')}
-                    onChange={(e) => setForm((f) => ({ ...f, user: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label className={labelClass}>Kullanıcı Adı</label>
+                    <input
+                        type="text"
+                        value={String(form.user ?? '')}
+                        onChange={(e) => setForm((f) => ({ ...f, user: e.target.value }))}
+                        className={inputClass}
+                    />
+                </div>
+                <div>
+                    <label className={labelClass}>Şifre</label>
+                    <input
+                        type="password"
+                        value={String(form.password ?? '')}
+                        onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                        className={inputClass}
+                        autoComplete="off"
+                    />
+                </div>
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Şifre</label>
-                <input
-                    type="password"
-                    value={String(form.password ?? '')}
-                    onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                    autoComplete="off"
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label className={labelClass}>Gönderen E-posta</label>
+                    <input
+                        type="email"
+                        value={String(form.from_email ?? '')}
+                        onChange={(e) => setForm((f) => ({ ...f, from_email: e.target.value }))}
+                        className={inputClass}
+                    />
+                </div>
+                <div>
+                    <label className={labelClass}>Gönderen Adı</label>
+                    <input
+                        type="text"
+                        value={String(form.from_name ?? '')}
+                        onChange={(e) => setForm((f) => ({ ...f, from_name: e.target.value }))}
+                        className={inputClass}
+                    />
+                </div>
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Gönderen E-posta</label>
-                <input
-                    type="email"
-                    value={String(form.from_email ?? '')}
-                    onChange={(e) => setForm((f) => ({ ...f, from_email: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Gönderen Adı</label>
-                <input
-                    type="text"
-                    value={String(form.from_name ?? '')}
-                    onChange={(e) => setForm((f) => ({ ...f, from_name: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                />
-            </div>
-            <button type="submit" disabled={saving} className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover disabled:opacity-50">
-                {saving ? 'Kaydediliyor…' : 'Kaydet'}
+            <button type="submit" disabled={saving} className={submitButtonClass}>
+                {saving ? (
+                    <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Kaydediliyor...
+                    </>
+                ) : 'SMTP Ayarlarını Kaydet'}
             </button>
         </form>
     );
@@ -347,29 +401,37 @@ function ApiTab({ data, onSave, saving }: { data: Record<string, unknown> | unde
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Google Maps API Anahtarı</label>
+                <label className={labelClass}>Google Maps API Anahtarı</label>
                 <input
                     type="text"
                     value={String(form.google_maps_key ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, google_maps_key: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                    placeholder="AIza..."
+                    className={inputClass}
+                    placeholder="AIzaSy..."
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Google Analytics ID</label>
+                <label className={labelClass}>Google Analytics ID</label>
                 <input
                     type="text"
                     value={String(form.analytics_id ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, analytics_id: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                    className={inputClass}
                     placeholder="G-XXXXXXXXXX"
                 />
             </div>
-            <button type="submit" disabled={saving} className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover disabled:opacity-50">
-                {saving ? 'Kaydediliyor…' : 'Kaydet'}
+            <button type="submit" disabled={saving} className={submitButtonClass}>
+                {saving ? (
+                    <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Kaydediliyor...
+                    </>
+                ) : 'API Ayarlarını Kaydet'}
             </button>
         </form>
     );
@@ -390,34 +452,44 @@ function MaintenanceTab({ data, onSave, saving }: { data: Record<string, unknown
     const toggle = () => setForm((f) => ({ ...f, enabled: !f.enabled }));
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
-            <div className="flex items-center gap-3">
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
+            <div className="flex items-center gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-100">
                 <button
                     type="button"
                     role="switch"
                     aria-checked={!!form.enabled}
                     onClick={toggle}
-                    className={`relative inline-flex h-7 w-12 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 ${form.enabled ? 'bg-accent' : 'bg-gray-200'}`}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary/20 ${form.enabled ? 'bg-primary' : 'bg-slate-200'}`}
                 >
                     <span
-                        className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition-transform ${form.enabled ? 'translate-x-5' : 'translate-x-1'}`}
-                        style={{ top: '2px' }}
+                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${form.enabled ? 'translate-x-5' : 'translate-x-0'}`}
                     />
                 </button>
-                <label className="text-sm font-medium text-gray-700">Bakım modu açık</label>
+                <div>
+                    <label className="text-sm font-semibold text-slate-800 block">Bakım Modunu Etkinleştir</label>
+                    <span className="text-xs text-slate-500">Etkinleştirildiğinde, ziyaretçiler sitenin bakımda olduğunu belirten mesajı göreceklerdir.</span>
+                </div>
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Bakım mesajı</label>
+                <label className={labelClass}>Bakım Mesajı</label>
                 <textarea
                     value={String(form.message ?? '')}
                     onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                     rows={3}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                    placeholder="Site kısa süreliğine bakımdadır."
+                    className={inputClass}
+                    placeholder="Sitemiz kısa bir süreliğine güncelleme çalışması nedeniyle bakımdadır. En kısa sürede tekrar yayında olacağız."
                 />
             </div>
-            <button type="submit" disabled={saving} className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover disabled:opacity-50">
-                {saving ? 'Kaydediliyor…' : 'Kaydet'}
+            <button type="submit" disabled={saving} className={submitButtonClass}>
+                {saving ? (
+                    <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Kaydediliyor...
+                    </>
+                ) : 'Bakım Ayarlarını Kaydet'}
             </button>
         </form>
     );
@@ -455,8 +527,14 @@ export default function Settings() {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center py-12">
-                <span className="text-gray-500">Yükleniyor…</span>
+            <div className="flex items-center justify-center py-20 bg-white rounded-3xl shadow-xl border border-slate-100">
+                <div className="flex flex-col items-center gap-3">
+                    <svg className="animate-spin h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    <span className="text-sm font-medium text-slate-500">Ayarlar yükleniyor...</span>
+                </div>
             </div>
         );
     }
@@ -464,20 +542,26 @@ export default function Settings() {
     const tabs = GROUPS.map((g) => ({ id: g.id, label: g.label, icon: <span>{g.icon}</span> }));
 
     return (
-        <div>
-            <h1 className="text-2xl font-bold text-primary mb-6">Site Ayarları</h1>
-            <TabGroup tabs={tabs} defaultTabId="general">
-                {(activeId) => (
-                    <>
-                        {activeId === 'general' && <GeneralTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
-                        {activeId === 'contact' && <ContactTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
-                        {activeId === 'seo' && <SeoTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
-                        {activeId === 'smtp' && <SmtpTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
-                        {activeId === 'api' && <ApiTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
-                        {activeId === 'maintenance' && <MaintenanceTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
-                    </>
-                )}
-            </TabGroup>
+        <div className="max-w-5xl mx-auto">
+            <div className="mb-8">
+                <h1 className="text-3xl font-heading font-extrabold text-primary tracking-tight">Site Ayarları</h1>
+                <p className="text-sm text-text-muted mt-1">Sivil toplum portalının genel ayarlarını, iletişim kanallarını, SEO yapılandırmalarını ve sistem durumunu buradan yönetin.</p>
+            </div>
+
+            <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden p-6 md:p-8">
+                <TabGroup tabs={tabs} defaultTabId="general">
+                    {(activeId) => (
+                        <div className="mt-8 pt-8 border-t border-slate-100 animate-in fade-in slide-in-from-top-2 duration-300">
+                            {activeId === 'general' && <GeneralTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
+                            {activeId === 'contact' && <ContactTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
+                            {activeId === 'seo' && <SeoTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
+                            {activeId === 'smtp' && <SmtpTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
+                            {activeId === 'api' && <ApiTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
+                            {activeId === 'maintenance' && <MaintenanceTab data={allData} onSave={handleSave} saving={mutation.isPending} />}
+                        </div>
+                    )}
+                </TabGroup>
+            </div>
             <Toast message={toast.message} visible={showToast} onClose={closeToast} type={toast.type || 'success'} />
         </div>
     );

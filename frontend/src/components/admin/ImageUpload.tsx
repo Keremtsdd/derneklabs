@@ -4,11 +4,12 @@ import { resolveImageUrl } from '../../services/api';
 interface ImageUploadProps {
     currentImage?: string;
     onFileSelect: (file: File | null) => void;
+    onClear?: () => void;
     /** Örn. "İkon" — Hızlı bağlantılar için; varsayılan: "Görsel" */
     label?: string;
 }
 
-export default function ImageUpload({ currentImage, onFileSelect, label = 'Görsel' }: ImageUploadProps) {
+export default function ImageUpload({ currentImage, onFileSelect, onClear, label = 'Görsel' }: ImageUploadProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -23,6 +24,7 @@ export default function ImageUpload({ currentImage, onFileSelect, label = 'Görs
     const handleRemove = () => {
         setPreview(null);
         onFileSelect(null);
+        if (onClear) onClear();
         if (inputRef.current) inputRef.current.value = '';
     };
 

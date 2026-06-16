@@ -9,35 +9,58 @@ interface ApiResponse<T> {
 }
 
 /**
- * Genel koleksiyon verisi çekme — GET /api/public/:collection
+ * Genel koleksiyon verisi çekme — GET /api/v1/:collection
  */
 export async function fetchCollection<T>(collection: CollectionName): Promise<T[]> {
-    const response = await fetch(`${API_BASE}/api/public/${collection}`);
+    const apiCollection = collection === 'fast_links' ? 'quick-links' : collection;
+    const response = await fetch(`${API_BASE}/api/v1/${apiCollection}`);
     if (!response.ok) {
         throw new Error(`API Error: ${response.status} — ${collection}`);
     }
-    const result: ApiResponse<T[]> = await response.json();
-    return result.data;
+    const result: ApiResponse<any[]> = await response.json();
+    return (result.data || []).map((item) => ({
+        id: item.id,
+        title: item.title,
+        summary: item.shortDescription || '',
+        content: item.content || '',
+        date: item.dynamicProperties?.date || item.dynamicProperties?.eventDate || '',
+        image: item.image || '',
+        link: item.link || '',
+        published: item.isActive,
+        created_at: item.createdAt,
+        updated_at: item.updatedAt,
+        ...item
+    })) as unknown as T[];
 }
 
 /**
- * Tek sayfa slug ile çekme — GET /api/public/pages/:slug
+ * Tek sayfa slug ile çekme — GET /api/v1/pages/:slug
  */
 export async function fetchPageBySlug(slug: string): Promise<Page> {
-    const response = await fetch(`${API_BASE}/api/public/pages/${slug}`);
+    const response = await fetch(`${API_BASE}/api/v1/pages/${slug}`);
     if (!response.ok) {
         throw new Error(`API Error: ${response.status} — page/${slug}`);
     }
-    const result: ApiResponse<Page> = await response.json();
-    return result.data;
+    const result: ApiResponse<any> = await response.json();
+    const item = result.data;
+    return {
+        id: item.id,
+        slug: item.slug,
+        title: item.title,
+        summary: item.shortDescription || '',
+        body: item.content || '',
+        image: item.image || '',
+        published: item.isActive,
+        created_at: item.createdAt,
+        updated_at: item.updatedAt
+    } as unknown as Page;
 }
 
 /**
  * Site ayarları (public — herkesin erişebildiği)
- * Admin paneldeki Site Ayarları buradan okunur; cache’li.
  */
 export async function fetchPublicSettings(): Promise<Record<string, unknown>> {
-    const response = await fetch(`${API_BASE}/api/public/settings`);
+    const response = await fetch(`${API_BASE}/api/v1/settings`);
     if (!response.ok) throw new Error('API Error: settings');
     const result: ApiResponse<Record<string, unknown>> = await response.json();
     return result.data || {};
@@ -79,8 +102,14 @@ export interface KurumsalMegamenuData {
 }
 
 export async function fetchKurumsalMenu(): Promise<KurumsalMegamenuData | null> {
-    const response = await fetch(`${API_BASE}/api/public/kurumsal-menu`);
-    if (!response.ok) return null;
+    const response = await fetch(`${API_BASE}/api/v1/settings/kurumsal_megamenu`);
+    if (!response.ok) {
+        // Geriye dönük uyumluluk için eski public menu rotasına fallback yap
+        const oldResponse = await fetch(`${API_BASE}/api/public/kurumsal-menu`);
+        if (!oldResponse.ok) return null;
+        const oldResult: ApiResponse<KurumsalMegamenuData | null> = await oldResponse.json();
+        return oldResult.data ?? null;
+    }
     const result: ApiResponse<KurumsalMegamenuData | null> = await response.json();
     return result.data ?? null;
 }
@@ -93,4 +122,26 @@ export function resolveImageUrl(path: string): string {
     if (path.startsWith('http')) return path;
     if (path.startsWith('/uploads')) return `${API_BASE}${path}`;
     return path;
+}
+
+/**
+ * Destek / İletişim Talebi Oluştur — POST /api/v1/support-tickets
+ */
+export async function createSupportTicket(payload: { userContact: string; subject: string; message: string }): Promise<boolean> {
+    const response = await fetch(`${API_BASE}/api/v1/support-tickets`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            user_contact: payload.userContact,
+            subject: payload.subject,
+            message: payload.message
+        })
+    });
+    if (!response.ok) {
+        throw new Error(`API Error: ${response.status} — support-tickets`);
+    }
+    const result: ApiResponse<any> = await response.json();
+    return result.success;
 }

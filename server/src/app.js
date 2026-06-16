@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const apiV1 = require('./routes/v1');
 const publicRoutes = require('./routes/publicRoutes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const { errorHandler } = require('./middleware/errorHandler');
 
+// Trigger nodemon cache reset comment - updated at 15:50
 function createApp() {
     const app = express();
 
@@ -37,6 +39,7 @@ function createApp() {
     app.use('/uploads', express.static(path.resolve(UPLOAD_DIR)));
 
     // Route'lar
+    app.use('/api/v1', apiV1);
     app.use('/api/public', publicRoutes);
     app.use('/api/auth', authRoutes);
     app.use('/api/admin', adminRoutes);

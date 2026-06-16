@@ -13,16 +13,16 @@ class BaseRepository {
         this.tableName = tableName;
     }
 
-    /** Tüm kayıtları getir (opsiyonel: sadece published) */
-    async findAll(publishedOnly = false) {
-        const orderBy = (this.tableName === 'fast_links' || this.tableName === 'banners')
+    /** Tüm kayıtları getir (opsiyonel: sadece aktif olanlar) */
+    async findAll(activeOnly = false) {
+        const orderBy = (this.tableName === 'quick_links' || this.tableName === 'banners')
             ? 'ORDER BY sort_order ASC, created_at DESC'
             : 'ORDER BY created_at DESC';
         let sql = `SELECT * FROM ?? ${orderBy}`;
         const params = [this.tableName];
 
-        if (publishedOnly) {
-            sql = `SELECT * FROM ?? WHERE published = 1 ${orderBy}`;
+        if (activeOnly) {
+            sql = `SELECT * FROM ?? WHERE is_active = 1 ${orderBy}`;
         }
 
         const [rows] = await pool.query(sql, params);
@@ -38,34 +38,41 @@ class BaseRepository {
         return rows[0] || null;
     }
 
-    /**
-     * DD.MM.YYYY -> YYYY-MM-DD dönüşümü
-     */
-    formatDate(value) {
-        if (!value) return null;
-        // Zaten YYYY-MM-DD formatındaysa dokunma
-        if (/^\d{4}-\d{2}-\d{2}/.test(value)) return value;
-
-        // DD.MM.YYYY formatı kontrolü
-        const parts = value.split('.');
-        if (parts.length === 3) {
-            return `${parts[2]}-${parts[1]}-${parts[0]}`;
-        }
-        return value;
+    /** Slug ile tek kayıt getir */
+    async findBySlug(slug) {
+        const [rows] = await pool.query(
+            `SELECT * FROM ?? WHERE slug = ?`,
+            [this.tableName, slug]
+        );
+        return rows[0] || null;
     }
 
-    /**
-     * Verileri temizle ve formatla
-     */
+    /** ID veya Slug ile tek kayıt getir */
+    async findByIdOrSlug(idOrSlug) {
+        const [rows] = await pool.query(
+            `SELECT * FROM ?? WHERE id = ? OR slug = ?`,
+            [this.tableName, idOrSlug, idOrSlug]
+        );
+        return rows[0] || null;
+    }
+
+    /** Verileri temizle ve formatla */
     sanitize(data) {
         const clean = {};
         for (const [key, value] of Object.entries(data)) {
-            if (value === '' || value === undefined) {
-                clean[key] = null;
-            } else if (key === 'date' && typeof value === 'string') {
-                clean[key] = this.formatDate(value);
+            if (value === undefined) {
+                continue;
+            }
+            if (key === 'dynamic_properties') {
+                if (typeof value === 'object' && value !== null) {
+                    clean[key] = JSON.stringify(value);
+                } else {
+                    clean[key] = value;
+                }
+            } else if (key === 'is_active') {
+                clean[key] = value ? 1 : 0;
             } else {
-                clean[key] = value;
+                clean[key] = value === '' ? null : value;
             }
         }
         return clean;

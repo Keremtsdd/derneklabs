@@ -1,12 +1,12 @@
 -- =============================================
--- Çukurca Belediyesi CMS — MySQL Schema
+-- Çukurca Belediyesi CMS — MySQL Schema (Modernized)
 -- =============================================
 
 CREATE DATABASE IF NOT EXISTS cukurca_bel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE cukurca_bel;
 
--- Kullanıcılar (admin)
+-- Kullanıcılar (admin/editor)
 CREATE TABLE IF NOT EXISTS users (
     id CHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -17,136 +17,163 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Haberler
+-- Haberler (News)
 CREATE TABLE IF NOT EXISTS news (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    summary TEXT,
-    date DATE,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
     image VARCHAR(500),
     link VARCHAR(500),
-    published TINYINT(1) DEFAULT 1,
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Etkinlikler
-CREATE TABLE IF NOT EXISTS events (
-    id CHAR(36) PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    summary TEXT,
-    date VARCHAR(100),
-    image VARCHAR(500),
-    link VARCHAR(500),
-    published TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Duyurular
+-- Duyurular (Announcements)
 CREATE TABLE IF NOT EXISTS announcements (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    summary TEXT,
-    date DATE,
-    link VARCHAR(500),
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
     image VARCHAR(500),
-    published TINYINT(1) DEFAULT 1,
+    link VARCHAR(500),
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- İlanlar
-CREATE TABLE IF NOT EXISTS notices (
+-- Etkinlikler (Events)
+CREATE TABLE IF NOT EXISTS events (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    summary TEXT,
-    date DATE,
-    link VARCHAR(500),
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
     image VARCHAR(500),
-    published TINYINT(1) DEFAULT 1,
+    link VARCHAR(500),
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Belgeler
-CREATE TABLE IF NOT EXISTS documents (
-    id CHAR(36) PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    link VARCHAR(500),
-    date VARCHAR(50),
-    image VARCHAR(500),
-    summary TEXT,
-    published TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Projeler
+-- Projeler (Projects)
 CREATE TABLE IF NOT EXISTS projects (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    summary TEXT,
-    date DATE,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
     image VARCHAR(500),
     link VARCHAR(500),
-    published TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Banner / Slider
-CREATE TABLE IF NOT EXISTS banners (
-    id CHAR(36) PRIMARY KEY,
-    title VARCHAR(255),
-    image VARCHAR(500),
-    link VARCHAR(500),
-    summary TEXT,
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
     sort_order INT DEFAULT 0,
-    published TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Hızlı İşlemler
-CREATE TABLE IF NOT EXISTS fast_links (
-    id CHAR(36) PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    link VARCHAR(500),
-    image VARCHAR(500),
-    sort_order INT DEFAULT 0,
-    published TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Videolar
-CREATE TABLE IF NOT EXISTS videos (
-    id CHAR(36) PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    summary TEXT,
-    date DATE,
-    image VARCHAR(500),
-    link VARCHAR(500),
-    published TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Sayfalar (içerik yönetimi)
+-- Sayfalar (Dynamic Pages)
 CREATE TABLE IF NOT EXISTS pages (
     id CHAR(36) PRIMARY KEY,
-    slug VARCHAR(200) NOT NULL UNIQUE,
     title VARCHAR(255) NOT NULL,
-    summary TEXT,
-    body LONGTEXT,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
     image VARCHAR(500),
-    published TINYINT(1) DEFAULT 1,
+    link VARCHAR(500),
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Site Ayarları (key-value)
+-- Belgeler (Documents)
+CREATE TABLE IF NOT EXISTS documents (
+    id CHAR(36) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
+    image VARCHAR(500),
+    link VARCHAR(500),
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Slaytlar / Bannerlar (Banners)
+CREATE TABLE IF NOT EXISTS banners (
+    id CHAR(36) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
+    image VARCHAR(500),
+    link VARCHAR(500),
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Fotoğraf Galerisi (PhotoGallery)
+CREATE TABLE IF NOT EXISTS photo_gallery (
+    id CHAR(36) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
+    image VARCHAR(500),
+    link VARCHAR(500),
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Hızlı Bağlantılar (QuickLinks)
+CREATE TABLE IF NOT EXISTS quick_links (
+    id CHAR(36) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
+    image VARCHAR(500),
+    link VARCHAR(500),
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Destek Talepleri (Support Tickets)
+CREATE TABLE IF NOT EXISTS support_tickets (
+    id CHAR(36) PRIMARY KEY,
+    user_contact VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('Open', 'Pending', 'Resolved') NOT NULL DEFAULT 'Open',
+    dynamic_properties JSON,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Site Ayarları (Settings)
 CREATE TABLE IF NOT EXISTS settings (
     setting_key VARCHAR(100) PRIMARY KEY,
     setting_value JSON,

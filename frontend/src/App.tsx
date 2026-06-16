@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import MainLayout from './components/layout/MainLayout';
 import Home from './pages/Home';
@@ -15,7 +16,7 @@ import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import PagesAdmin from './pages/admin/PagesAdmin';
 import MenuManager from './pages/admin/MenuManager';
-import KurumsalMenuManager from './pages/admin/KurumsalMenuManager';
+
 import Settings from './pages/admin/Settings';
 import {
   NewsPage,
@@ -25,6 +26,7 @@ import {
   BannersPage,
   FastLinksPage,
   DocumentsPage,
+  SupportTicketsPage,
 } from './pages/admin/CollectionPages';
 
 const queryClient = new QueryClient({
@@ -37,10 +39,21 @@ const queryClient = new QueryClient({
   },
 });
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Public */}
           <Route element={<MainLayout />}>
@@ -50,9 +63,11 @@ export default function App() {
             <Route path="/etkinlikler" element={<Events />} />
             <Route path="/projeler" element={<Projects />} />
             <Route path="/iletisim" element={<Contact />} />
+            <Route path="/destek" element={<Contact />} />
             <Route path="/hakkinda" element={<GenericPage />} />
             <Route path="/baskan" element={<GenericPage />} />
             <Route path="/sayfa/:slug" element={<GenericPage />} />
+            <Route path="*" element={<Home />} />
           </Route>
 
           {/* Admin */}
@@ -68,8 +83,9 @@ export default function App() {
             <Route path="belgeler" element={<DocumentsPage />} />
             <Route path="sayfalar" element={<PagesAdmin />} />
             <Route path="menu" element={<MenuManager />} />
-            <Route path="kurumsal-menu" element={<KurumsalMenuManager />} />
+
             <Route path="ayarlar" element={<Settings />} />
+            <Route path="destek-talepleri" element={<SupportTicketsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

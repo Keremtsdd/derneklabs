@@ -1,8 +1,22 @@
 -- =============================================
--- Çukurca Bel CMS — Seed Data (db.json'dan aktarım)
+-- Çukurca STK CMS — Seed Data (STK / NGO Rebranded)
 -- =============================================
 
 USE cukurca_bel;
+
+-- Temizleme işlemleri
+DELETE FROM users;
+DELETE FROM news;
+DELETE FROM announcements;
+DELETE FROM events;
+DELETE FROM projects;
+DELETE FROM pages;
+DELETE FROM documents;
+DELETE FROM banners;
+DELETE FROM photo_gallery;
+DELETE FROM quick_links;
+DELETE FROM support_tickets;
+DELETE FROM settings;
 
 -- Admin kullanıcı (şifre: admin123)
 INSERT INTO
@@ -16,716 +30,463 @@ INSERT INTO
 VALUES (
         'd24f3b1e-67d0-42af-bac2-a4e8f747c590',
         'Yönetici',
-        'admin@bayrampasa.bel.tr',
+        'admin@cukurcastk.org.tr',
         '$2a$10$McyHGqrayhiMgxDBm2PFGe6jhCO34CtGZip8mx23XCZyADRAvm/kK',
         'admin'
     );
 
--- Haberler
+-- Haberler (News)
 INSERT INTO
     news (
         id,
         title,
-        summary,
-        date,
+        slug,
+        short_description,
+        content,
         image,
         link,
-        published,
-        created_at,
-        updated_at
+        dynamic_properties,
+        is_active,
+        sort_order
     )
 VALUES (
         'a132224f-0bc7-4aad-bdb5-eb76c38b8d47',
-        'Orhanpaşa Metrosu Açılıyor',
-        'Orhanpaşa Metrosu Açılıyor hakkında kısa bilgilendirme.',
-        '2026-01-29',
+        'Kış Dönemi Gıda ve Kıyafet Destekleri Tamamlandı',
+        'kis-donemi-destekleri-tamamlandi',
+        'Çukurca genelinde ihtiyaç sahibi ailelerimize yönelik kış yardımlarımızı başarıyla ulaştırdık.',
+        '<p>Derneğimiz, kış aylarının zorlu şartlarında Çukurca genelindeki 250 aileye gıda kolisi, sıcak kıyafet ve yakacak yardımlarını ulaştırdı. Gönüllülerimizin özverili çalışmalarıyla hazırlanan paketler, ihtiyaç sahiplerine kapı kapı teslim edildi.</p>',
         '/uploads/1769971718207-Gemini_Generated_Image_6ayct6ayct6ayct6.png',
         '',
+        '{"date": "2026-01-20"}',
         1,
-        '2026-01-29 18:18:29',
-        '2026-02-01 18:48:38'
+        0
     ),
     (
         '6f02cf4e-1481-4ac5-a0c9-5da739028482',
-        'Dijital Belediye Uygulaması Yayında',
-        'Dijital Belediye Uygulaması Yayında hakkında kısa bilgilendirme.',
-        '2026-01-29',
+        'Gönüllü Eğitim Seminerleri Başvuruları Açıldı',
+        'gonullu-egitim-seminerleri',
+        'Yeni dönem saha çalışmalarımızda yer alacak gönüllülerimiz için eğitim programımız başlıyor.',
+        '<p>Toplumsal fayda üretmek ve saha operasyonlarimizi daha etkin kilmak amaciyla düzenlediğimiz Gönüllü Eğitim Seminerleri başliyor. Eğitime katilan tüm gönüllülerimize sertifika verilecektir.</p>',
         '/uploads/1769971739278-Gemini_Generated_Image_vl886svl886svl88.png',
         '',
+        '{"date": "2026-02-05"}',
         1,
-        '2026-01-29 18:18:29',
-        '2026-02-01 18:48:59'
+        1
     ),
     (
         '3a12d805-9e2e-45bd-9fd0-5d862cc5e64f',
-        'Orhanpaşa Yaz Spor Okulları Başladı',
-        'Orhanpaşa Yaz Spor Okulları Başladı hakkında kısa bilgilendirme.',
-        '2026-01-29',
-        'https://placehold.co/600x400?text=Haber+Gorseli',
+        'Çukurca Doğa ve Çevre Koruma Hareketi',
+        'doga-ve-cevre-koruma-hareketi',
+        'Çevre bilincini artırmak amacıyla gençlerimizle fidan dikimi ve çevre temizliği gerçekleştirdik.',
+        '<p>Gelecek nesillere daha yeşil bir Çukurca birakmak için düzenlediğimiz çevre hareketi kapsaminda 500 fidanı toprakla buluşturduk. Etkinliğe katilan tüm çevre dostu gönüllülerimize teşekkür ederiz.</p>',
+        'https://placehold.co/600x400?text=Cevre+Hareketi',
         '',
+        '{"date": "2026-02-15"}',
         1,
-        '2026-01-29 18:18:29',
-        '2026-01-29 18:18:29'
+        2
     ),
     (
         'e1e1700c-7e6b-4cdc-9079-2abe1184a82f',
-        'Akıllı Atık Toplama Sistemi Devrede',
-        'Akıllı Atık Toplama Sistemi Devrede hakkında kısa bilgilendirme.',
-        '2026-01-29',
-        'https://placehold.co/600x400?text=Haber+Gorseli',
+        'Girişimci Kadınlar Kalkınma Atölyesi Kuruldu',
+        'girisimci-kadinlar-kalkinma-atolyesi',
+        'Yerel üretimi desteklemek ve kadın istihdamını artırmak amacıyla el sanatları ve gıda atölyemizi açtık.',
+        '<p>Çukurca derneğimizin koordinasyonunda kurulan atölye ile kadinlarimizin el emeği ürünleri e-ticaret ve yerel pazarlarla buluşuyor. Üreten Çukurca için desteklerinizi bekliyoruz.</p>',
+        'https://placehold.co/600x400?text=Kadin+Atolyesi',
         '',
+        '{"date": "2026-02-28"}',
         1,
-        '2026-01-29 18:18:29',
-        '2026-01-29 18:18:29'
-    ),
-    (
-        '87ec2cb5-67ed-4b20-8288-957500d414c4',
-        'Kültür ve Sanat Günleri Başlıyor',
-        'Kültür ve Sanat Günleri Başlıyor hakkında kısa bilgilendirme.',
-        '2026-01-29',
-        'https://placehold.co/600x400?text=Haber+Gorseli',
-        '',
-        1,
-        '2026-01-29 18:18:29',
-        '2026-01-29 18:18:29'
-    ),
-    (
-        'f9169bdf-ab2d-4687-9923-341a90067143',
-        'Yeni Nesil Kütüphane Hizmete Girdi',
-        'Yeni Nesil Kütüphane Hizmete Girdi hakkında kısa bilgilendirme.',
-        '2026-01-29',
-        'https://placehold.co/600x400?text=Haber+Gorseli',
-        '',
-        1,
-        '2026-01-29 18:18:29',
-        '2026-01-29 18:18:29'
+        3
     );
 
--- Etkinlikler
+-- Etkinlikler (Events)
 INSERT INTO
     events (
         id,
         title,
-        summary,
-        date,
+        slug,
+        short_description,
+        content,
         image,
         link,
-        published,
-        created_at,
-        updated_at
+        dynamic_properties,
+        is_active,
+        sort_order
     )
 VALUES (
         '7c5a17cc-1da0-4976-bd3a-5e9a81b4463c',
-        'PİŞİRİCİLER | ÇOCUK SİNEMA',
-        '',
-        '',
+        'Çocuklar İçin Çevre ve Eğlence Şenliği',
+        'cocuklar-icin-cevre-senligi',
+        'Eğlenceli oyunlar, atölyeler ve hediyelerle çocuklarımızla buluşuyoruz.',
+        '<p>Çocuklarimizin çevre bilincini eğlenerek kazanmalari için tiyatro gösterileri ve interaktif atölyeler düzenliyoruz. Katilim ücretsizdir.</p>',
         '/uploads/1769971759629-Gemini_Generated_Image_i0i831i0i831i0i8.png',
-        'pisiriciler-cocuk-sinema-5975',
+        'cocuklar-icin-cevre-senligi',
+        '{"eventDate": "20 Haziran 2026", "location": "Dernek Gençlik Merkezi Salonu"}',
         1,
-        '2026-01-25 12:32:09',
-        '2026-02-01 18:49:19'
+        0
     ),
     (
         '38643107-ed47-4a94-86ab-786330c5605e',
-        'GULİVER\'İN GEZİLERİ | ÇOCUK TİYATRO',
-        '',
-        '26 Ocak 2026 Pazartesi',
+        'Sürdürülebilir Tarım ve Hayvancılık Semineri',
+        'surdurulebilir-tarim-semineri',
+        'Yerel çiftçilerimizi desteklemek amacıyla uzman akademisyenlerin katılımıyla eğitim düzenliyoruz.',
+        '<p>Çukurca bölgesindeki tarimsal verimliliği artirmak ve modern hayvancilik yöntemlerini tanitmak üzere gerçekleştireceğimiz seminere tüm bölge halkimiz davetlidir.</p>',
         'images/crop_is_7964.jpg',
-        'guliver-in-gezileri-cocuk-tiyatro',
+        'surdurulebilir-tarim-semineri',
+        '{"eventDate": "28 Haziran 2026", "location": "Çukurca Kültür Evi"}',
         1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '86d47de6-9ed0-46e5-92d6-12a4a567700d',
-        'DEDEKTİF İZ PEŞİNDE | ÇOCUK TİYATRO',
-        '',
-        '28 Ocak 2026 Çarşamba',
-        'images/crop_is_9884.jpg',
-        'dedektif-iz-pesinde-cocuk-tiyatro-5977',
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '5a425c23-1008-47e2-8957-3f25e3fb2a28',
-        'TATLI DÜŞLER | ÇOCUK TİYATRO',
-        '',
-        '31 Ocak 2026 Cumartesi',
-        'images/crop_is_9346.jpg',
-        'tatli-dusler-cocuk-tiyatro-5978',
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
+        1
     );
 
--- Duyurular
+-- Duyurular (Announcements)
 INSERT INTO
     announcements (
         id,
         title,
-        summary,
-        date,
+        slug,
+        short_description,
+        content,
+        image,
         link,
-        published,
-        created_at,
-        updated_at
+        dynamic_properties,
+        is_active,
+        sort_order
     )
 VALUES (
         '88625f73-ee12-41fb-8eec-d6c29e291da8',
-        'Su Kesintisi Hakkında',
-        NULL,
-        '2026-01-29',
+        'Kış Yardım Kampanyası Bağış Başvuruları',
+        'kis-yardimi-bagis-basvurulari',
+        'İhtiyaç sahibi aileler için kış yardım başvuruları ve bağış kabulleri başlamıştır.',
+        '<p>Kiş dönemi boyunca sürecek gida, giysi ve yakacak yardimlari için hem ihtiyaç sahiplerinin başvurularini hem de bağişçilarimizin katkilarini kabul etmeye başladik.</p>',
         '',
+        '',
+        '{"date": "2026-06-10"}',
         1,
-        '2026-01-29 18:18:29',
-        '2026-01-29 18:18:29'
+        0
     ),
     (
         '1bbb4f90-423b-4b75-9e5a-64f5b51210a8',
-        'Vergi Ödemeleri Hatırlatması',
-        NULL,
-        '2026-01-29',
+        'Dernek Yönetim Kurulu Toplantısı Kararları',
+        'dernek-yonetim-kurulu-kararlari',
+        'Haziran ayı dernek yönetim kurulu kararları şeffaflık ilkesi gereği yayınlanmıştır.',
+        '<p>Derneğimizin haziran ayi olağan yönetim kurulu toplantisinda alinan bütçe harcamalari, proje onaylari ve yeni dönem hedeflerini içeren kararlara duyuru detayindan ulaşabilirsiniz.</p>',
         '',
-        1,
-        '2026-01-29 18:18:29',
-        '2026-01-29 18:18:29'
-    ),
-    (
-        'f155d782-2b67-4c2a-b029-fe7b638375bf',
-        'Park Bakım Çalışmaları Duyurusu',
-        NULL,
-        '2026-01-29',
         '',
+        '{"date": "2026-06-12"}',
         1,
-        '2026-01-29 18:18:29',
-        '2026-01-29 18:18:29'
+        1
     );
 
--- Belgeler
+-- Belgeler (Documents)
 INSERT INTO
     documents (
         id,
         title,
+        slug,
+        short_description,
+        content,
+        image,
         link,
-        date,
-        published,
-        created_at,
-        updated_at
+        dynamic_properties,
+        is_active,
+        sort_order
     )
 VALUES (
         '6a1848e5-f82b-492f-8004-01c486872f3f',
-        'Bayrampaşa Afet Toplanma Alanları',
-        'bayrampasa-afet-toplanma-alanlari-5750',
-        '28/04/2025',
+        'Dernek Tüzüğü ve Yönetmelik',
+        'dernek-tuzugu-ve-yonetmelik',
+        'Derneğimizin kuruluş amacı, çalışma ilkeleri ve yasal tüzüğü.',
+        '<p>Çukurca Sivil Toplum Destek Derneği resmi tüzük belgesidir. Şeffaf ve hesap verebilir yönetim modelimizin detaylarini içerir.</p>',
+        '',
+        '/uploads/dernek-tuzugu.pdf',
+        '{"date": "2026-01-01", "fileSize": "1.2 MB", "fileType": "pdf"}',
         1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
+        0
     ),
     (
         '1daae1cc-ebc0-453b-8958-344bb10d176e',
-        'Atık Toplama Alanları (PDF)',
-        'https://bayrampasa.bel.tr/isDosyalar/2022/12/geri-donusum-atik-noktalari4032.pdf',
-        '16/12/2022',
+        '2025 Yılı Faaliyet ve Denetim Raporu',
+        '2025-faaliyet-raporu',
+        '2025 yılı boyunca gerçekleştirdiğimiz tüm projeler, toplanan bağışlar ve harcama detayları.',
+        '<p>Şeffaflik vizyonumuz gereği, 2025 mali yilina ait tüm gelir-gider tablolarini ve denetim kurulu raporlarini içeren resmi belgedir.</p>',
+        '',
+        '/uploads/2025-faaliyet-raporu.pdf',
+        '{"date": "2026-02-15", "fileSize": "3.8 MB", "fileType": "pdf"}',
         1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '4ede7613-e889-412c-b308-2d2ace25d2f0',
-        'Nikah Randevu İptal (Docx)',
-        'https://www.bayrampasa.bel.tr/isDosyalar/2022/02/08/is_4289.docx',
-        '16/12/2022',
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '0307d81b-a37b-48e9-8653-9c437e818dde',
-        'Nikah Randevu Değiştirme (Docx)',
-        'https://bayrampasa.bel.tr/isDosyalar/2022/02/08/is_6273.docx',
-        '16/12/2022',
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'fd32d7af-9692-4164-bf73-78e4b09e1557',
-        'Gezi Muvafakatname (PDF)',
-        'https://bayrampasa.bel.tr/belgeler/uploads/gezi-muvafakatname.pdf',
-        '16/12/2022',
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
+        1
     );
 
--- Bannerlar
+-- Bannerlar (Banners)
 INSERT INTO
     banners (
         id,
         title,
+        slug,
+        short_description,
+        content,
         image,
         link,
-        summary,
-        sort_order,
-        published,
-        created_at,
-        updated_at
+        dynamic_properties,
+        is_active,
+        sort_order
     )
 VALUES (
         'e3156a2e-2e58-4381-bf6e-4e6670b13c03',
-        '02.02',
-        'images/02-0287874.jpg',
+        'Geleceği Birlikte İnşa Ediyoruz',
+        'gelecegi-birlikte-insa-ediyoruz',
+        'Çukurca halkının refahı, eğitimi ve yerel kalkınması için el ele verdik.',
         '',
+        '/images/02-0287874.jpg',
         '',
-        0,
+        '{}',
         1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
+        0
     ),
     (
         '02908367-444f-485e-8de7-c2c62583e4fa',
-        '30.01',
-        'images/30-0187541.jpg',
+        'Bir Çocuğun Eğitimi, Bir Dünyanın Değişimi',
+        'bir-cocugun-egitimi',
+        'Eğitimde fırsat eşitliği sağlamak amacıyla burs kampanyamıza destek olun.',
         '',
+        '/images/30-0187541.jpg',
         '',
+        '{}',
         1,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '757da318-bf77-4093-b162-1665a5017a72',
-        '31.01',
-        'images/31-0187610.jpg',
-        '',
-        '',
-        2,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'da23d335-f5f4-4ff6-994d-a63dc758af12',
-        '31.12',
-        'images/31-1283794.jpg',
-        '',
-        '',
-        3,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '0736bfa2-6cfd-4d7f-9996-740aa6a15650',
-        '31.12',
-        'images/31-1286225.jpg',
-        'https://www.bayrampasa.bel.tr/bayrampasa-belediyesi-yari-olimpik-yuzme-havuzu-5042',
-        '',
-        4,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '90454d97-e88c-40d8-ad3c-7cba39f4a9be',
-        '31.12',
-        'images/31-128381.jpg',
-        'https://bayrampasa.bel.tr/yuvamiz-bayrampasa-5530',
-        '',
-        5,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'de2993df-0ce3-4105-bdfa-0dca2c98c9c7',
-        '31.12',
-        'images/31-1283987.jpg',
-        'https://bayrampasakariyer.com',
-        '',
-        6,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
+        1
     );
 
--- Hızlı İşlemler (fast_links)
+-- Hızlı Bağlantılar (QuickLinks)
 INSERT INTO
-    fast_links (
+    quick_links (
         id,
         title,
-        link,
+        slug,
+        short_description,
+        content,
         image,
-        sort_order,
-        published,
-        created_at,
-        updated_at
+        link,
+        dynamic_properties,
+        is_active,
+        sort_order
     )
 VALUES (
         'ed91b24e-690a-44e3-bec6-d9be12db268a',
-        'T.C No ile Ödeme',
-        'https://ebelediye.bayrampasa.bel.tr',
+        'Destek Ol / Bağış Yap',
+        'destek-ol-bagis-yap',
+        'Güvenli ödeme altyapımız ile derneğimize bağış yaparak katkıda bulunun.',
+        '',
         'images/online-odeme42.png',
-        0,
+        '/destek',
+        '{}',
         1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'a9250882-7f52-4bcf-9cc2-401683255101',
-        'Afet ve Acil Durum Toplanma Alanı Sorgulama',
-        'https://www.turkiye.gov.tr/afet-ve-acil-durum-yonetimi-acil-toplanma-alani-sorgulama',
-        'images/afet-ve-acil-durum-toplanma-alani-sorgulama77182.png',
-        1,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
+        0
     ),
     (
         '9c3cb0b1-4d0e-4f67-b9ce-08ca3a4c3943',
-        'Fotoğraf Galeri',
-        'https://galeri.bayrampasa.bel.tr',
+        'Gönüllü Ol',
+        'gonullu-ol',
+        'Projelerimizde aktif görev alarak Çukurca için fark yaratın.',
+        '',
         'images/fotograf-galeri61051.png',
-        2,
+        '/sayfa/gonulluluk',
+        '{}',
         1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
+        1
     ),
     (
         'd344bb1e-0c55-4b78-9760-da810a567275',
-        'Çözüm Merkezi',
-        'https://cozummerkezi.bayrampasa.bel.tr/',
+        'Destek Masası',
+        'destek-masasi',
+        'Her türlü yardım talebi, öneri ve işbirlikleri için mesaj gönderin.',
+        '',
         'images/istek-ve-sikayet598.png',
-        3,
+        '/iletisim',
+        '{}',
         1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '8c3ec978-6d50-451f-8fbc-ddf1fa74eee5',
-        'Bayrampaşa Kent Konseyi',
-        'https://bayrampasa.bel.tr/bayrampasa-kent-konseyi-5702',
-        'images/bayrampasa-kent-konseyi75286.png',
-        4,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'b1b2ba28-0e52-42e1-b047-4b1d6e1ff31e',
-        'E-Veteriner',
-        'https://www.bayrampasa.bel.tr/e-veteriner',
-        'images/e-veteriner66357.png',
-        5,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'f94a6be4-47fd-496a-9e31-b2c963216f04',
-        'İmar Durumu Sorgulama',
-        'https://keos.bayrampasa.bel.tr:4443/imardurumu/',
-        'images/hizli-islemler128.png',
-        6,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '6537e975-9dde-48c0-a058-d76a59014373',
-        'Dijital İmar Yönetim Sistemi',
-        'https://imar.bayrampasa.bel.tr:8095/YapiBelgeleriWeb/Kullanici',
-        'images/eksper-dosya-inceleme-basvurusu968.png',
-        7,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'c0a374b4-3249-4103-a3bf-2da72ee5d39d',
-        'Kent Bilgi Sistemi',
-        'https://keos.bayrampasa.bel.tr:4443/keos/',
-        'images/cografi-bilgi-sistemi9881.png',
-        8,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '81bacc7d-4615-4c92-bd44-0861a629da6c',
-        'Ulusal Kent Rehberi',
-        'https://bulutkbs.gov.tr/Rehber/#/app',
-        'images/ulusal-kent-rehberi59517.png',
-        9,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'a1725336-a290-4b07-bb1c-0c93de2edeed',
-        'Ulusal Kent Rehberi (Belediye)',
-        'https://bulutkbs.gov.tr/Rehber/#/app?58033662',
-        'images/ulusal-kent-rehberi58499.png',
-        10,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '3e1b16ff-8e6e-44e1-9499-3c114a2c5f8a',
-        'Adres Numara Sorgulama',
-        'https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu',
-        'images/adres-numara-sorgulama17868.png',
-        11,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '0fbc34f7-6b37-4392-8ed8-957a5f816e68',
-        'Evlendirme İşlemleri',
-        'https://bayrampasa.bel.tr/evlendirme-islemleri',
-        'images/nikah-islemleri1426.png',
-        12,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '6a3564ca-eec0-47b3-8ba1-b43a9654459e',
-        'Hizmet Merkezleri',
-        'hizmet-merkezleri',
-        'images/hizmet-merkezleri3506.png',
-        13,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '3535583d-7a5a-4f37-a4ad-f1716b4ebfde',
-        'Belge Arşivi',
-        'https://bayrampasa.bel.tr/belgeler/',
-        'images/beyan-girisi1390.png',
-        14,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        '9990a0d4-1e8c-4b94-8148-7573aa92bae5',
-        'Bülten',
-        'https://bit.ly/belediyebulten',
-        'images/bulten-abone51311.png',
-        15,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
-    ),
-    (
-        'ed32fc67-3607-45e6-8137-aac8c7b1e73b',
-        'Banka Hesap Numarası',
-        'https://bayrampasa.bel.tr/banka-hesap-numarasi-4054',
-        'images/banka-hesap-numaralari1775.png',
-        16,
-        1,
-        '2026-01-25 12:32:09',
-        '2026-01-25 12:32:09'
+        2
     );
 
--- Sayfalar
+-- Sayfalar (Pages)
 INSERT INTO
     pages (
         id,
-        slug,
         title,
-        summary,
-        body,
+        slug,
+        short_description,
+        content,
         image,
-        published,
-        created_at,
-        updated_at
+        link,
+        dynamic_properties,
+        is_active,
+        sort_order
     )
 VALUES (
-        'pg-hizmet-merkezleri',
-        'hizmet-merkezleri',
-        'Hizmet Merkezleri',
-        'asdasd',
-        'asasdasdasd',
+        'pg-hakkimizda',
+        'Hakkımızda',
+        'hakkimizda',
+        'Derneğimizin kuruluş hikayesi, misyonu ve vizyonu.',
+        '<h2>Biz Kimiz?</h2><p>Çukurca Sivil Toplum Destek Derneği, Çukurca bölgesindeki sosyal yardımlaşmayı artırmak, yerel kalkınmayı desteklemek ve eğitimde fırsat eşitliği sağlamak amacıyla kurulmuş kar amacı gütmeyen bir sivil toplum kuruluşudur.</p><h2>Misyonumuz</h2><p>Toplumsal refahı artıracak projeler üretmek, şeffaf ve hesap verebilir bir yardımlaşma köprüsü kurmak.</p><h2>Vizyonumuz</h2><p>Çukurca’da her bireyin eşit fırsatlara sahip olduğu, dayanışmanın en üst düzeyde yaşandığı yeşil ve müreffeh bir gelecek.</p>',
         '/uploads/1769971808949-Gemini_Generated_Image_17bsaq17bsaq17bs.png',
+        '',
+        '{}',
         1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 18:50:08'
+        0
     ),
     (
-        'pg-baskan',
-        'baskan',
-        'Belediye Başkan V.',
+        'pg-yonetim-kurulu',
+        'Yönetim Kurulu',
+        'yonetim-kurulu',
+        'Derneğimizin yönetim ve denetim organlarında görev alan değerli üyelerimiz.',
+        '<h2>Yönetim Kurulu Başkanımız</h2><p>Ahmet Yılmaz - Yönetim Kurulu Başkanı</p><h2>Yönetim Kurulu Üyeleri</h2><ul><li>Zeynep Kaya - Genel Sekreter</li><li>Mehmet Demir - Muhasip Üye</li><li>Canan Öztürk - Proje Koordinatörü</li><li>Ali Şahin - Gönüllü İlişkileri Sorumlusu</li></ul>',
         '',
         '',
-        '',
+        '{}',
         1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
+        1
     ),
     (
-        'pg-baskan-yardimcilari',
-        'baskan-yardimcilari',
-        'Başkan Yardımcıları',
+        'pg-gonulluluk',
+        'Gönüllülük İlkeleri',
+        'gonulluluk',
+        'Gönüllü çalışmalarımızın temel kuralları ve katılım süreci.',
+        '<h2>Gönüllü Olun, Fark Yaratın</h2><p>Çukurca Sivil Toplum Destek Derneği olarak, tüm çalışmalarımızı gönüllülerimizin desteği ve enerjisiyle yürütüyoruz. Gönüllü olmak için hiçbir özel tecrübeye ihtiyacınız yok, toplumsal fayda üretme arzunuz olması yeterlidir.</p><h2>Çalışma Alanlarımız</h2><ul><li>Sosyal Yardım Dağıtımları</li><li>Çocuklar İçin Eğitim Desteği</li><li>Doğa ve Çevre Kampanyaları</li><li>Sosyal Sorumluluk Atölyeleri</li></ul>',
         '',
         '',
-        '',
+        '{}',
         1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
+        2
     ),
     (
-        'pg-koordinatorler',
-        'koordinatorler',
-        'Koordinatörler',
+        'pg-dernek-tuzugu',
+        'Dernek Tüzüğü',
+        'dernek-tuzugu',
+        'Yasal mevzuat ve tüzük maddelerimiz.',
+        '<h2>Kuruluş ve Amaç</h2><p>Dernek, Çukurca ilçesi ve çevre köylerinde insani yardım, kültürel gelişim, eğitim destekleri ve ekolojik dengenin korunması amacıyla kurulmuştur.</p>',
         '',
         '',
-        '',
+        '{}',
         1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-meclis',
-        'meclis',
-        'Belediye Meclisi',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-mudurlukler',
-        'mudurlukler',
-        'Müdürlükler',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-encumen',
-        'encumen',
-        'Belediye Encümeni',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-organizasyon-semasi',
-        'organizasyon-semasi',
-        'Organizasyon Şeması',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-denetim',
-        'denetim',
-        'İç Denetim',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-kent-konseyi',
-        'kent-konseyi',
-        'Bayrampaşa Kent Konseyi',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-stratejik',
-        'stratejik',
-        'Stratejik Plan ve Raporlar',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-kurumsal-kimlik',
-        'kurumsal-kimlik',
-        'Kurumsal Kimlik',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-banka-hesap-numarasi',
-        'banka-hesap-numarasi',
-        'Banka Hesap Numarası',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-kamuhizmet-standarti',
-        'kamuhizmet-standarti',
-        'Kamu Hizmeti Standartı',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-etik-ilkeler',
-        'etik-ilkeler',
-        'Etik İlkeler',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
-    ),
-    (
-        'pg-basvurular',
-        'basvurular',
-        'Başvuru İşlemleri',
-        '',
-        '',
-        '',
-        1,
-        '2026-02-01 00:00:00',
-        '2026-02-01 00:00:00'
+        3
     );
 
--- Settings
+-- Projeler (Projects)
+INSERT INTO
+    projects (
+        id,
+        title,
+        slug,
+        short_description,
+        content,
+        image,
+        link,
+        dynamic_properties,
+        is_active,
+        sort_order
+    )
+VALUES (
+        'proj-egitim-bursu',
+        'Eğitimde Fırsat Eşitliği Bursu',
+        'egitimde-firsat-esitligi',
+        'Çukurcalı başarılı ve ihtiyaç sahibi öğrencilerimize kırtasiye ve aylık eğitim bursu sağlıyoruz.',
+        '<p>Geleceğimizin teminatı olan çocuklarımızın eğitim hayatlarını kesintisiz sürdürebilmeleri için burs ve eğitim ekipmanı sağlıyoruz. Bu kampanya ile öğrencilerin okul ihtiyaçları karşılanmaktadır.</p>',
+        'https://placehold.co/600x400?text=Egitim+Projesi',
+        '',
+        '{"targetAmount": 250000, "raisedAmount": 165000, "progressPercent": 66}',
+        1,
+        0
+    ),
+    (
+        'proj-temiz-su',
+        'Temiz Su ve Altyapı Desteği',
+        'temiz-su-altyapi-destegi',
+        'Bölgemizdeki su kaynaklarının korunması ve temiz su erişiminin iyileştirilmesi projesi.',
+        '<p>Temiz suya erişim en temel insan hakkıdır. Çukurca derneğimiz öncülüğünde yerel su hatlarının yenilenmesi ve köylerimizin su analizlerinin yapılmasını hedefliyoruz.</p>',
+        'https://placehold.co/600x400?text=Su+Altyapi+Projesi',
+        '',
+        '{"targetAmount": 500000, "raisedAmount": 200000, "progressPercent": 40}',
+        1,
+        1
+    ),
+    (
+        'proj-kirsal-kalkinma',
+        'Kırsal Kalkınma ve Kadın Emeği',
+        'kirsal-kalkinma-kadin-emegi',
+        'Kadınlarımızın yöresel tarım ve el sanatları üretimlerini ekonomik kazanca dönüştürme projesi.',
+        '<p>Kırsal bölgelerde yaşayan kadınlarımızın ürettikleri yöresel Çukurca ürünlerinin markalaşması, paketlenmesi ve satışı için kurulan atölyenin ekipman ve pazarlama bütçesi.</p>',
+        'https://placehold.co/600x400?text=Kadin+Emegi+Projesi',
+        '',
+        '{"targetAmount": 150000, "raisedAmount": 135000, "progressPercent": 90}',
+        1,
+        2
+    );
+
+-- Site Ayarları (Settings)
 INSERT INTO
     settings (setting_key, setting_value)
-VALUES ('contact', '{}'),
-    ('social', '{}'),
-    ('analytics', '{}');
+VALUES (
+        'general_site_name',
+        '"Çukurca Sivil Toplum Destek Derneği"'
+    ),
+    (
+        'general_site_description',
+        '"Çukurca\'da eğitim, çevre ve sosyal dayanışma projeleri üreten şeffaf sivil toplum kuruluşu."'
+    ),
+    (
+        'general_logo',
+        '"/images/logo-kare.png"'
+    ),
+    (
+        'general_favicon',
+        '"/images/favicon.ico"'
+    ),
+    (
+        'contact_address',
+        '"Merkez Mahallesi Cumhuriyet Caddesi No:45, Çukurca/Hakkari"'
+    ),
+    (
+        'contact_phone',
+        '"0438 511 20 14"'
+    ),
+    (
+        'contact_email',
+        '"iletisim@cukurcastk.org.tr"'
+    ),
+    (
+        'contact_map_embed',
+        '""'
+    ),
+    (
+        'seo_meta_title',
+        '"Çukurca Sivil Toplum Destek Derneği"'
+    ),
+    (
+        'seo_meta_description',
+        '"Eğitim, kırsal kalkınma ve sosyal yardımlaşma projeleri"'
+    ),
+    (
+        'seo_meta_keywords',
+        '"dernek, çukurca, sivil toplum, vakıf, bağış, yardım, gönüllü"'
+    ),
+    (
+        'seo_og_image',
+        '""'
+    ),
+    (
+        'social',
+        '{"facebook": "https://facebook.com/cukurcastk", "twitter": "https://twitter.com/cukurcastk", "instagram": "https://instagram.com/cukurcastk", "youtube": "https://youtube.com/cukurcastk"}'
+    ),
+    (
+        'navbar_menu',
+        '[{"title":"Anasayfa","url":"/"},{"title":"Kurumsal","url":"/sayfa/hakkimizda","children":[{"title":"Hakkımızda","url":"/sayfa/hakkimizda"},{"title":"Yönetim Kurulu","url":"/sayfa/yonetim-kurulu"},{"title":"Dernek Tüzüğü","url":"/sayfa/dernek-tuzugu"},{"title":"Gönüllülük","url":"/sayfa/gonulluluk"}]},{"title":"Haberler","url":"/haberler"},{"title":"Duyurular","url":"/duyurular"},{"title":"Etkinlikler","url":"/etkinlikler"},{"title":"Projeler","url":"/projeler"},{"title":"Destek Talebi","url":"/iletisim"}]'
+    ),
+    (
+        'home_hero_title',
+        '"Çukurca İçin Sevgi ve Dayanışma Köprüsü"'
+    ),
+    (
+        'home_hero_subtitle',
+        '"Çukurca Sivil Toplum Destek Derneği olarak, eğitim, kırsal kalkınma ve toplumsal dayanışma alanlarında sürdürülebilir projeler üretiyor, geleceği hep birlikte inşa ediyoruz."'
+    ),
+    (
+        'home_stats',
+        '[{"label": "Desteklenen Aile", "value": "1,450+", "icon": "heart"}, {"label": "Aktif Gönüllü", "value": "480+", "icon": "users"}, {"label": "Aktif Proje", "value": "18+", "icon": "globe"}, {"label": "Ulaştırılan Yardım", "value": "5,200+", "icon": "hands"}]'
+    );
