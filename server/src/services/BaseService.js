@@ -34,6 +34,14 @@ class BaseService {
         return record;
     }
 
+    async getBySlug(slug) {
+        const record = await this.repo.findBySlug(slug);
+        if (!record) {
+            throw new AppError('Kayıt bulunamadı', 404, 'NOT_FOUND');
+        }
+        return record;
+    }
+
     /** Benzersiz slug üretir */
     async generateUniqueSlug(title, excludeId = null) {
         const baseSlug = slugify(title);

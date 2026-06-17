@@ -8,22 +8,25 @@ interface AnnouncementItemProps {
 }
 
 export default function AnnouncementItem({ item }: AnnouncementItemProps) {
+    const title = item.title;
+    const summary = item.summary || '';
+
     return (
-        <li className="border-b border-slate-100 last:border-0">
+        <li className="border-b border-slate-100 dark:border-slate-800/60 last:border-0">
             <Link
-                to={`/duyurular/${item.id}`}
-                className="block py-4 px-2 hover:bg-slate-50/80 transition-all duration-200 rounded-2xl group"
-                aria-label={`Duyuru: ${item.title}`}
+                to={`/sayfa/${item.slug || ''}`}
+                className="block py-4 px-2 hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-all duration-200 rounded-2xl group"
+                aria-label={`Duyuru: ${title}`}
             >
                 <div className="flex flex-col gap-1.5">
-                    <p className="text-sm font-bold text-slate-800 group-hover:text-accent transition-colors leading-snug">
-                        {item.title}
+                    <p className="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-accent dark:group-hover:text-emerald transition-colors leading-snug">
+                        {title}
                     </p>
-                    {item.summary && (
-                        <p className="text-xs text-slate-500 line-clamp-1 leading-normal font-medium">{item.summary}</p>
+                    {summary && (
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 leading-normal font-medium">{summary}</p>
                     )}
                     {item.date && (
-                        <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">
+                        <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-400 dark:text-slate-550 mt-1 uppercase tracking-wider">
                             <FaClock className="text-[9px]" />
                             <time dateTime={item.date}>{formatDate(item.date)}</time>
                         </div>

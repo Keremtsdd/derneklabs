@@ -3,12 +3,14 @@ export interface BaseRecord {
     id: string;
     title: string;
     summary: string;
+    content?: string;
     date: string;
     image: string;
     link: string;
     created_at: string;
     updated_at: string;
     published: boolean;
+    slug?: string;
     dynamicProperties?: any;
 }
 
@@ -29,6 +31,8 @@ export interface Banner extends BaseRecord { }
 export interface FastLink extends BaseRecord { }
 
 export interface Notice extends BaseRecord { }
+
+export interface PhotoGallery extends BaseRecord { }
 
 export interface Page {
     id: string;
@@ -53,4 +57,5 @@ export type CollectionName =
     | 'projects'
     | 'fast_links'
     | 'videos'
-    | 'pages';
+    | 'pages'
+    | 'photo-gallery';

@@ -1,4 +1,5 @@
 export default function AtaturkQuote() {
+
     return (
         <div className="max-w-7xl mx-auto px-4 mb-10">
             <div className="bg-gradient-to-r from-[#0C1425] via-[#111F36] to-primary text-white rounded-3xl shadow-xl shadow-slate-900/10 p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 overflow-hidden relative border border-slate-800">
@@ -8,9 +9,7 @@ export default function AtaturkQuote() {
                 <blockquote className="flex-1 text-center md:text-left relative z-10">
                     <span className="text-4xl text-slate-600 block mb-1 font-serif select-none">“</span>
                     <p className="text-slate-100 italic text-base md:text-lg leading-relaxed -mt-3 font-medium">
-                        Çalışmadan, yorulmadan ve üretmeden rahat yaşamak isteyen toplumlar, evvela
-                        haysiyetlerini sonra hürriyetlerini daha sonra da istiklal ve istikballerini
-                        kaybetmeye mahkûmdurlar.
+                        "Vatanını en çok seven, görevini en iyi yapandır."
                     </p>
                     <footer className="mt-4 flex items-center justify-center md:justify-start gap-2">
                         <div className="h-px w-6 bg-slate-500" />

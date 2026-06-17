@@ -11,6 +11,7 @@ import type {
     FastLink,
     Notice,
     Page,
+    PhotoGallery,
 } from '../types';
 
 /** Haberler */
@@ -65,6 +66,13 @@ export const useNotices = () =>
     useQuery<Notice[]>({
         queryKey: ['notices'],
         queryFn: () => fetchCollection<Notice>('notices'),
+    });
+
+/** Fotoğraf Galerisi */
+export const usePhotoGallery = () =>
+    useQuery<PhotoGallery[]>({
+        queryKey: ['photo-gallery'],
+        queryFn: () => fetchCollection<PhotoGallery>('photo-gallery'),
     });
 
 /** Slug ile tek sayfa */

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from './context/ThemeContext';
 import MainLayout from './components/layout/MainLayout';
 import Home from './pages/Home';
 import News from './pages/News';
@@ -51,44 +52,46 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          {/* Public */}
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/haberler" element={<News />} />
-            <Route path="/duyurular" element={<Announcements />} />
-            <Route path="/etkinlikler" element={<Events />} />
-            <Route path="/projeler" element={<Projects />} />
-            <Route path="/iletisim" element={<Contact />} />
-            <Route path="/destek" element={<Contact />} />
-            <Route path="/hakkinda" element={<GenericPage />} />
-            <Route path="/baskan" element={<GenericPage />} />
-            <Route path="/sayfa/:slug" element={<GenericPage />} />
-            <Route path="*" element={<Home />} />
-          </Route>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            {/* Public */}
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/haberler" element={<News />} />
+              <Route path="/duyurular" element={<Announcements />} />
+              <Route path="/etkinlikler" element={<Events />} />
+              <Route path="/projeler" element={<Projects />} />
+              <Route path="/iletisim" element={<Contact />} />
+              <Route path="/destek" element={<Contact />} />
+              <Route path="/hakkinda" element={<GenericPage />} />
+              <Route path="/baskan" element={<GenericPage />} />
+              <Route path="/sayfa/:slug" element={<GenericPage />} />
+              <Route path="*" element={<Home />} />
+            </Route>
 
-          {/* Admin */}
-          <Route path="/admin/giris" element={<Login />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="haberler" element={<NewsPage />} />
-            <Route path="duyurular" element={<AnnouncementsPage />} />
-            <Route path="etkinlikler" element={<EventsPage />} />
-            <Route path="projeler" element={<ProjectsPage />} />
-            <Route path="bannerlar" element={<BannersPage />} />
-            <Route path="hizli-islemler" element={<FastLinksPage />} />
-            <Route path="belgeler" element={<DocumentsPage />} />
-            <Route path="sayfalar" element={<PagesAdmin />} />
-            <Route path="menu" element={<MenuManager />} />
+            {/* Admin */}
+            <Route path="/admin/giris" element={<Login />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="haberler" element={<NewsPage />} />
+              <Route path="duyurular" element={<AnnouncementsPage />} />
+              <Route path="etkinlikler" element={<EventsPage />} />
+              <Route path="projeler" element={<ProjectsPage />} />
+              <Route path="bannerlar" element={<BannersPage />} />
+              <Route path="hizli-islemler" element={<FastLinksPage />} />
+              <Route path="belgeler" element={<DocumentsPage />} />
+              <Route path="sayfalar" element={<PagesAdmin />} />
+              <Route path="menu" element={<MenuManager />} />
 
-            <Route path="ayarlar" element={<Settings />} />
-            <Route path="destek-talepleri" element={<SupportTicketsPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+              <Route path="ayarlar" element={<Settings />} />
+              <Route path="destek-talepleri" element={<SupportTicketsPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }

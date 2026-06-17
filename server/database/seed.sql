@@ -476,7 +476,7 @@ VALUES (
     ),
     (
         'navbar_menu',
-        '[{"title":"Anasayfa","url":"/"},{"title":"Kurumsal","url":"/sayfa/hakkimizda","children":[{"title":"Hakkımızda","url":"/sayfa/hakkimizda"},{"title":"Yönetim Kurulu","url":"/sayfa/yonetim-kurulu"},{"title":"Dernek Tüzüğü","url":"/sayfa/dernek-tuzugu"},{"title":"Gönüllülük","url":"/sayfa/gonulluluk"}]},{"title":"Haberler","url":"/haberler"},{"title":"Duyurular","url":"/duyurular"},{"title":"Etkinlikler","url":"/etkinlikler"},{"title":"Projeler","url":"/projeler"},{"title":"Destek Talebi","url":"/iletisim"}]'
+        '[{"title":"Anasayfa","url":"/"},{"title":"Kurumsal","url":"/sayfa/hakkimizda","children":[{"title":"Hakkımızda","url":"/sayfa/hakkimizda"},{"title":"Yönetim Kurulu","url":"/sayfa/yonetim-kurulu"},{"title":"Dernek Tüzüğü","url":"/sayfa/dernek-tuzugu"},{"title":"Gönüllülük","url":"/sayfa/gonulluluk"}]},{"title":"Çalışmalarımız","url":"/projeler","children":[{"title":"Sosyal Projeler","url":"/projeler"},{"title":"Etkinlik Takvimi","url":"/etkinlikler"}]},{"title":"Güncel & Medya","url":"/haberler","children":[{"title":"Faaliyet Haberleri","url":"/haberler"},{"title":"Duyurular","url":"/duyurular"}]},{"title":"İletişim","url":"/iletisim"}]'
     ),
     (
         'home_hero_title',
@@ -489,4 +489,19 @@ VALUES (
     (
         'home_stats',
         '[{"label": "Desteklenen Aile", "value": "1,450+", "icon": "heart"}, {"label": "Aktif Gönüllü", "value": "480+", "icon": "users"}, {"label": "Aktif Proje", "value": "18+", "icon": "globe"}, {"label": "Ulaştırılan Yardım", "value": "5,200+", "icon": "hands"}]'
+    ),
+    (
+        'faq',
+        '[{"question": "Çocuklar için yaz okulu var mı?", "answer": "Evet, her yıl yaz aylarında çocuklarımız için kültürel, sportif ve eğitici yaz okulu etkinlikleri düzenlenmektedir."}, {"question": "Şifre ve giriş sorunları için ne yapmalıyım?", "answer": "Yönetim paneli veya üyelik girişlerinde sorun yaşıyorsanız, şifre sıfırlama talebinde bulunabilir ya da teknik destek ekibimizle iletişime geçebilirsiniz."}, {"question": "Bağışlar nasıl kullanılmaktadır?", "answer": "Tüm bağışlar, tüzüğümüzde yer alan amaçlar doğrultusunda eğitim bursları, gıda-kıyafet yardımları ve sürdürülebilir kalkınma projelerinde şeffaf bir şekilde kullanılmaktadır."}, {"question": "Kurban bağışı kabul ediyor musunuz?", "answer": "Evet, Kurban Bayramı döneminde vekalet yoluyla adak, akika ve vacip kurban bağışlarınızı kabul ediyor, kesimlerini gerçekleştirerek ihtiyaç sahiplerine ulaştırıyoruz."}, {"question": "Derneğe nasıl bağış yapabilirim?", "answer": "Web sitemiz üzerinden kredi kartınızla güvenli bir şekilde online bağış yapabilir veya banka hesap numaralarımıza (havale/EFT) gönderim sağlayabilirsiniz."}, {"question": "Hac ve Umre organizasyonlarınız var mı?", "answer": "Derneğimiz sosyal yardımlaşma ve dayanışma odaklı olup, Hac ve Umre organizasyonu gibi ticari veya seyahat faaliyetleri yürütmemektedir."}, {"question": "Derneğinizin faaliyet alanları nelerdir?", "answer": "Faaliyet alanlarımız arasında eğitim destekleri, kırsal kalkınma projeleri, çevre koruma etkinlikleri ve acil insani yardım çalışmaları yer almaktadır."}, {"question": "Dernekte nikah kıyılıyor mu?", "answer": "Derneğimizin nikah kıma yetkisi bulunmamaktadır. Nikah işlemleri resmi nikah memurları tarafından belediyelerde yürütülmektedir."}]'
     );
+
+-- Fotoğraf Galerisi (PhotoGallery)
+INSERT INTO
+    photo_gallery (id, title, slug, image, is_active, sort_order)
+VALUES
+    ('g1111111-1111-1111-1111-111111111111', 'Sokak Hayvanları Tedavi ve Rehabilitasyon Merkezi', 'sokak-hayvanlari-tedavi-merkezi', '/images/sokak-hayvanlari-bakim-ve-tedavi-merkezi71659.jpg', 1, 0),
+    ('g2222222-2222-2222-2222-222222222222', 'Kütüphane ve Gençlik Çalışma Alanlarımız', 'kutuphane-calisma-alanlari', '/images/kutuphanelerimiz4332.jpg', 1, 1),
+    ('g3333333-3333-3333-3333-333333333333', 'Girişimci Kadınlar Kalkınma Atölyesi Sınıfı', 'girisimci-kadinlar-atolye-sinifi', '/images/08-0186825.jpg', 1, 2),
+    ('g4444444-4444-4444-4444-444444444444', 'Saha Gönüllüleri Eğitim ve Planlama Buluşması', 'gonullu-planlama-bulusmasi', '/images/30-0187541.jpg', 1, 3),
+    ('g5555555-5555-5555-5555-555555555555', 'Zübeyde Hanım Yaşam Merkezi Sosyal Tesisler', 'zubeyde-hanim-yasam-merkezi', '/images/zubeyde-hanim-yasam-merkezi7177.jpg', 1, 4),
+    ('g6666666-6666-6666-6666-666666666666', 'Gıda ve Sıcak Yemek Dağıtım Operasyonlarımız', 'gida-ve-yemek-dagitimlari', '/images/bayrampasa-belediyesi-yemek-uretim-tesisi76658.jpg', 1, 5);
