@@ -1,12 +1,17 @@
 /**
  * Merkezi hata yakalama middleware
  */
-function errorHandler(err, _req, res, _next) {
-  console.error('[ERROR]', err.stack || err.message);
-
+function errorHandler(err, req, res, _next) {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Sunucu hatası';
   const errorCode = err.errorCode || 'INTERNAL_ERROR';
+
+  // Sadece sunucu kaynaklı 500 ve üzeri kritik hataları stack trace ile terminale yazdır.
+  // 404 gibi istemci hataları terminali kirletmesin.
+  if (statusCode >= 500) {
+    const reqInfo = req ? `${req.method} ${req.originalUrl}` : 'Unknown Request';
+    console.error(`[SERVER ERROR] [${reqInfo}]`, err.stack || err.message);
+  }
 
   res.status(statusCode).json({
     success: false,

@@ -33,6 +33,7 @@
 
   const renderBanners = (items) => {
     const bannerEl = document.querySelector('.buyuk-slider');
+    if (bannerEl) bannerEl.innerHTML = '';
     if (!bannerEl || !items?.length) return;
     bannerEl.innerHTML = items.map((item) => {
       const img = absUrl(item.image);
@@ -65,6 +66,7 @@
 
   const renderEvents = (items) => {
     const el = document.querySelector('#etkinlik-tab .video-slider');
+    if (el) el.innerHTML = '';
     if (!el || !items?.length) return;
     el.innerHTML = items.slice(0, 40).map((item) => {
       const img = absUrl(item.image);
@@ -87,6 +89,7 @@
 
   const renderVideos = (items) => {
     const el = document.querySelector('#video-tab .video-slider');
+    if (el) el.innerHTML = '';
     if (!el || !items) return;
     if (!items.length) {
       el.innerHTML = '<p>Hiç video bulunamadı.</p>';
@@ -182,6 +185,7 @@
 
   const renderProjects = (items) => {
     const el = document.querySelector('.proje-slider');
+    if (el) el.innerHTML = '';
     if (!el || !items?.length) return;
     el.innerHTML = items.slice(0, 16).map((item) => {
       const title = item.title || '';

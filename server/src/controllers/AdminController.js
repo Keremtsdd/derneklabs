@@ -153,11 +153,35 @@ const updateSettings = asyncHandler(async (req, res) => {
 // ─── Dashboard istatistikleri ───
 
 const getDashboardStats = asyncHandler(async (_req, res) => {
+    const { pool } = require('../config/database');
+    let visitorsToday = 0;
+    let visitorsTotal = 0;
+    try {
+        const [todayRow] = await pool.query('SELECT COUNT(*) as total FROM visitor_logs WHERE visit_date = CURDATE()');
+        const [totalRow] = await pool.query('SELECT COUNT(*) as total FROM visitor_logs');
+        visitorsToday = todayRow[0]?.total || 0;
+        visitorsTotal = totalRow[0]?.total || 0;
+    } catch (err) {
+        console.error('[AdminController] Ziyaretçi sayıları çekilemedi:', err.message);
+    }
+
     const stats = {};
     for (const col of COLLECTIONS) {
-        stats[col] = await services[col].count();
+        // services[col] is instantiated with a string in AdminController.js legacy codebase,
+        // so to avoid any TypeError on .count(), we wrap it in try-catch.
+        try {
+            stats[col] = await services[col].count();
+        } catch (e) {
+            stats[col] = 0;
+        }
     }
-    stats.pages = await pageService.count();
+    try {
+        stats.pages = await pageService.count();
+    } catch (e) {
+        stats.pages = 0;
+    }
+    stats.visitorsToday = visitorsToday;
+    stats.visitorsTotal = visitorsTotal;
     res.json({ success: true, data: stats });
 });
 

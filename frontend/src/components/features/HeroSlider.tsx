@@ -12,6 +12,8 @@ interface SlideItem {
     link: string;
     videoUrl?: string;
     buttonText?: string;
+    showButton?: boolean;
+    showDonateButton?: boolean;
     slug?: string;
 }
 
@@ -86,7 +88,9 @@ export default function HeroSlider() {
                     date: b.date || "16 Haziran 2026",
                     link: b.link || "/sayfa/hakkimizda",
                     videoUrl: i === 0 ? "https://assets.mixkit.co/videos/preview/mixkit-group-of-people-raising-their-hands-in-a-volunteer-event-40019-large.mp4" : undefined,
-                    buttonText: b.title ? "İncele" : "Hakkımızda",
+                    buttonText: b.dynamicProperties?.button_text || (b.title ? "İncele" : "Hakkımızda"),
+                    showButton: b.dynamicProperties?.show_button !== undefined ? (b.dynamicProperties.show_button === true || b.dynamicProperties.show_button === '1' || b.dynamicProperties.show_button === 1) : true,
+                    showDonateButton: b.dynamicProperties?.show_donate_button !== undefined ? (b.dynamicProperties.show_donate_button === true || b.dynamicProperties.show_donate_button === '1' || b.dynamicProperties.show_donate_button === 1) : true,
                     slug: b.slug
                 };
             });
@@ -99,6 +103,8 @@ export default function HeroSlider() {
                 link: `/sayfa/${p.slug || ''}`,
                 videoUrl: i === 0 ? "https://assets.mixkit.co/videos/preview/mixkit-group-of-people-raising-their-hands-in-a-volunteer-event-40019-large.mp4" : undefined,
                 buttonText: "Projeyi İncele",
+                showButton: true,
+                showDonateButton: true,
                 slug: p.slug
             }));
         }
@@ -267,20 +273,24 @@ export default function HeroSlider() {
 
                                             {/* Action Buttons */}
                                             <div className="flex flex-wrap gap-3 items-center">
-                                                <Link
-                                                    to={slide.link}
-                                                    className="px-5 py-2.5 bg-white text-slate-950 font-extrabold text-xs uppercase tracking-wider rounded-xl hover:bg-slate-100 transition-all shadow-lg cursor-pointer"
-                                                >
-                                                    {slide.buttonText || "Hakkımızda"}
-                                                </Link>
+                                                {slide.showButton !== false && (
+                                                    <Link
+                                                        to={slide.link}
+                                                        className="px-5 py-2.5 bg-white text-slate-950 font-extrabold text-xs uppercase tracking-wider rounded-xl hover:bg-slate-100 transition-all shadow-lg cursor-pointer"
+                                                    >
+                                                        {slide.buttonText || "Hakkımızda"}
+                                                    </Link>
+                                                )}
                                                 
-                                                <Link
-                                                    to="/destek"
-                                                    className="px-5 py-2.5 bg-accent text-white font-extrabold text-xs uppercase tracking-wider rounded-xl hover:bg-accent-hover transition-all shadow-lg inline-flex items-center gap-1.5 cursor-pointer"
-                                                >
-                                                    <FaHeart className="text-[10px] text-white animate-pulse" />
-                                                    BAĞIŞ YAP
-                                                </Link>
+                                                {slide.showDonateButton !== false && (
+                                                    <Link
+                                                        to="/destek"
+                                                        className="px-5 py-2.5 bg-accent text-white font-extrabold text-xs uppercase tracking-wider rounded-xl hover:bg-accent-hover transition-all shadow-lg inline-flex items-center gap-1.5 cursor-pointer"
+                                                    >
+                                                        <FaHeart className="text-[10px] text-white animate-pulse" />
+                                                        BAĞIŞ YAP
+                                                    </Link>
+                                                )}
                                             </div>
                                         </>
                                     )}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNews } from '../hooks/useCollections';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 import NewsCard from '../components/features/NewsCard';
 import SearchBar from '../components/layout/SearchBar';
 import { resolveImageUrl } from '../services/api';
@@ -8,24 +9,39 @@ import { FaClock, FaCalendarAlt } from 'react-icons/fa';
 
 export default function News() {
     const { data: news, isLoading, error } = useNews();
+    const { raw: settingsRaw } = useSiteSettings();
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState('All');
  
-    // Kategori tanımları ve eşleşen kelimeler
-    const categories = [
-        { id: 'All', label: 'Tümü' },
-        { id: 'Help', label: 'İnsani Yardım', keywords: ['destek', 'gıda', 'yardım', 'aile'] },
-        { id: 'Education', label: 'Eğitim & Gönüllülük', keywords: ['eğitim', 'seminer', 'öğrenci', 'gönüllü'] },
-        { id: 'Environment', label: 'Çevre & Doğa', keywords: ['çevre', 'doğa', 'fidan', 'yeşil'] },
-        { id: 'Business', label: 'Kadın & Girişimcilik', keywords: ['kadın', 'girişimci', 'atölye', 'üretim'] }
-    ];
+    // Parse categories from settings or fallback to defaults
+    const categories = (() => {
+        const defaults = [
+            { id: 'All', label: 'Tümü' },
+            { id: 'Help', label: 'İnsani Yardım' },
+            { id: 'Education', label: 'Eğitim & Gönüllülük' },
+            { id: 'Environment', label: 'Çevre & Doğa' },
+            { id: 'Business', label: 'Kadın & Girişimcilik' }
+        ];
+        if (!settingsRaw?.news_categories) return defaults;
+        try {
+            const parsed = typeof settingsRaw.news_categories === 'string'
+                ? JSON.parse(settingsRaw.news_categories)
+                : settingsRaw.news_categories;
+            if (Array.isArray(parsed)) {
+                return [{ id: 'All', label: 'Tümü' }, ...parsed];
+            }
+        } catch (e) {
+            console.error('Failed to parse news_categories:', e);
+        }
+        return defaults;
+    })();
 
     const handleCategoryClick = (categoryId: string) => {
         setActiveCategory(categoryId);
     };
 
     // Filtreleme fonksiyonu
-    const filteredNews = (news || []).filter((item) => {
+    const filteredNews = (news || []).filter((item: any) => {
         // Arama sorgusu
         const titleMatch = item.title?.toLowerCase().includes(searchQuery.toLowerCase());
         const descMatch = item.summary?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -35,11 +51,9 @@ export default function News() {
 
         // Kategori filtresi
         if (activeCategory === 'All') return true;
-        const cat = categories.find(c => c.id === activeCategory);
-        if (!cat || !cat.keywords) return true;
-
-        const textToSearch = `${item.title} ${item.summary}`.toLowerCase();
-        return cat.keywords.some(kw => textToSearch.includes(kw));
+        
+        const itemCategory = item.category_id || item.dynamicProperties?.category_id || item.category;
+        return String(itemCategory || '').toLowerCase() === activeCategory.toLowerCase();
     });
 
     // Öne çıkan haber (Manşet)

@@ -86,6 +86,10 @@ function mapToDto(data: any): any {
     if (data.location) dynamicProperties.location = data.location;
     if (data.fileSize) dynamicProperties.fileSize = data.fileSize;
     if (data.fileType) dynamicProperties.fileType = data.fileType;
+    if (data.button_text !== undefined) dynamicProperties.button_text = data.button_text;
+    if (data.show_button !== undefined) dynamicProperties.show_button = data.show_button;
+    if (data.show_donate_button !== undefined) dynamicProperties.show_donate_button = data.show_donate_button;
+    if (data.category_id !== undefined) dynamicProperties.category_id = data.category_id;
     if (Object.keys(dynamicProperties).length > 0) {
         dto.dynamicProperties = dynamicProperties;
     }
@@ -107,7 +111,7 @@ function mapFormDataToDto(formData: FormData): FormData {
             newForm.append('sortOrder', value);
         } else if (key === 'status') {
             newForm.append('status', value);
-        } else if (['date', 'eventDate', 'location', 'fileSize', 'fileType'].includes(key)) {
+        } else if (['date', 'eventDate', 'location', 'fileSize', 'fileType', 'button_text', 'show_button', 'show_donate_button', 'category_id'].includes(key)) {
             // Skiped: handled in dynamicProperties
         } else {
             newForm.append(key, value);
@@ -120,6 +124,10 @@ function mapFormDataToDto(formData: FormData): FormData {
     if (formData.has('location')) dynamicProperties.location = formData.get('location');
     if (formData.has('fileSize')) dynamicProperties.fileSize = formData.get('fileSize');
     if (formData.has('fileType')) dynamicProperties.fileType = formData.get('fileType');
+    if (formData.has('button_text')) dynamicProperties.button_text = formData.get('button_text');
+    if (formData.has('show_button')) dynamicProperties.show_button = formData.get('show_button');
+    if (formData.has('show_donate_button')) dynamicProperties.show_donate_button = formData.get('show_donate_button');
+    if (formData.has('category_id')) dynamicProperties.category_id = formData.get('category_id');
     if (Object.keys(dynamicProperties).length > 0) {
         newForm.append('dynamicProperties', JSON.stringify(dynamicProperties));
     }
@@ -130,6 +138,21 @@ function mapFormDataToDto(formData: FormData): FormData {
 /** Dashboard istatistikleri */
 export async function fetchDashboardStats(): Promise<DashboardStats> {
     return request<DashboardStats>('/api/v1/dashboard/stats');
+}
+
+export interface ActivityLog {
+    id: number;
+    description: string;
+    activity_type: string;
+    created_at: string;
+}
+
+export async function fetchRecentActivities(): Promise<ActivityLog[]> {
+    return request<ActivityLog[]>('/api/v1/dashboard/activities');
+}
+
+export async function syncInstagramContent(): Promise<void> {
+    return request<void>('/api/v1/sync-instagram', { method: 'POST' });
 }
 
 /** Site ayarları — tümü veya gruplu (örn. group=general) */

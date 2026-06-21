@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAdmin';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
@@ -9,30 +9,40 @@ type MenuSection = { title: string; items: MenuItem[] };
 
 const menuSections: MenuSection[] = [
     {
-        title: 'Genel',
+        title: 'Özet / Dashboard',
         items: [
-            { to: '/admin', label: 'Dashboard', icon: '📊' },
+            { to: '/admin/dashboard', label: 'Kontrol Paneli', icon: '📊' },
         ]
     },
     {
-        title: 'İçerik Yönetim Sistemi',
+        title: 'İçerik Yönetimi',
         items: [
-            { to: '/admin/haberler', label: 'Haberler', icon: '📰' },
+            { to: '/admin/hero', label: 'Hero Slider', icon: '🖼️' },
+            { to: '/admin/etkinlikler', label: 'Etkinlikler', icon: '📅' },
             { to: '/admin/duyurular', label: 'Duyurular', icon: '📢' },
-            { to: '/admin/etkinlikler', label: 'Etkinlikler', icon: '🎭' },
+            { to: '/admin/haberler', label: 'Haberler', icon: '📰' },
             { to: '/admin/projeler', label: 'Projeler', icon: '🏗️' },
-            { to: '/admin/sayfalar', label: 'Sayfalar', icon: '📃' },
-            { to: '/admin/belgeler', label: 'Belgeler', icon: '📄' },
-            { to: '/admin/bannerlar', label: 'Banner / Slider', icon: '🖼️' },
-            { to: '/admin/hizli-islemler', label: 'Hızlı Bağlantılar', icon: '⚡' },
+            { to: '/admin/basin', label: 'Basın Açıklamaları', icon: '✉️' },
         ]
     },
     {
-        title: 'Site Yönetimi',
+        title: 'Modüller & Sayfalar',
         items: [
-            { to: '/admin/menu', label: 'Menü Yönetimi', icon: '☰' },
-            { to: '/admin/ayarlar', label: 'Site Ayarları', icon: '⚙️' },
-            { to: '/admin/destek-talepleri', label: 'Destek Talepleri', icon: '📬' },
+            { to: '/admin/sayfalar', label: 'Kurumsal Sayfalar', icon: '📑' },
+            { to: '/admin/sss', label: 'Soru & Cevap (SSS)', icon: '❓' },
+            { to: '/admin/foto-galeri', label: 'Foto Galeri', icon: '📸' },
+            { to: '/admin/kategori-yonetimi', label: 'Kategori Yönetimi', icon: '🏷️' },
+        ]
+    },
+    {
+        title: 'Site Yapılandırması',
+        items: [
+            { to: '/admin/logo-baslik', label: 'Logo & Başlık', icon: '🏛️' },
+            { to: '/admin/ust-menu', label: 'Üst Menü & Sosyal', icon: '📱' },
+            { to: '/admin/arac-cubugu', label: 'Araç Çubuğu (Sekme)', icon: '💻' },
+            { to: '/admin/menu', label: 'Menü Yönetimi', icon: '🌿' },
+            { to: '/admin/iletisim-ayarlari', label: 'İletişim & Harita', icon: '📍' },
+            { to: '/admin/footer-ayarlari', label: 'Footer & Copyright', icon: '📝' },
         ]
     }
 ];
@@ -41,7 +51,22 @@ export default function AdminLayout() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const { siteName, logo } = useSiteSettings();
+    const { siteName, logo, favicon } = useSiteSettings();
+
+    // Dynamically update browser tab title and favicon in the admin panel
+    useEffect(() => {
+        if (siteName) {
+            document.title = `${siteName} - Yönetim Paneli`;
+        } else {
+            document.title = 'Yönetim Paneli';
+        }
+        if (favicon && favicon.trim() !== '') {
+            const shortcutIcon = document.querySelector('link[rel="icon"]');
+            if (shortcutIcon) {
+                shortcutIcon.setAttribute('href', favicon);
+            }
+        }
+    }, [siteName, favicon]);
 
     // State to track expanded sections. Default to all open or based on current route
     const [expandedSections, setExpandedSections] = useState<string[]>(() => {
@@ -83,24 +108,24 @@ export default function AdminLayout() {
             {/* Sidebar */}
             <aside className="w-64 bg-[#090D16] text-white flex flex-col shrink-0 font-sans border-r border-slate-900">
                 {/* Logo Area */}
-                <div className="px-6 py-6 border-b border-slate-900">
-                    <div className="flex items-center gap-3">
+                <div className="px-5 py-4 border-b border-slate-900">
+                    <div className="flex items-center gap-2.5">
                         {logo ? (
-                            <img src={logo} alt="" className="w-8 h-8 object-contain rounded-lg" />
+                            <img src={logo} alt="" className="w-7 h-7 object-contain rounded-lg" />
                         ) : (
-                            <span className="text-2xl bg-slate-800 p-1.5 rounded-xl">🏛️</span>
+                            <span className="text-xl bg-slate-800 p-1 rounded-xl">🏛️</span>
                         )}
                         <div>
-                            <h1 className="text-sm font-extrabold text-white tracking-wider uppercase font-heading truncate max-w-[140px]" title={siteName || 'Yönetim'}>
+                            <h1 className="text-xs font-extrabold text-white tracking-wider uppercase font-heading truncate max-w-[140px]" title={siteName || 'Yönetim'}>
                                 {siteName || 'Yönetim'}
                             </h1>
-                            <p className="text-[10px] font-bold text-primary-light tracking-widest uppercase mt-0.5">Yönetim Paneli</p>
+                            <p className="text-[9px] font-bold text-primary-light tracking-widest uppercase mt-0.5">Yönetim Paneli</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Sidebar Navigation */}
-                <nav className="flex-1 overflow-y-auto py-6 select-none space-y-4">
+                <nav className="flex-1 overflow-y-auto py-3 select-none space-y-2 no-scrollbar">
                     {menuSections.map((section) => {
                         const isExpanded = expandedSections.includes(section.title);
 
@@ -108,27 +133,27 @@ export default function AdminLayout() {
                             <div key={section.title} className="px-3">
                                 <button
                                     onClick={() => toggleSection(section.title)}
-                                    className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold text-slate-500 hover:text-slate-300 uppercase tracking-widest transition-colors"
+                                    className="w-full flex items-center justify-between px-3 py-1.5 text-[9px] font-bold text-slate-500 hover:text-slate-300 uppercase tracking-widest transition-colors"
                                 >
                                     <span>{section.title}</span>
                                     {isExpanded ? <FaChevronDown size={8} /> : <FaChevronRight size={8} />}
                                 </button>
 
                                 {isExpanded && (
-                                    <div className="space-y-1 mt-2 transition-all duration-200">
+                                    <div className="space-y-0.5 mt-1 transition-all duration-200">
                                         {section.items.map((item) => (
                                             <NavLink
                                                 key={item.to}
                                                 to={item.to}
                                                 end={item.to === '/admin'}
                                                 className={({ isActive }) =>
-                                                    `flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-xl transition-all duration-200 ${isActive
-                                                        ? 'bg-gradient-to-r from-primary-light to-primary text-white shadow-md shadow-primary/10'
-                                                        : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                                                    `flex items-center gap-2 px-3 py-1.5 text-xs font-semibold transition-all duration-150 rounded-lg ${isActive
+                                                        ? 'bg-slate-800 text-white border-l-2 border-primary rounded-l-none'
+                                                        : 'text-slate-400 hover:text-white hover:bg-slate-900/60'
                                                     }`
                                                 }
                                             >
-                                                <span className="text-base w-5 flex justify-center">{item.icon}</span>
+                                                <span className="text-xs w-4 flex justify-center">{item.icon}</span>
                                                 {item.label}
                                             </NavLink>
                                         ))}
@@ -140,19 +165,19 @@ export default function AdminLayout() {
                 </nav>
 
                 {/* Profile & Footer */}
-                <div className="p-4 border-t border-slate-900 bg-slate-950/40">
-                    <div className="flex items-center gap-3 bg-slate-900/40 p-3 rounded-2xl border border-slate-900">
-                        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary-light to-primary flex items-center justify-center text-sm font-bold text-white shadow-inner">
+                <div className="p-3 border-t border-slate-900 bg-slate-950/40">
+                    <div className="flex items-center gap-2.5 bg-slate-900/40 p-2.5 rounded-xl border border-slate-900">
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-primary-light to-primary flex items-center justify-center text-xs font-bold text-white shadow-inner">
                             {user?.name?.[0] || 'A'}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-white truncate">{user?.name || 'Yönetici'}</p>
-                            <p className="text-[10px] font-medium text-slate-500 truncate">{user?.email || 'admin@cukurca.bel.tr'}</p>
+                            <p className="text-[11px] font-bold text-white truncate">{user?.name || 'Yönetici'}</p>
+                            <p className="text-[9px] font-medium text-slate-500 truncate">{user?.email || 'admin@cukurca.bel.tr'}</p>
                         </div>
                     </div>
                     <button
                         onClick={handleLogout}
-                        className="mt-3 w-full py-2.5 px-4 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 font-semibold rounded-xl text-xs transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+                        className="mt-2 w-full py-1.5 px-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 font-bold rounded-lg text-[10px] transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                         Çıkış Yap
                     </button>

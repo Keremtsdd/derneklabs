@@ -88,11 +88,11 @@ export default function DataTable<T extends { id: string }>({
                             <thead>
                                 <tr className="bg-slate-50/70 border-b border-slate-100">
                                     {columns.map((col) => (
-                                        <th key={String(col.key)} className="text-left px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                        <th key={String(col.key)} className="text-left px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">
                                             {col.label}
                                         </th>
                                     ))}
-                                    <th className="text-right px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-40">
+                                    <th className="text-right px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider w-40">
                                         İşlemler
                                     </th>
                                 </tr>
@@ -101,19 +101,38 @@ export default function DataTable<T extends { id: string }>({
                                 {filteredItems.map((item) => (
                                     <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
                                         {columns.map((col) => (
-                                            <td key={String(col.key)} className="px-6 py-4 text-sm text-slate-700 whitespace-nowrap">
+                                            <td 
+                                                key={String(col.key)} 
+                                                className={`px-6 py-2.5 text-xs text-slate-700 ${
+                                                    ['title', 'summary', 'shortDescription', 'short_description', 'content', 'link'].includes(String(col.key))
+                                                        ? 'whitespace-normal break-words'
+                                                        : 'whitespace-nowrap'
+                                                }`}
+                                            >
                                                 {col.render ? (
                                                     col.render(item)
                                                 ) : col.key === 'published' ? (
                                                     (item as any)[col.key] ? (
-                                                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
                                                             Yayında
                                                         </span>
                                                     ) : (
-                                                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
                                                             Taslak
                                                         </span>
                                                     )
+                                                ) : String(col.key) === 'link' ? (
+                                                    <span className="font-mono text-slate-400 max-w-[150px] truncate block" title={String((item as any)[col.key] ?? '')}>
+                                                        {String((item as any)[col.key] ?? '') || '-'}
+                                                    </span>
+                                                ) : String(col.key) === 'summary' || String(col.key) === 'shortDescription' || String(col.key) === 'short_description' ? (
+                                                    <span className="max-w-[280px] line-clamp-2 block text-slate-500 font-medium leading-relaxed" title={String((item as any)[col.key] ?? '')}>
+                                                        {String((item as any)[col.key] ?? '')}
+                                                    </span>
+                                                ) : String(col.key) === 'title' ? (
+                                                    <span className="max-w-[200px] block font-bold text-slate-900 leading-snug">
+                                                        {String((item as any)[col.key] ?? '')}
+                                                    </span>
                                                 ) : (
                                                     <span className="font-medium text-slate-800">
                                                         {String((item as Record<string, unknown>)[col.key as string] ?? '')}
@@ -121,18 +140,18 @@ export default function DataTable<T extends { id: string }>({
                                                 )}
                                             </td>
                                         ))}
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="px-6 py-2.5 text-right">
                                             <div className="flex items-center justify-end gap-2">
                                                 <button
                                                     onClick={() => onEdit(item)}
-                                                    className="px-3.5 py-1.5 text-xs bg-blue-50 text-blue-600 font-semibold rounded-lg hover:bg-blue-100 transition-colors"
+                                                    className="px-2.5 py-1 text-xs bg-blue-50 text-blue-600 font-semibold rounded-lg hover:bg-blue-100 transition-colors"
                                                 >
                                                     Düzenle
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(item.id)}
                                                     disabled={isDeleting}
-                                                    className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors ${deleteId === item.id
+                                                    className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-colors ${deleteId === item.id
                                                             ? 'bg-red-600 text-white hover:bg-red-700'
                                                             : 'bg-red-50 text-red-600 hover:bg-red-100'
                                                         }`}

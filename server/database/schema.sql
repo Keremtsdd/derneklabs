@@ -161,6 +161,23 @@ CREATE TABLE IF NOT EXISTS quick_links (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+
+-- İlanlar / Basın (Notices / Press)
+CREATE TABLE IF NOT EXISTS notices (
+    id CHAR(36) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    short_description TEXT,
+    content LONGTEXT,
+    image VARCHAR(500),
+    link VARCHAR(500),
+    dynamic_properties JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- Destek Talepleri (Support Tickets)
 CREATE TABLE IF NOT EXISTS support_tickets (
     id CHAR(36) PRIMARY KEY,
@@ -178,4 +195,21 @@ CREATE TABLE IF NOT EXISTS settings (
     setting_key VARCHAR(100) PRIMARY KEY,
     setting_value JSON,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Ziyaretçi Logları (Visitor Logs)
+CREATE TABLE IF NOT EXISTS visitor_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ip_address VARCHAR(45) NOT NULL,
+    visit_date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_visit (ip_address, visit_date)
+);
+
+-- Aktivite Logları (Activity Logs)
+CREATE TABLE IF NOT EXISTS activity_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(255) NOT NULL,
+    activity_type VARCHAR(50) NOT NULL, -- 'login', 'settings', 'sync', 'create', 'update', 'delete'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

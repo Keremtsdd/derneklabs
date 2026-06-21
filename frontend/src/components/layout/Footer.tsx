@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function Footer() {
-    const { siteName, logo, address, email, phone, raw: settingsRaw } = useSiteSettings();
+    const { siteName, logo, address, email, phone, footerSubtitle, footerText, footerCopyright, contactWhatsapp, raw: settingsRaw } = useSiteSettings();
     const social = settingsRaw?.social as Record<string, string> | undefined;
 
     const scrollToTop = () => {
@@ -46,12 +46,12 @@ export default function Footer() {
                                     {siteName || 'SİVİL TOPLUM PORTALI'}
                                 </span>
                                 <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald block -mt-0.5">
-                                    Geleceği Birlikte İnşa Ediyoruz
+                                    {footerSubtitle}
                                 </span>
                             </div>
                         </Link>
                         <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                            Şeffaflık, hesap verebilirlik ve toplumsal fayda ilkeleriyle hareket ediyor; dünyanın her köşesindeki ihtiyaç sahiplerine umut taşıyan sürdürülebilir kalkınma modelleri geliştiriyoruz.
+                            {footerText}
                         </p>
                         
                         {/* Social Links */}
@@ -203,7 +203,7 @@ export default function Footer() {
                             <li className="flex items-center gap-2">
                                 <FaWhatsapp className="text-emerald-600 dark:text-emerald shrink-0 text-xs" />
                                 <a 
-                                    href={`https://wa.me/${phone ? phone.replace(/\s/g, '').replace('+', '') : ''}?text=Merhaba`} 
+                                    href={`https://wa.me/${contactWhatsapp ? contactWhatsapp.replace(/\s/g, '').replace('+', '') : (phone ? phone.replace(/\s/g, '').replace('+', '') : '')}?text=Merhaba`} 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
                                     className="text-slate-600 hover:text-emerald-655 dark:text-slate-400 dark:hover:text-emerald transition-colors font-semibold"
@@ -221,7 +221,7 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 mt-2">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] text-slate-500 dark:text-slate-500 font-bold">
                     <p className="text-center md:text-left">
-                        © {new Date().getFullYear()} {siteName || 'Mesleki & Dayanışma'}. Tüm Hakları Saklıdır.
+                        {footerCopyright || `© ${new Date().getFullYear()} ${siteName || 'Mesleki & Dayanışma'}. Tüm Hakları Saklıdır.`}
                     </p>
                     
                     <div className="flex flex-wrap justify-center gap-4.5">
@@ -252,7 +252,7 @@ export default function Footer() {
 
             {/* Sticky Green WhatsApp Floating Button */}
             <a
-                href={`https://wa.me/${phone ? phone.replace(/\s/g, '').replace('+', '') : ''}?text=Merhaba`}
+                href={`https://wa.me/${contactWhatsapp ? contactWhatsapp.replace(/\s/g, '').replace('+', '') : (phone ? phone.replace(/\s/g, '').replace('+', '') : '')}?text=Merhaba`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-3.5 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center group"

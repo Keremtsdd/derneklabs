@@ -1,4 +1,20 @@
 const { asyncHandler } = require('../middleware/errorHandler');
+const { logActivity } = require('../utils/activityLogger');
+
+function translateTable(tableName) {
+    const map = {
+        news: 'haber',
+        announcements: 'duyuru',
+        events: 'etkinlik',
+        projects: 'proje',
+        banners: 'banner',
+        documents: 'belge',
+        photo_gallery: 'fotoğraf',
+        quick_links: 'hızlı bağlantı',
+        notices: 'basın açıklaması'
+    };
+    return map[tableName] || tableName;
+}
 
 /**
  * Generic Controller sınıfı.
@@ -48,6 +64,12 @@ class BaseController {
 
         const entityData = this.dtoMapper.toEntity(payload);
         const record = await this.service.create(entityData);
+        
+        // Aktiviteyi logla
+        const tableName = this.service.repo?.tableName || 'icerik';
+        const title = record.title || 'Yeni Öğe';
+        logActivity(`Yeni ${translateTable(tableName)} eklendi: "${title}"`, 'create');
+
         res.status(201).json({ success: true, data: this.dtoMapper.toResponse(record) });
     });
 
@@ -61,13 +83,33 @@ class BaseController {
 
         const entityData = this.dtoMapper.toEntity(payload);
         const record = await this.service.update(id, entityData);
+
+        // Aktiviteyi logla
+        const tableName = this.service.repo?.tableName || 'icerik';
+        const title = record.title || 'Öğe';
+        logActivity(`"${title}" başlıklı ${translateTable(tableName)} güncellendi`, 'update');
+
         res.json({ success: true, data: this.dtoMapper.toResponse(record) });
     });
 
     /** DELETE /:id — Kayıt silme (Admin yetkisi gerekir) */
     delete = asyncHandler(async (req, res) => {
         const { id } = req.params;
+        
+        let title = 'Öğe';
+        const tableName = this.service.repo?.tableName || 'icerik';
+        try {
+            const record = await this.service.getById(id);
+            if (record) {
+                title = record.title || 'Öğe';
+            }
+        } catch (e) {}
+
         await this.service.delete(id);
+
+        // Aktiviteyi logla
+        logActivity(`"${title}" başlıklı ${translateTable(tableName)} silindi`, 'delete');
+
         res.json({ success: true, message: 'Kayıt başarıyla silindi' });
     });
 }

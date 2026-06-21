@@ -16,6 +16,7 @@ const quickLinkController = require('../../controllers/QuickLinkController');
 const supportTicketController = require('../../controllers/SupportTicketController');
 const settingsController = require('../../controllers/SettingsController');
 const dashboardController = require('../../controllers/DashboardController');
+const noticeController = require('../../controllers/NoticeController');
 
 const router = Router();
 
@@ -36,8 +37,10 @@ function registerCrud(path, controller) {
 router.post('/auth/login', authController.login);
 router.get('/auth/profile', auth, authController.getProfile);
 
-// Dashboard İstatistikleri
+// Dashboard İstatistikleri ve Aktiviteler
 router.get('/dashboard/stats', auth, dashboardController.getDashboardStats);
+router.get('/dashboard/activities', auth, dashboardController.getRecentActivities);
+router.post('/sync-instagram', auth, dashboardController.syncInstagram);
 
 // Tek Dosya Yükleme (Medya)
 router.post('/upload', auth, upload.single('file'), (req, res) => {
@@ -61,6 +64,8 @@ registerCrud('/documents', documentController);
 registerCrud('/banners', bannerController);
 registerCrud('/photo-gallery', photoGalleryController);
 registerCrud('/quick-links', quickLinkController);
+registerCrud('/notices', noticeController);
+
 // Destek Talepleri (Support Tickets) - POST isteği herkese açıktır, diğerleri admin yetkisi gerektirir
 router.get('/support-tickets', auth, supportTicketController.getAll);
 router.get('/support-tickets/:idOrSlug', auth, supportTicketController.getByIdOrSlug);

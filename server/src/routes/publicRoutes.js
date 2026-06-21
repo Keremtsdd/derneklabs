@@ -2,8 +2,12 @@ const { Router } = require('express');
 const {
     getCollection, getPages, getPageBySlug, getSettings, getKurumsalMenu,
 } = require('../controllers/PublicController');
+const trackVisitor = require('../middleware/visitorTracker');
 
 const router = Router();
+
+// Ziyaretçi takibi middleware'ini tüm public rotalara uygula
+router.use(trackVisitor);
 
 // Site ayarları
 router.get('/settings', getSettings);

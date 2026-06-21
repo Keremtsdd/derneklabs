@@ -26,7 +26,7 @@ interface MenuItem {
 }
 
 export default function Header() {
-    const { siteName, logo, phone, raw: settingsRaw } = useSiteSettings();
+    const { siteName, siteSubtitle, logo, phone, contactWhatsapp, raw: settingsRaw } = useSiteSettings();
     const social = settingsRaw?.social as Record<string, string> | undefined;
     const [mobileOpen, setMobileOpen] = useState(false);
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -104,7 +104,7 @@ export default function Header() {
                             <span>{phone || '0438 511 20 14'}</span>
                         </a>
                         <a 
-                            href={`https://wa.me/${phone ? phone.replace(/\s/g, '').replace('+', '') : '904385112014'}?text=Merhaba,%20bilgi%20almak%20istiyorum.`} 
+                            href={`https://wa.me/${contactWhatsapp ? contactWhatsapp.replace(/\s/g, '').replace('+', '') : (phone ? phone.replace(/\s/g, '').replace('+', '') : '904385112014')}?text=Merhaba,%20bilgi%20almak%20istiyorum.`} 
                             target="_blank" 
                             rel="noopener noreferrer" 
                             className="flex items-center gap-1.5 text-emerald hover:text-emerald-dark transition-colors"
@@ -172,7 +172,7 @@ export default function Header() {
                                     <div className="h-5 w-24 bg-slate-100 dark:bg-slate-800 animate-pulse rounded-md my-0.5" />
                                 )}
                                 <span className="text-[9px] font-bold uppercase tracking-widest text-emerald block -mt-0.5">
-                                    Sivil Toplum Portalı
+                                    {siteSubtitle}
                                 </span>
                             </div>
                         </Link>

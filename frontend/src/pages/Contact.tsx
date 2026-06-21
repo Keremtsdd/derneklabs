@@ -1,8 +1,24 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { useSiteSettings } from '../hooks/useSiteSettings';
 import { createSupportTicket } from '../services/api';
+
+const MapContainer = memo(({ embedHtml }: { embedHtml: string }) => {
+    if (!embedHtml || embedHtml.trim().length === 0) {
+        return (
+            <div className="flex items-center justify-center h-[300px] bg-slate-50 dark:bg-slate-955/20 rounded-2xl text-slate-400 dark:text-slate-550 text-xs font-semibold">
+                Harita konumu belirtilmemiş.
+            </div>
+        );
+    }
+    return (
+        <div 
+            className="[&>iframe]:w-full [&>iframe]:h-[300px] [&>iframe]:border-0 [&>iframe]:rounded-2xl dark:[&>iframe]:opacity-80" 
+            dangerouslySetInnerHTML={{ __html: embedHtml }} 
+        />
+    );
+});
 
 export default function Contact() {
     const { address, email, phone, mapEmbed } = useSiteSettings();
@@ -10,9 +26,6 @@ export default function Contact() {
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
-    const hasMapHtml = mapEmbed && mapEmbed.trim().length > 0;
-    const mapContent = hasMapHtml ? { __html: mapEmbed } : undefined;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -97,13 +110,7 @@ export default function Contact() {
 
                     {/* Harita */}
                     <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl dark:shadow-black/20 p-2 border border-slate-100 dark:border-slate-800/85 overflow-hidden min-h-[300px]">
-                        {hasMapHtml ? (
-                            <div className="[&>iframe]:w-full [&>iframe]:h-[300px] [&>iframe]:border-0 [&>iframe]:rounded-2xl dark:[&>iframe]:opacity-80" dangerouslySetInnerHTML={mapContent} />
-                        ) : (
-                            <div className="flex items-center justify-center h-[300px] bg-slate-50 dark:bg-slate-955/20 rounded-2xl text-slate-400 dark:text-slate-550 text-xs font-semibold">
-                                Harita konumu belirtilmemiş.
-                            </div>
-                        )}
+                        <MapContainer embedHtml={mapEmbed} />
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './context/ThemeContext';
 import MainLayout from './components/layout/MainLayout';
@@ -14,20 +14,27 @@ import GenericPage from './pages/GenericPage';
 // Admin
 import AdminLayout from './pages/admin/AdminLayout';
 import Login from './pages/admin/Login';
-import Dashboard from './pages/admin/Dashboard';
 import PagesAdmin from './pages/admin/PagesAdmin';
 import MenuManager from './pages/admin/MenuManager';
+import Dashboard from './pages/admin/Dashboard';
 
-import Settings from './pages/admin/Settings';
+import {
+  LogoBaslikPage,
+  UstMenuPage,
+  IletisimAyarlariPage,
+  FooterAyarlariPage,
+  KategoriYonetimiPage,
+  SssPage,
+  AracCubuguPage
+} from './pages/admin/Settings';
 import {
   NewsPage,
   AnnouncementsPage,
   EventsPage,
   ProjectsPage,
   BannersPage,
-  FastLinksPage,
-  DocumentsPage,
-  SupportTicketsPage,
+  PhotoGalleryPage,
+  NoticesPage,
 } from './pages/admin/CollectionPages';
 
 const queryClient = new QueryClient({
@@ -75,19 +82,24 @@ export default function App() {
             {/* Admin */}
             <Route path="/admin/giris" element={<Login />} />
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Dashboard />} />
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="hero" element={<BannersPage />} />
               <Route path="haberler" element={<NewsPage />} />
               <Route path="duyurular" element={<AnnouncementsPage />} />
               <Route path="etkinlikler" element={<EventsPage />} />
               <Route path="projeler" element={<ProjectsPage />} />
-              <Route path="bannerlar" element={<BannersPage />} />
-              <Route path="hizli-islemler" element={<FastLinksPage />} />
-              <Route path="belgeler" element={<DocumentsPage />} />
+              <Route path="foto-galeri" element={<PhotoGalleryPage />} />
+              <Route path="basin" element={<NoticesPage />} />
               <Route path="sayfalar" element={<PagesAdmin />} />
               <Route path="menu" element={<MenuManager />} />
-
-              <Route path="ayarlar" element={<Settings />} />
-              <Route path="destek-talepleri" element={<SupportTicketsPage />} />
+              <Route path="logo-baslik" element={<LogoBaslikPage />} />
+              <Route path="ust-menu" element={<UstMenuPage />} />
+              <Route path="iletisim-ayarlari" element={<IletisimAyarlariPage />} />
+              <Route path="footer-ayarlari" element={<FooterAyarlariPage />} />
+              <Route path="kategori-yonetimi" element={<KategoriYonetimiPage />} />
+              <Route path="sss" element={<SssPage />} />
+              <Route path="arac-cubugu" element={<AracCubuguPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

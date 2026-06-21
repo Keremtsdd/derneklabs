@@ -3,6 +3,7 @@ import { useAdminCollection } from '../../hooks/useAdmin';
 import DataTable, { imageColumn } from '../../components/admin/DataTable';
 import ImageUpload from '../../components/admin/ImageUpload';
 import Toast from '../../components/ui/Toast';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 interface CrudItem {
     [key: string]: unknown;
@@ -18,8 +19,9 @@ interface CrudItem {
 interface FieldConfig {
     key: string;
     label: string;
-    type: 'text' | 'textarea' | 'date' | 'url' | 'number' | 'checkbox';
+    type: 'text' | 'textarea' | 'date' | 'url' | 'number' | 'checkbox' | 'select';
     required?: boolean;
+    options?: { value: string; label: string }[];
 }
 
 interface CollectionPageConfig {
@@ -34,6 +36,7 @@ interface CollectionPageConfig {
 export function createCollectionPage(config: CollectionPageConfig) {
     return function CollectionPage() {
         const { items, isLoading, create, update, remove, isDeleting } = useAdminCollection<CrudItem>(config.collection);
+        const { raw: settingsRaw } = useSiteSettings();
         const [editing, setEditing] = useState<CrudItem | null>(null);
         const [showForm, setShowForm] = useState(false);
         const [imageFile, setImageFile] = useState<File | null>(null);
@@ -146,6 +149,35 @@ export function createCollectionPage(config: CollectionPageConfig) {
                                                     rows={4}
                                                     className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm font-medium text-slate-800"
                                                 />
+                                            ) : field.type === 'select' ? (
+                                                <select
+                                                    value={formData[field.key] || ''}
+                                                    onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                                                    required={field.required}
+                                                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm font-medium text-slate-800 bg-white"
+                                                >
+                                                    <option value="">Seçiniz...</option>
+                                                    {field.key === 'category_id' ? (() => {
+                                                        try {
+                                                            const cats = typeof settingsRaw?.news_categories === 'string'
+                                                                ? JSON.parse(settingsRaw.news_categories)
+                                                                : settingsRaw?.news_categories;
+                                                            if (Array.isArray(cats)) {
+                                                                return cats.map((c: any) => (
+                                                                    <option key={c.id} value={c.id}>{c.label}</option>
+                                                                ));
+                                                            }
+                                                        } catch(e) {}
+                                                        return [
+                                                            { id: 'Help', label: 'İnsani Yardım' },
+                                                            { id: 'Education', label: 'Eğitim & Gönüllülük' },
+                                                            { id: 'Environment', label: 'Çevre & Doğa' },
+                                                            { id: 'Business', label: 'Kadın & Girişimcilik' }
+                                                        ].map(c => <option key={c.id} value={c.id}>{c.label}</option>);
+                                                    })() : (field.options || []).map((opt) => (
+                                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                                    ))}
+                                                </select>
                                             ) : (
                                                 <input
                                                     type={field.type === 'date' ? 'date' : field.type === 'url' ? 'url' : field.type === 'number' ? 'number' : 'text'}
@@ -200,9 +232,10 @@ export const NewsPage = createCollectionPage({
     title: 'Haberler',
     fields: [
         { key: 'title', label: 'Başlık', type: 'text', required: true },
+        { key: 'category_id', label: 'Haber Kategorisi', type: 'select', required: true },
         { key: 'summary', label: 'Özet', type: 'textarea' },
         { key: 'date', label: 'Tarih', type: 'date' },
-        { key: 'link', label: 'Link', type: 'url' },
+        { key: 'link', label: 'Link (Opsiyonel)', type: 'url' },
     ],
 });
 
@@ -241,33 +274,34 @@ export const ProjectsPage = createCollectionPage({
 
 export const BannersPage = createCollectionPage({
     collection: 'banners',
-    title: 'Banner / Slider',
+    title: 'Hero Slider',
     fields: [
-        { key: 'title', label: 'Başlık', type: 'text' },
-        { key: 'link', label: 'Link', type: 'url' },
-        { key: 'summary', label: 'Açıklama', type: 'textarea' },
+        { key: 'title', label: 'Slayt Başlığı', type: 'text' },
+        { key: 'summary', label: 'Slayt Açıklaması', type: 'textarea' },
+        { key: 'link', label: 'Buton 1 Yönlendirme Linki (URL)', type: 'url' },
+        { key: 'button_text', label: 'Buton 1 Yazısı (Varsayılan: İncele)', type: 'text' },
+        { key: 'show_button', label: 'Buton 1 Gösterilsin mi?', type: 'checkbox' },
+        { key: 'show_donate_button', label: 'Bağış Yap Butonu Gösterilsin mi?', type: 'checkbox' },
     ],
 });
 
-export const FastLinksPage = createCollectionPage({
-    collection: 'fast_links',
-    title: 'Hızlı Bağlantılar',
-    imageLabel: 'İkon',
+export const PhotoGalleryPage = createCollectionPage({
+    collection: 'photo-gallery',
+    title: 'Fotoğraf Galerisi',
     fields: [
-        { key: 'title', label: 'Başlık', type: 'text', required: true },
-        { key: 'link', label: 'Bağlantı adresi (URL)', type: 'url', required: true },
-        { key: 'sort_order', label: 'Sıra (küçük numara önce görünür)', type: 'number' },
-        { key: 'published', label: 'Yayında göster', type: 'checkbox' },
+        { key: 'title', label: 'Görsel Başlığı / Açıklaması', type: 'text', required: true },
+        { key: 'sort_order', label: 'Sıra No (Küçük önce görünür)', type: 'number' },
     ],
 });
 
-export const DocumentsPage = createCollectionPage({
-    collection: 'documents',
-    title: 'Belgeler',
+export const NoticesPage = createCollectionPage({
+    collection: 'notices',
+    title: 'Basın Açıklamaları',
     fields: [
-        { key: 'title', label: 'Başlık', type: 'text', required: true },
-        { key: 'link', label: 'Dosya Linki', type: 'url' },
-        { key: 'date', label: 'Tarih', type: 'text' },
+        { key: 'title', label: 'Açıklama Başlığı', type: 'text', required: true },
+        { key: 'summary', label: 'Kısa Özet', type: 'textarea' },
+        { key: 'date', label: 'Yayın Tarihi', type: 'date' },
+        { key: 'link', label: 'Basın Linki (Opsiyonel)', type: 'url' },
     ],
 });
 

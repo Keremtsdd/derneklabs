@@ -21,6 +21,11 @@ export const SETTINGS_KEYS = {
     seo_og_image: '',
     maintenance_enabled: false,
     maintenance_message: '',
+    general_site_subtitle: '',
+    footer_subtitle: '',
+    footer_text: '',
+    footer_copyright: '',
+    contact_whatsapp: '',
 } as const;
 
 function getString(settings: SiteSettings | undefined, key: string, fallback: string): string {
@@ -80,5 +85,15 @@ export function useSiteSettings() {
         maintenanceEnabled: getBool(data, 'maintenance_enabled', false),
         /** Bakım mesajı */
         maintenanceMessage: getString(data, 'maintenance_message', ''),
+        /** Genel: site alt başlığı */
+        siteSubtitle: getString(data, 'general_site_subtitle', 'Sivil Toplum Portalı'),
+        /** Footer: alt başlık */
+        footerSubtitle: getString(data, 'footer_subtitle', 'Geleceği Birlikte İnşa Ediyoruz'),
+        /** Footer: açıklama */
+        footerText: getString(data, 'footer_text', 'Şeffaflık, hesap verebilirlik ve toplumsal fayda ilkeleriyle hareket ediyor; dünyanın her köşesindeki ihtiyaç sahiplerine umut taşıyan sürdürülebilir kalkınma modelleri geliştiriyoruz.'),
+        /** Footer: copyright */
+        footerCopyright: getString(data, 'footer_copyright', ''),
+        /** İletişim: WhatsApp destek numarası */
+        contactWhatsapp: getString(data, 'contact_whatsapp', ''),
     };
 }

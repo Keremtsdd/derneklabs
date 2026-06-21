@@ -17,6 +17,8 @@ DELETE FROM photo_gallery;
 DELETE FROM quick_links;
 DELETE FROM support_tickets;
 DELETE FROM settings;
+DELETE FROM visitor_logs;
+DELETE FROM activity_logs;
 
 -- Admin kullanıcı (şifre: admin123)
 INSERT INTO
@@ -366,6 +368,54 @@ VALUES (
         '{}',
         1,
         3
+    ),
+    (
+        'pg-sss',
+        'Sıkça Sorulan Sorular',
+        's-s-s',
+        'Sıkça sorulan sorular ve cevaplar.',
+        '<h2>Sıkça Sorulan Sorular</h2><p>Derneğimiz ve faaliyetlerimiz hakkında sıkça sorulan sorulara bu sayfadan ulaşabilirsiniz.</p>',
+        '',
+        '',
+        '{}',
+        1,
+        4
+    ),
+    (
+        'pg-gizlilik-politikasi',
+        'Gizlilik Politikası',
+        'gizlilik-politikasi',
+        'Gizlilik politikası metni.',
+        '<h2>Gizlilik Politikası</h2><p>Kişisel verilerinizin korunması derneğimizin en önemli ilkelerinden biridir.</p>',
+        '',
+        '',
+        '{}',
+        1,
+        5
+    ),
+    (
+        'pg-kullanim-sartlari',
+        'Kullanım Şartları',
+        'kullanim-sartlari',
+        'Kullanım şartları ve koşulları.',
+        '<h2>Kullanım Şartları</h2><p>Web sitemizi kullanırken uymanız gereken kurallar ve koşullar.</p>',
+        '',
+        '',
+        '{}',
+        1,
+        6
+    ),
+    (
+        'pg-kvkk-aydinlatma-metni',
+        'KVKK Aydınlatma Metni',
+        'kvkk-aydinlatma-metni',
+        'KVKK aydınlatma ve rıza metni.',
+        '<h2>KVKK Aydınlatma Metni</h2><p>6698 sayılı Kişisel Verilerin Korunması Kanunu uyarınca aydınlatma metnimiz.</p>',
+        '',
+        '',
+        '{}',
+        1,
+        7
     );
 
 -- Projeler (Projects)
@@ -493,6 +543,10 @@ VALUES (
     (
         'faq',
         '[{"question": "Çocuklar için yaz okulu var mı?", "answer": "Evet, her yıl yaz aylarında çocuklarımız için kültürel, sportif ve eğitici yaz okulu etkinlikleri düzenlenmektedir."}, {"question": "Şifre ve giriş sorunları için ne yapmalıyım?", "answer": "Yönetim paneli veya üyelik girişlerinde sorun yaşıyorsanız, şifre sıfırlama talebinde bulunabilir ya da teknik destek ekibimizle iletişime geçebilirsiniz."}, {"question": "Bağışlar nasıl kullanılmaktadır?", "answer": "Tüm bağışlar, tüzüğümüzde yer alan amaçlar doğrultusunda eğitim bursları, gıda-kıyafet yardımları ve sürdürülebilir kalkınma projelerinde şeffaf bir şekilde kullanılmaktadır."}, {"question": "Kurban bağışı kabul ediyor musunuz?", "answer": "Evet, Kurban Bayramı döneminde vekalet yoluyla adak, akika ve vacip kurban bağışlarınızı kabul ediyor, kesimlerini gerçekleştirerek ihtiyaç sahiplerine ulaştırıyoruz."}, {"question": "Derneğe nasıl bağış yapabilirim?", "answer": "Web sitemiz üzerinden kredi kartınızla güvenli bir şekilde online bağış yapabilir veya banka hesap numaralarımıza (havale/EFT) gönderim sağlayabilirsiniz."}, {"question": "Hac ve Umre organizasyonlarınız var mı?", "answer": "Derneğimiz sosyal yardımlaşma ve dayanışma odaklı olup, Hac ve Umre organizasyonu gibi ticari veya seyahat faaliyetleri yürütmemektedir."}, {"question": "Derneğinizin faaliyet alanları nelerdir?", "answer": "Faaliyet alanlarımız arasında eğitim destekleri, kırsal kalkınma projeleri, çevre koruma etkinlikleri ve acil insani yardım çalışmaları yer almaktadır."}, {"question": "Dernekte nikah kıyılıyor mu?", "answer": "Derneğimizin nikah kıma yetkisi bulunmamaktadır. Nikah işlemleri resmi nikah memurları tarafından belediyelerde yürütülmektedir."}]'
+    ),
+    (
+        'news_categories',
+        '[{"id": "Help", "label": "İnsani Yardım"}, {"id": "Education", "label": "Eğitim & Gönüllülük"}, {"id": "Environment", "label": "Çevre & Doğa"}, {"id": "Business", "label": "Kadın & Girişimcilik"}]'
     );
 
 -- Fotoğraf Galerisi (PhotoGallery)
@@ -505,3 +559,10 @@ VALUES
     ('g4444444-4444-4444-4444-444444444444', 'Saha Gönüllüleri Eğitim ve Planlama Buluşması', 'gonullu-planlama-bulusmasi', '/images/30-0187541.jpg', 1, 3),
     ('g5555555-5555-5555-5555-555555555555', 'Zübeyde Hanım Yaşam Merkezi Sosyal Tesisler', 'zubeyde-hanim-yasam-merkezi', '/images/zubeyde-hanim-yasam-merkezi7177.jpg', 1, 4),
     ('g6666666-6666-6666-6666-666666666666', 'Gıda ve Sıcak Yemek Dağıtım Operasyonlarımız', 'gida-ve-yemek-dagitimlari', '/images/bayrampasa-belediyesi-yemek-uretim-tesisi76658.jpg', 1, 5);
+
+-- İlanlar / Basın (Notices / Press)
+INSERT INTO
+    notices (id, title, slug, short_description, image, is_active, sort_order)
+VALUES
+    ('n1111111-1111-1111-1111-111111111111', 'Çukurca Eğitim Kampanyası Basın Bülteni', 'cukurca-egitim-kampanyasi-basin-bulteni', 'Derneğimiz, Çukurca genelindeki kırsal okullarda eğitim gören 500 öğrenciye ulaştırılacak kırtasiye ve tablet yardımı kampanyasını kamuoyuna duyurur.', '/images/kutuphanelerimiz4332.jpg', 1, 0),
+    ('n2222222-2222-2222-2222-222222222222', 'Olağan Genel Kurul Toplantısı Çağrısı', 'olagan-genel-kurul-cagrisi', 'Çukurca Sivil Toplum Destek Derneği Yönetim Kurulu kararı ile Olağan Genel Kurul Toplantısı 15 Temmuz 2026 tarihinde dernek merkezinde gerçekleştirilecektir.', '/images/30-0187541.jpg', 1, 1);
